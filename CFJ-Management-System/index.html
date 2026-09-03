@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Overview</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="overview">
+  <!-- Shared navigation: every top link opens its own page instead of scrolling. -->
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a class="active" href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+    <a class="nav-login" href="login.html">Login / Signup</a>
+  </header>
+
+  <main>
+    <!-- Hero section uses the uploaded gym design references and project images. -->
+    <section class="hero-page">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Team Forge | CFJ Lifestyle Fitness</p>
+        <h1>Push your limits with a smarter gym system.</h1>
+        <p>CFJ replaces manual gym administration with a working website and app-style system for memberships, payments, class bookings, trainer discovery, friend matching, reports, and goal-based training manuals.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="login.html">Join Now</a>
+          <a class="ghost-button" href="library.html">View Training Guide</a>
+        </div>
+      </div>
+      <div class="hero-image reveal">
+        <img src="assets/training-hero.jpg" alt="Gym athlete training">
+      </div>
+    </section>
+
+    <!-- Live dashboard cards are filled by JavaScript from localStorage. -->
+    <section class="metric-strip reveal">
+      <article><b id="metricMembers">0</b><span>members registered</span></article>
+      <article><b id="metricPayments">0</b><span>payments recorded</span></article>
+      <article><b id="metricClasses">0</b><span>active classes</span></article>
+      <article><b id="metricRevenue">R0</b><span>total revenue</span></article>
+    </section>
+
+    <!-- Project information for visitors and potential members. -->
+    <section class="content-band two-col">
+      <div class="section-title reveal">
+        <p class="eyebrow">About The System</p>
+        <h2>Your fitness journey starts here.</h2>
+      </div>
+      <div class="info-grid reveal">
+        <article>
+          <h3>Member App</h3>
+          <p>Members can sign up, log in, pay monthly fees, book classes, view payment confirmations, and access training guides after payment.</p>
+        </article>
+        <article>
+          <h3>Admin Portal</h3>
+          <p>Admins can log in to view registered members, joined dates, payment records, paid months, and confirmation messages.</p>
+        </article>
+        <article>
+          <h3>Training Manual</h3>
+          <p>The guide is divided by member goals such as strength, weight loss, muscle tone, and endurance. It is unlocked for paid members.</p>
+        </article>
+        <article>
+          <h3>Communication</h3>
+          <p>After a payment is recorded, the system generates a simulated SMS and email confirmation for the member's payment section.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Image-led feature section using files from images.zip. -->
+    <section class="image-feature reveal">
+      <img src="assets/aesthetic-gym.jpg" alt="Modern gym interior">
+      <div>
+        <p class="eyebrow">Why CFJ Needed This</p>
+        <h2>Less paperwork. Better service. Clear reports.</h2>
+        <p>CFJ brings the gym experience into one place: members get faster service, staff spend less time on paperwork, and management can make decisions from clear, current information.</p>
+      </div>
+    </section>
+
+    <!-- Extra real-website content explains the value proposition before the footer. -->
+    <section class="content-band feature-lanes reveal">
+      <article>
+        <h3>For Members</h3>
+        <p>Members can register, manage preferences, pay fees, book classes, connect with trainers, and unlock their training manual after payment.</p>
+      </article>
+      <article>
+        <h3>For Staff</h3>
+        <p>Staff can record attendance manually, process payments, monitor paid months, and support members with fast searchable information.</p>
+      </article>
+      <article>
+        <h3>For Management</h3>
+        <p>Admins get live member and payment reports showing joined dates, invoices, monthly payment status, and confirmation messages.</p>
+      </article>
+    </section>
+  </main>
+
+  <!-- Bottom navigation makes the site feel complete and gives access from page end. -->
+  <footer class="site-footer">
+    <div>
+      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+      <p>CFJ Lifestyle Fitness Management System.</p>
+    </div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

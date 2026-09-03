@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Member Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="member-login">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav"></nav>
+    <a class="nav-login active" href="login.html">Signup</a>
+  </header>
+  <main class="auth-page redesigned-auth">
+    <section class="auth-shell login-only reveal">
+      <div class="auth-showcase">
+        <p class="eyebrow">Member Access</p>
+        <h1>Welcome back.</h1>
+        <p>Log in to update your profile, pay fees, book classes, and unlock your training manual.</p>
+      </div>
+      <form class="auth-card active-auth-form" id="memberLoginForm">
+        <h2>Member login.</h2>
+        <label>Email<input id="memberLoginEmail" type="email" value="anele@cfjfit.co.za" required></label>
+        <label>Password<input id="memberLoginPassword" type="password" value="member123" required></label>
+        <button class="primary-button" type="submit">Login As Member</button>
+        <a class="ghost-button" href="login.html">Create New Account</a>
+      </form>
+    </section>
+  </main>
+  <footer class="site-footer"></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

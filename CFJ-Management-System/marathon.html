@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Join Marathon</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="marathon">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav"></nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <section class="marathon-hero reveal">
+      <div>
+        <p class="eyebrow">CFJ Community Run</p>
+        <h1>Join the CFJ Wellness Marathon.</h1>
+        <p>CFJ hosts marathon events to help members build endurance, confidence, and healthier daily habits. The event also supports people managing blood pressure related concerns by encouraging safe, consistent cardiovascular training.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="login.html">Register Interest</a>
+          <a class="ghost-button" href="#marathon-info">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="marathon-info" class="content-band marathon-grid">
+      <article class="panel reveal">
+        <h2>Event Time</h2>
+        <label>Pick marathon date<input id="marathonDate" type="date"></label>
+        <div class="marathon-countdown" id="marathonCountdown">Select a date to see the event countdown.</div>
+        <p class="muted">Once a date is selected, this page shows how much time remains before the marathon starts.</p>
+      </article>
+
+      <article class="panel reveal">
+        <h2>Why We Host It</h2>
+        <p>Running events give members a clear goal outside normal gym sessions. They build community, improve consistency, and help people experience progress in a measurable way.</p>
+        <p>CFJ also supports members with blood pressure related problems by encouraging responsible cardio training, warm-ups, hydration, pacing, and regular check-ins before high-intensity effort.</p>
+      </article>
+    </section>
+
+    <section class="content-band marathon-gallery reveal">
+      <img src="assets/marathon-runners.jpg" alt="Runners hydrating during a marathon">
+      <img src="assets/marathon-start.jpg" alt="Marathon start line">
+      <img src="assets/marathon-heartbeat.jpg" alt="Runner heartbeat motivation graphic">
+    </section>
+
+    <section class="content-band feature-lanes reveal">
+      <article>
+        <h3>Preparation</h3>
+        <p>Members receive pacing advice, endurance sessions, mobility work, and recovery reminders before the event.</p>
+      </article>
+      <article>
+        <h3>Health Awareness</h3>
+        <p>Participants are encouraged to monitor blood pressure, hydrate properly, and train at a safe intensity.</p>
+      </article>
+      <article>
+        <h3>Community</h3>
+        <p>The marathon brings CFJ members together and gives beginners a supportive reason to keep going.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

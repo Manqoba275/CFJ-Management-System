@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Operations</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="operations">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a class="active" href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <section class="page-hero operations-hero reveal">
+      <div>
+        <p class="eyebrow">Gym Operations</p>
+        <h1>Book classes, check in, find trainers, and connect.</h1>
+        <p>Manage daily gym actions from one place: bookings, check-ins, trainer contact, friend matching, and staff service entries.</p>
+      </div>
+    </section>
+
+    <section class="content-band operations-grid">
+      <!-- Attendance writes a new visit record for the current member. -->
+      <article class="panel reveal">
+        <h2>Attendance Check-In</h2>
+        <label>Member ID / card number<input id="attendanceMemberId" type="text" placeholder="M-1001"></label>
+        <div class="scanner"><span></span><span></span><span></span><span></span></div>
+        <p class="muted">Members can tap a card, enter a member ID, or simulate a QR scan. Admin can later view attendance totals in reports.</p>
+        <div class="button-row">
+          <button class="primary-button" id="checkInButton" type="button">Check In Now</button>
+          <button class="ghost-button" id="qrScanButton" type="button">Scan QR</button>
+          <button class="ghost-button" id="checkOutButton" type="button">Check Out</button>
+        </div>
+      </article>
+
+      <!-- Class list is rendered dynamically and reduces capacity when booked. -->
+      <article class="panel reveal">
+        <div class="panel-title">
+          <h2>Class Booking</h2>
+          <select id="classFilter"><option>All classes</option><option>Strength</option><option>Cardio</option><option>Mobility</option></select>
+        </div>
+        <div class="tool-row">
+          <label>Date<input id="classDate" type="date"></label>
+          <label>Instructor<select id="instructorFilter"><option>All instructors</option><option>Lindiwe Jacobs</option><option>Thabo Nkosi</option><option>Mia Naidoo</option></select></label>
+        </div>
+        <div class="class-list" id="classList"></div>
+        <h3>Your Bookings</h3>
+        <div class="stack-list" id="bookingList"></div>
+      </article>
+
+      <!-- Trainer and friend features create request records. -->
+      <article class="panel reveal">
+        <h2>Trainer & Friend Requests</h2>
+        <label>Trainer specialisation<select id="trainerFilter"><option>All trainers</option><option>Strength</option><option>HIIT</option><option>Mobility</option></select></label>
+        <div class="tool-row">
+          <label>Language<select id="trainerLanguage"><option>Any language</option><option>English</option><option>Zulu</option><option>Venda</option></select></label>
+          <label>Minimum rating<select id="trainerRating"><option>Any rating</option><option>4.5</option><option>4.8</option></select></label>
+        </div>
+        <div class="tool-row">
+          <label>Preferred date<input id="trainerDate" type="date"></label>
+          <label>Preferred time<input id="trainerTime" type="time"></label>
+        </div>
+        <label>Message to trainer<input id="trainerMessage" type="text" placeholder="I need help with..."></label>
+        <div class="stack-list" id="trainerList"></div>
+        <h3>Rate Trainer</h3>
+        <div class="tool-row">
+          <label>Stars<select id="trainerStars"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+          <label>Review<input id="trainerReview" type="text" placeholder="Optional comment"></label>
+        </div>
+        <hr>
+        <h3>Find a Friend</h3>
+        <p class="muted">The system suggests members with similar goals or training times.</p>
+        <div class="stack-list" id="friendList"></div>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Footer repeats the page map and keeps navigation available at the bottom. -->
+  <footer class="site-footer">
+    <div>
+      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+      <p>Operations include attendance, payments, bookings, trainers, and friend matching.</p>
+    </div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

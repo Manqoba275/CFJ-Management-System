@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Staff</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="staff">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="library.html">Library</a>
+      <a class="active" href="staff.html">Staff</a>
+    </nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <section class="page-hero operations-hero reveal">
+      <div>
+        <p class="eyebrow">Staff Desk</p>
+        <h1>Attendance and payment service tools.</h1>
+        <p>Staff can record manual attendance, process member payments, and search recent service records. Admin-only reports remain hidden from staff.</p>
+      </div>
+    </section>
+
+    <section class="content-band staff-grid">
+      <form class="panel reveal" id="staffAttendanceForm">
+        <h2>Manual Attendance Entry</h2>
+        <label>Member ID / name / email<input id="staffAttendanceMember" type="text" placeholder="M-1001 or Anele"></label>
+        <label>Date<input id="staffAttendanceDate" type="date"></label>
+        <label>Time<input id="staffAttendanceTime" type="time"></label>
+        <button class="primary-button" type="submit">Record Attendance</button>
+      </form>
+
+      <form class="panel reveal" id="staffPaymentForm">
+        <h2>Record Payment</h2>
+        <label>Member name or ID<input id="staffPaymentMember" type="text" placeholder="Anele or M-1001"></label>
+        <label>Amount<input id="staffPaymentAmount" type="number" min="1" value="450"></label>
+        <label>Date<input id="staffPaymentDate" type="date"></label>
+        <label>Payment method<select id="staffPaymentMethod"><option>Cash</option><option>Card</option><option>EFT</option></select></label>
+        <button class="primary-button" type="submit">Record Payment</button>
+      </form>
+    </section>
+
+    <section class="content-band">
+      <div class="panel table-wrap reveal">
+        <div class="panel-title">
+          <h2>Recent Staff Records</h2>
+          <input id="staffRecordSearch" type="search" placeholder="Filter by member">
+        </div>
+        <table>
+          <thead><tr><th>Type</th><th>Member</th><th>Date</th><th>Details</th></tr></thead>
+          <tbody id="staffRecordTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
