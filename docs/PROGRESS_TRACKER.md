@@ -1,28 +1,7 @@
 # Project pacer
 
-Proposed owners below come from the plan. Confirm due dates with the team; no completed participation is invented. Link each item to Azure Boards and to actual PR/test evidence.
+The current role-specific schedule is [the two-week team plan](team/README.md), covering 28 September to 11 October 2026. It supersedes the earlier provisional owner allocations. Manqoba may work across all areas; other members contribute within their named professions.
 
-| Task | Proposed owner | Deadline | Status | Evidence |
-|---|---|---|---|---|
-| Review setup and onboard GitHub collaborators | Sanele | To agree | Setup prepared; onboarding pending | Setup branch |
-| Requirement acceptance scenarios | Nyito | To agree | Planned | Pending |
-| Oracle ERD, migrations and seed data | Tshifhiwa | To agree | Planned | Pending |
-| Shared API and authentication | Sanele | To agree | Planned | Pending |
-| Website API integration and accessibility | Nonhlanhla | To agree | Planned | Pending |
-| Kotlin profile/settings screens | Nyito | To agree | Planned | Pending |
-| Kotlin bookings and database checks | Tshifhiwa | To agree | Planned | Pending |
-| UI tests and real-phone usability | Nonhlanhla | To agree | Planned | Pending |
-| Integration, CI and release | Sanele + all reviewers | To agree | Planned | Pending |
+Track actual completion separately from planned dates. Record task, owner, deadline, status, commit/PR URL, checks, reviewer and blockers in each member's evidence template. No participation has been marked complete on behalf of members.
 
-## Meeting schedule proposal
-
-Monday, Wednesday and Friday, 18:00-20:00 Africa/Johannesburg, subject to team agreement. No Teams invites have been sent. Record every meeting, attendance, participation, decisions, allocated tasks and deadlines. Keep recordings in the team's access-controlled Teams/OneDrive area and link evidence; do not put large recordings in Git.
-
-## Repeat for each meeting
-
-- Date/time and meeting link:
-- Attendees, apologies and participation:
-- Topics and decisions:
-- Tasks, owners and due dates:
-- Recording link:
-- Commit/PR/test evidence since last meeting:
+Proposed recorded Teams sessions: 28/30 September and 2/5/7/9 October, 18:00-20:00 Africa/Johannesburg. Confirm availability with the team. No invitations were sent. Keep attendance, participation, minutes, decisions, tasks, deadlines and recording links for each session.
