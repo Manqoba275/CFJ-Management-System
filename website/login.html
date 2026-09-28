@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Create Account</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="login">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav"></nav>
+    <a class="nav-login active" href="login.html">Login / Signup</a>
+  </header>
+
+  <main class="auth-page redesigned-auth">
+    <section class="auth-shell single-auth reveal">
+      <div class="auth-showcase">
+        <p class="eyebrow">Join CFJ Today</p>
+        <h1>Create your fitness account.</h1>
+        <p>Register as a member to manage your profile, payments, bookings, goals, and training manual access.</p>
+        <a class="ghost-button" href="marathon.html">Join Marathon</a>
+      </div>
+
+      <!-- This is the only account box on the signup page. Role-login buttons link to their own pages. -->
+      <form class="auth-card active-auth-form" id="signupForm">
+        <h2>Create new account.</h2>
+        <label>Full name<input id="signupName" type="text" required></label>
+        <label>Email<input id="signupEmail" type="email" required></label>
+        <label>Password<input id="signupPassword" type="password" minlength="6" required></label>
+        <label>Phone<input id="signupPhone" type="tel" placeholder="+27 71 000 0000"></label>
+        <label>Goal<select id="signupGoal"><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select></label>
+        <label>Body type<select id="signupBody"><option>Mesomorph</option><option>Ectomorph</option><option>Endomorph</option></select></label>
+        <label>Preferred time<input id="signupTime" type="time" value="17:30"></label>
+        <label>Medical notes<input id="signupMedical" type="text" placeholder="Optional"></label>
+        <button class="primary-button" type="submit">Create Account</button>
+        <div class="role-buttons">
+          <a class="ghost-button mini-button" href="member-login.html">Member Login</a>
+          <a class="ghost-button mini-button" href="staff-login.html">Staff Login</a>
+          <a class="ghost-button mini-button" href="admin-login.html">Admin Login</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
