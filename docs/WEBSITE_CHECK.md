@@ -1,4 +1,4 @@
-# Website setup check — 28 September 2026
+# Website setup check â€” 28 September 2026
 
 Local preview: `npm start`, then http://127.0.0.1:8765/ . No dependencies need installing; Node.js 22 or later is required. The server is bound to this PC's loopback interface and serves only website files. It does not expose the Git repository or Desktop files.
 
@@ -12,6 +12,7 @@ Verified in the browser using the existing fictional demo account:
 - Paid member library displayed unlocked guides and opened a guide modal.
 - Logout returned to the sign-up page.
 - Admin login displayed the reports, payments, invoices and staff-management interface.
+- Staff login displayed the attendance/payment service desk without admin-report navigation.
 - The new demo notice correctly explains local-only data and simulated transactions.
 
 Automated checks: all 11 HTML pages' local file references and app.js syntax passed; the preview-server test passed for normal files, missing/private/traversal paths, unsupported write methods, and HEAD requests.
