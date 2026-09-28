@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Members</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="members">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a class="active" href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <!-- Member dashboard shows the logged-in member and their account status. -->
+    <section class="page-hero members-hero reveal">
+      <div>
+        <p class="eyebrow">Member Dashboard</p>
+        <h1>Profile, payments, and confirmation messages.</h1>
+        <p>Members use this page to update their details, pay membership fees, and see whether their training guide is unlocked.</p>
+      </div>
+    </section>
+
+    <section class="content-band two-col">
+      <article class="panel profile-panel reveal">
+        <div class="profile-picture" id="profilePicture"><span id="profileInitials">CF</span></div>
+        <h2 id="profileName">Please log in</h2>
+        <p id="profileMeta">Use the login page to access your member dashboard.</p>
+        <ul class="clean-list" id="profileDetails"></ul>
+        <button class="ghost-button mini-button" id="logoutButton" type="button">Logout</button>
+      </article>
+
+      <!-- Payment form records paid months and generates simulated SMS/email confirmations. -->
+      <form class="panel payment-panel reveal" id="memberPaymentForm">
+        <h2>Payment Section</h2>
+        <p class="muted">After payment, members receive a confirmation SMS or email. In this local demo, the confirmation is generated and displayed below.</p>
+        <label>Payment month<select id="paymentMonth"></select></label>
+        <label>Amount<input id="paymentAmount" type="number" min="1" value="450"></label>
+        <label>Confirmation channel<select id="paymentChannel"><option>Email</option><option>SMS</option></select></label>
+        <button class="primary-button" type="submit">Pay Membership</button>
+      </form>
+    </section>
+
+    <!-- Editable profile covers the required registration/profile interactions. -->
+    <section class="content-band">
+      <div class="section-title reveal">
+        <p class="eyebrow">Edit Profile & Preferences</p>
+        <h2>Update personal details, goals, measurements, and settings.</h2>
+      </div>
+      <form class="panel form-grid reveal" id="profileEditForm">
+        <label>Full name<input id="editName" type="text"></label>
+        <label>Contact number<input id="editPhone" type="tel"></label>
+        <label>Fitness goal<select id="editGoal"><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select></label>
+        <label>Body type<select id="editBody"><option>Mesomorph</option><option>Ectomorph</option><option>Endomorph</option></select></label>
+        <label>Body measurements<input id="editMeasurements" type="text" placeholder="e.g. 82kg, waist 84cm"></label>
+        <label>Medical notes<input id="editMedical" type="text" placeholder="Optional"></label>
+        <label>Workout type<select id="editWorkout"><option>Strength</option><option>Cardio</option><option>Mobility</option><option>Mixed</option></select></label>
+        <label>Preferred time<input id="editTime" type="time"></label>
+        <label>Intensity<select id="editIntensity"><option>Low</option><option>Medium</option><option>High</option></select></label>
+        <label>Profile picture<input id="editPhoto" type="file" accept="image/*"></label>
+        <label class="toggle-row full-row"><input id="editNotifications" type="checkbox"> Enable payment and class notifications</label>
+        <button class="primary-button full-row" type="submit">Save Profile Changes</button>
+      </form>
+    </section>
+
+    <section class="content-band">
+      <div class="section-title reveal">
+        <p class="eyebrow">Payment History</p>
+        <h2>Paid months and confirmations.</h2>
+      </div>
+      <div class="panel table-wrap reveal">
+        <table>
+          <thead><tr><th>Month</th><th>Amount</th><th>Channel</th><th>Confirmation</th></tr></thead>
+          <tbody id="memberPaymentTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom navigation mirrors the header so users can continue from the page end. -->
+  <footer class="site-footer">
+    <div>
+      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+      <p>Member profile, payment confirmation, and training-manual access.</p>
+    </div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

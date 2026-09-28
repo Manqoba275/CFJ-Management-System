@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Library</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="library">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a class="active" href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <section class="page-hero library-hero reveal">
+      <div>
+        <p class="eyebrow">Training Manual</p>
+        <h1>Goal-based workout guidance for paid members.</h1>
+        <p>CFJ includes a training guide inspired by strength-training anatomy principles. The manual is organised by what each member wants to achieve.</p>
+      </div>
+    </section>
+
+    <!-- Locked state appears until the member has paid for the current month. -->
+    <section class="content-band">
+      <div class="locked-guide reveal" id="guideStatus"></div>
+      <div class="manual-explainer reveal">
+        <article>
+          <h2>What is the training manual?</h2>
+          <p>The CFJ training manual is a member-only guide that turns each member's goal into practical workout instructions. It explains what to train, why the muscle group matters, how to perform the movement safely, and how to progress without rushing.</p>
+        </article>
+        <article>
+          <h2>What inspired it?</h2>
+          <p>The guide was inspired by the exercise and anatomy resources included in the project pack. Instead of copying book content, CFJ uses the same idea: members learn which body parts are involved and receive clear, safe instructions matched to goals such as strength, weight loss, muscle tone, or endurance.</p>
+        </article>
+      </div>
+      <div class="tool-row reveal">
+        <label>Goal filter<select id="guideGoal"><option>My goal</option><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select></label>
+        <label>Body area<select id="guideArea"><option>All areas</option><option>Chest</option><option>Back</option><option>Legs</option><option>Core</option></select></label>
+      </div>
+      <form class="panel goal-picker reveal" id="libraryGoalForm">
+        <h2>Select Your Training Goals</h2>
+        <p class="muted">New members can choose the goals they want to focus on. Your selected goals appear first, and other guides appear underneath.</p>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" name="libraryGoals" value="Build strength"> Build strength</label>
+          <label><input type="checkbox" name="libraryGoals" value="Weight loss"> Weight loss</label>
+          <label><input type="checkbox" name="libraryGoals" value="Muscle tone"> Muscle tone</label>
+          <label><input type="checkbox" name="libraryGoals" value="Endurance"> Endurance</label>
+        </div>
+        <button class="primary-button" type="submit">Save Goals</button>
+      </form>
+      <div class="manual-grid reveal" id="manualGrid"></div>
+    </section>
+  </main>
+
+  <dialog class="modal" id="manualModal">
+    <button class="icon-button modal-close" type="button" aria-label="Close training guide">x</button>
+    <div id="manualModalContent"></div>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <!-- Bottom site navigation keeps this page connected to the rest of the app. -->
+  <footer class="site-footer">
+    <div>
+      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+      <p>Goal-based training manuals are unlocked after current-month payment.</p>
+    </div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </footer>
+</body>
+</html>

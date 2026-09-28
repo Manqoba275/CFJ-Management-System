@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Staff Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="staff-login">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav"></nav>
+    <a class="nav-login active" href="login.html">Signup</a>
+  </header>
+  <main class="auth-page redesigned-auth">
+    <section class="auth-shell login-only reveal">
+      <div class="auth-showcase">
+        <p class="eyebrow">Staff Access</p>
+        <h1>Staff service desk.</h1>
+        <p>Staff can record attendance, process payments, and view staff service records only.</p>
+      </div>
+      <form class="auth-card active-auth-form" id="staffLoginForm">
+        <h2>Staff login.</h2>
+        <label>Staff email<input id="staffEmail" type="email" required></label>
+        <label>Password<input id="staffPassword" type="password" required></label>
+        <button class="primary-button" type="submit">Login As Staff</button>
+      </form>
+    </section>
+  </main>
+  <footer class="site-footer"></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CFJ Lifestyle Fitness | Reports</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="reports">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a class="active" href="reports.html">Reports</a>
+    </nav>
+    <a class="nav-login" href="login.html" id="sessionLink">Login / Signup</a>
+  </header>
+
+  <main>
+    <section class="page-hero reports-hero reveal">
+      <div>
+        <p class="eyebrow">Admin Reports</p>
+        <h1>Members, payments, joined dates, and paid months.</h1>
+        <p>This page is admin-only. It gives staff visibility into member records and payment status for each month.</p>
+      </div>
+    </section>
+
+    <!-- Admin guard: app.js hides report content unless the admin is logged in. -->
+    <section class="content-band" id="adminGuard">
+      <div class="panel reveal">
+        <h2>Admin login required</h2>
+        <p>Please log in as an admin to view reports.</p>
+        <a class="primary-button" href="login.html">Go To Admin Login</a>
+      </div>
+    </section>
+
+    <section class="content-band admin-only" id="adminReports">
+      <div class="metric-strip reveal">
+        <article><b id="reportMembers">0</b><span>members</span></article>
+        <article><b id="reportPaid">0</b><span>paid this month</span></article>
+        <article><b id="reportUnpaid">0</b><span>unpaid this month</span></article>
+        <article><b id="reportRevenue">R0</b><span>total revenue</span></article>
+      </div>
+
+      <div class="panel table-wrap reveal">
+        <div class="panel-title">
+          <h2>Member Payment Status</h2>
+          <button class="ghost-button mini-button" id="exportReport" type="button">Export JSON</button>
+        </div>
+        <div class="tool-row report-filters">
+          <label>Start date<input id="reportStart" type="date"></label>
+          <label>End date<input id="reportEnd" type="date"></label>
+          <label>Member filter<input id="reportMemberFilter" type="search" placeholder="Search member"></label>
+          <button class="ghost-button mini-button" id="applyReportFilter" type="button">Filter</button>
+        </div>
+        <table>
+          <thead><tr><th>Member</th><th>Email</th><th>Joined</th><th>Goal</th><th>Paid Months</th><th>This Month</th></tr></thead>
+          <tbody id="adminMemberTable"></tbody>
+        </table>
+      </div>
+
+      <div class="panel table-wrap reveal">
+        <h2>Payment Records & Confirmations</h2>
+        <table>
+          <thead><tr><th>Date</th><th>Member</th><th>Month</th><th>Amount</th><th>Method</th><th>Channel</th><th>Confirmation</th></tr></thead>
+          <tbody id="adminPaymentTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Invoice workflow lets admin mark a selected invoice as paid. -->
+      <div class="panel table-wrap reveal">
+        <h2>Invoices</h2>
+        <table>
+          <thead><tr><th>Invoice</th><th>Member</th><th>Month</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="invoiceTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Admin staff management controls who can access the staff page. -->
+      <div class="panel table-wrap reveal">
+        <div class="panel-title">
+          <h2>Staff Management</h2>
+        </div>
+        <form class="form-grid" id="addStaffForm">
+          <label>Staff name<input id="newStaffName" type="text" required></label>
+          <label>Staff email<input id="newStaffEmail" type="email" required></label>
+          <label>Password<input id="newStaffPassword" type="password" minlength="6" required></label>
+          <button class="primary-button full-row" type="submit">Add Staff Member</button>
+        </form>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="staffTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer gives bottom navigation like a complete public website. -->
+  <footer class="site-footer">
+    <div>
+      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+      <p>Admin reporting for members, invoices, paid months, and confirmations.</p>
+    </div>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="members.html">Members</a>
+      <a href="operations.html">Operations</a>
+      <a href="library.html">Library</a>
+      <a href="reports.html">Reports</a>
+    </nav>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
