@@ -1,0 +1,9 @@
+[
+  {"id":"BOOK-01","description":"An online signed-in member can request an available class","online":true,"signedIn":true,"alreadyBooked":false,"spaces":1,"expected":"READY"},
+  {"id":"BOOK-02","description":"An offline device cannot confirm a reservation","online":false,"signedIn":true,"alreadyBooked":false,"spaces":4,"expected":"OFFLINE"},
+  {"id":"BOOK-03","description":"A guest must sign in before requesting a class","online":true,"signedIn":false,"alreadyBooked":false,"spaces":4,"expected":"SIGN_IN_REQUIRED"},
+  {"id":"BOOK-04","description":"A member cannot request a duplicate booking","online":true,"signedIn":true,"alreadyBooked":true,"spaces":4,"expected":"ALREADY_BOOKED"},
+  {"id":"BOOK-05","description":"A class with no spaces cannot accept a booking","online":true,"signedIn":true,"alreadyBooked":false,"spaces":0,"expected":"FULL"},
+  {"id":"BOOK-06","description":"Invalid negative availability is rejected","online":true,"signedIn":true,"alreadyBooked":false,"spaces":-1,"expected":"INVALID_CAPACITY"},
+  {"id":"BOOK-07","description":"Duplicate status takes priority when the class is also full","online":true,"signedIn":true,"alreadyBooked":true,"spaces":0,"expected":"ALREADY_BOOKED"}
+]

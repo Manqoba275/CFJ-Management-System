@@ -10,10 +10,10 @@ Scope: Architecture diagrams, ERD, data dictionary, Oracle SQL migrations, seed 
 
 | Day/date | Work to complete | Repository destination | Suggested commit after completion |
 |---|---|---|---|
-| 1: Wed 30 Sep 2026 | Review architecture and entity list | `docs/design/architecture.md` | `docs: define shared service and database architecture` |
-| 2: Thu 01 Oct 2026 | Create ERD and relationship explanations | `docs/design/erd.md` | `docs: model CFJ entity relationships` |
-| 3: Fri 02 Oct 2026 | Write data dictionary and role mapping | `database/data-dictionary.md` | `docs: define Oracle fields and identity mapping` |
-| 4: Sat 03 Oct 2026 | Create versioned core Oracle tables | `database/migrations/` | `feat: add core Oracle schema and constraints` |
+| 1: Wed 30 Sep 2026 | Review and copy web starter (System Designer and Database Architect) | `website/modules/fitness-class.mjs` | `feat: define website fitness class response model` |
+| 2: Thu 01 Oct 2026 | Review and copy Android starter (System Designer and Database Architect) | `mobile-app/app/src/main/java/za/co/cfjlifestylefitness/app/model/FitnessClassSummary.kt` | `feat: define Android fitness class data model` |
+| 3: Fri 02 Oct 2026 | Add supporting specs/tests and review shared behavior | `docs/design/class-response-contract.md` | `test: record tshifhiwa starter verification` |
+| 4: Sat 03 Oct 2026 | Review combined web/Android starter; fix confirmed issues within role | `See CODE_TO_PUSH.md and daily evidence` | `fix: address reviewed tshifhiwa starter issues` |
 | 5: Sun 04 Oct 2026 | Create synthetic seed records and count checks | `database/seeds/` | `test: add representative Oracle seed data` |
 | 6: Mon 05 Oct 2026 | Verify constraints and record real results | `database/tests/` | `test: verify database keys and invalid data rejection` |
 | 7: Tue 06 Oct 2026 | Review normalization and schema changes | `docs/design/schema-review.md` | `docs: record first-week database design review` |
@@ -28,3 +28,7 @@ Scope: Architecture diagrams, ERD, data dictionary, Oracle SQL migrations, seed 
 ## Daily evidence
 
 For each task record: actual date, files changed, reason, checks and results, commit URL, PR URL, reviewer, and remaining blockers. Do not mark a planned task complete before its checks pass. Never put private records or credentials into evidence.
+
+## Copy-and-paste starter
+
+Open [COPY_AND_PASTE.html](COPY_AND_PASTE.html) for full web and Android code. Read [CODE_TO_PUSH.md](CODE_TO_PUSH.md) for dependencies, target paths and push commands.

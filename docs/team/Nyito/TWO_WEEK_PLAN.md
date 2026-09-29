@@ -10,10 +10,10 @@ Scope: Business requirements, use cases, business rules, acceptance criteria, tr
 
 | Day/date | Work to complete | Repository destination | Suggested commit after completion |
 |---|---|---|---|
-| 1: Wed 30 Sep 2026 | Confirm scope and stakeholder needs | `docs/analysis/scope.md` | `docs: define CFJ scope and stakeholder needs` |
-| 2: Thu 01 Oct 2026 | Document member staff and admin requirements | `docs/analysis/requirements.md` | `docs: specify requirements for each user role` |
-| 3: Fri 02 Oct 2026 | Write registration login and SSO use cases | `docs/analysis/auth-use-cases.md` | `docs: describe account and SSO acceptance criteria` |
-| 4: Sat 03 Oct 2026 | Specify profiles settings and privacy expectations | `docs/analysis/profile-rules.md` | `docs: define profile and settings business rules` |
+| 1: Wed 30 Sep 2026 | Review and copy web starter (Business Analyst) | `website/specifications/booking-cases.json` | `test: specify website booking acceptance examples` |
+| 2: Thu 01 Oct 2026 | Review and copy Android starter (Business Analyst) | `mobile-app/app/src/test/java/za/co/cfjlifestylefitness/app/specification/BookingExamples.kt` | `test: specify Android booking acceptance examples` |
+| 3: Fri 02 Oct 2026 | Add supporting specs/tests and review shared behavior | `docs/analysis/booking-acceptance.md` | `test: record nyito starter verification` |
+| 4: Sat 03 Oct 2026 | Review combined web/Android starter; fix confirmed issues within role | `See CODE_TO_PUSH.md and daily evidence` | `fix: address reviewed nyito starter issues` |
 | 5: Sun 04 Oct 2026 | Specify class booking cancellation and waitlist rules | `docs/analysis/booking-rules.md` | `docs: define booking capacity and cancellation rules` |
 | 6: Mon 05 Oct 2026 | Review week-one flows against requirements | `docs/analysis/traceability.md` | `docs: map first-week features to requirements` |
 | 7: Tue 06 Oct 2026 | Record stakeholder questions and agreed decisions | `docs/analysis/decision-log.md` | `docs: capture first-week scope decisions` |
@@ -28,3 +28,7 @@ Scope: Business requirements, use cases, business rules, acceptance criteria, tr
 ## Daily evidence
 
 For each task record: actual date, files changed, reason, checks and results, commit URL, PR URL, reviewer, and remaining blockers. Do not mark a planned task complete before its checks pass. Never put private records or credentials into evidence.
+
+## Copy-and-paste starter
+
+Open [COPY_AND_PASTE.html](COPY_AND_PASTE.html) for full web and Android code. Read [CODE_TO_PUSH.md](CODE_TO_PUSH.md) for dependencies, target paths and push commands.

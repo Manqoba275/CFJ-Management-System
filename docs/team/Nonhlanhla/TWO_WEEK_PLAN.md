@@ -10,10 +10,10 @@ Scope: Wireframes, visual design, website styles/layouts, Android UI layouts, ac
 
 | Day/date | Work to complete | Repository destination | Suggested commit after completion |
 |---|---|---|---|
-| 1: Wed 30 Sep 2026 | Audit website and app starter navigation | `docs/qa/ui-audit.md` | `docs: record website and Android interface audit` |
-| 2: Thu 01 Oct 2026 | Create real wireframes and navigation map | `docs/wireframes/` | `design: add member and staff navigation wireframes` |
-| 3: Fri 02 Oct 2026 | Define shared colors type and accessible controls | `docs/design/ui-guide.md` | `design: define shared website and Android UI guide` |
-| 4: Sat 03 Oct 2026 | Improve website forms and responsive layout | `website/styles.css and website/*.html` | `style: improve responsive member forms` |
+| 1: Wed 30 Sep 2026 | Review and copy web starter (UI/UX Designer and Tester) | `website/class-card-preview.html, website/modules/class-card.mjs` | `feat: add accessible website class card preview` |
+| 2: Thu 01 Oct 2026 | Review and copy Android starter (UI/UX Designer and Tester) | `mobile-app/app/src/main/java/za/co/cfjlifestylefitness/app/ui/FitnessClassCard.kt, mobile-app/app/src/main/res/layout/view_fitness_class.xml, mobile-app/app/src/main/res/values/class_card_strings.xml` | `feat: add Android class card layout and presentation` |
+| 3: Fri 02 Oct 2026 | Add supporting specs/tests and review shared behavior | `mobile-app/app/src/test/java/za/co/cfjlifestylefitness/app/booking/BookingEligibilityTest.kt, scripts/booking-packet.test.mjs` | `test: record nonhlanhla starter verification` |
+| 4: Sat 03 Oct 2026 | Review combined web/Android starter; fix confirmed issues within role | `See CODE_TO_PUSH.md and daily evidence` | `fix: address reviewed nonhlanhla starter issues` |
 | 5: Sun 04 Oct 2026 | Refine Android screen layout and accessibility | `mobile-app/app/src/main/` | `style: refine Android member screen layout` |
 | 6: Mon 05 Oct 2026 | Run keyboard mobile-size and contrast checks | `docs/qa/accessibility.md` | `test: record accessibility and responsive checks` |
 | 7: Tue 06 Oct 2026 | Review week-one UX and log reproducible defects | `docs/qa/defects.md` | `test: document first-week usability defects` |
@@ -28,3 +28,7 @@ Scope: Wireframes, visual design, website styles/layouts, Android UI layouts, ac
 ## Daily evidence
 
 For each task record: actual date, files changed, reason, checks and results, commit URL, PR URL, reviewer, and remaining blockers. Do not mark a planned task complete before its checks pass. Never put private records or credentials into evidence.
+
+## Copy-and-paste starter
+
+Open [COPY_AND_PASTE.html](COPY_AND_PASTE.html) for full web and Android code. Read [CODE_TO_PUSH.md](CODE_TO_PUSH.md) for dependencies, target paths and push commands.

@@ -2,7 +2,9 @@
 
 Dates: 30 September - 13 October 2026 (Africa/Johannesburg). Day 1 is Wednesday, 30 September 2026. These are planned tasks, not completed contribution evidence. Adjust deadlines openly if dependencies slip.
 
-Each member completes and understands their role-specific work, verifies it, then commits and pushes it using their own account. These starter instructions are not finished work to upload unchanged. Only Manqoba has cross-area scope. Do not push as someone else, manufacture activity, or make empty daily commits. If blocked, document the actual blocker and useful findings instead of claiming completion.
+Each member has a COPY_AND_PASTE.html page, a CODE_TO_PUSH.md guide, and a code/ folder containing complete web and Android starter files. Review and understand the shared starter, copy files into the listed repository paths, run the checks, and push from your own account. Record actual changes and verification honestly. Only Manqoba has cross-area scope.
+
+Prepared packs: Manqoba supplies booking eligibility logic; Tshifhiwa supplies matching class data models; Nyito supplies executable acceptance examples and business rules; Nonhlanhla supplies class-card UI components and tests. The first four days cover these files and their integration. Later days remain planned development work. See [CODE_INTEGRATION.md](CODE_INTEGRATION.md) for dependency order and the Android screen connection.
 
 Use meaningful commit messages describing the actual change. Push after a completed coherent task or working session, regularly across both weeks. Review another member's pull request within your expertise. Do not push unrelated folders. GitHub write access does not enforce folder restrictions; use review and this ownership agreement.
 

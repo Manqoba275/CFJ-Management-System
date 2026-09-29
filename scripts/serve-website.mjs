@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const website = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'website');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
+  '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
 
 // Local preview only: serve website files, never the repository or credentials.
