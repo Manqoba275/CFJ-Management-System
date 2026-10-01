@@ -22,6 +22,7 @@ Read [the implementation plan](docs/IMPLEMENTATION_PLAN.md), [requirements](docs
 ## Checks
 
 With Node.js 22 or later: `node scripts/check-website.mjs`.
+Run saved-state recovery regression tests with `node --test scripts/test-state.mjs`.
 CI runs the same baseline validation on pushes and pull requests. Android build/test CI will be added with the actual Gradle project; the current checks do not claim to build an APK.
 
 ## Release notes
