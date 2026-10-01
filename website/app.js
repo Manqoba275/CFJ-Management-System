@@ -175,6 +175,14 @@ function loadState() {
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
   const upgraded = { ...structuredClone(seed), ...savedState };
+  // Valid JSON can still contain damaged collections (for example users: null).
+  // Recover only the affected collection so valid saved records are retained.
+  for (const [key, fallback] of Object.entries(seed)) {
+    if (!Array.isArray(fallback)) continue;
+    upgraded[key] = Array.isArray(upgraded[key])
+      ? upgraded[key].filter((record) => record !== null && typeof record === "object" && !Array.isArray(record))
+      : structuredClone(fallback);
+  }
   seed.users.forEach((seedUser) => {
     if (!upgraded.users.some((user) => user.id === seedUser.id || user.email === seedUser.email)) {
       upgraded.users.push(seedUser);
