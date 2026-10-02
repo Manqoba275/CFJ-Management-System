@@ -12,5 +12,5 @@ jobs:
           node-version: '22'
       - name: Check website source and local assets
         run: node scripts/check-website.mjs
-      - name: Test local preview server
-        run: node --test scripts/serve-website.test.mjs
+      - name: Test preview server and shared booking contract
+        run: npm test
