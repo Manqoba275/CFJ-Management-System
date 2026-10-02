@@ -42,4 +42,8 @@ This block deliberately uses fictional signed-in/online flags for demonstration.
 
 ## What is actually verified
 
+For a combined review before everyone has integrated their files, run `node scripts/prepare-team-code-check.mjs` from the repository root. It creates a disposable checkout under `tmp/`, preserves existing tracked application files and fills only missing paths from the prepared packs. It runs both the packet checks and Friday's shared booking contract (34 Node tests), then checks website references. It does not apply teammates' files to the working source tree or establish their individual contributions.
+
+Use the printed checkout path with `node scripts/check-team-android-integration.mjs <checkout-path>` to apply the documented screen example there, then run the Android tests/build inside that checkout's mobile-app directory. The combined Android suite currently has 11 JUnit tests, including the shared 24-case contract. Inspect the actual results before recording completion; UI interaction and real API booking still require separate verification.
+
 Node tests cover the seven business scenarios, malformed inputs, and class-model validation. Kotlin JUnit tests cover the same seven scenarios and model constraints. An APK compilation validates resource names and imports. Physical-phone testing, screen accessibility, server authorization, concurrency and synchronization require separate checks; a unit-test pass does not establish them.
