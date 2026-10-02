@@ -1,0 +1,10 @@
+{
+  "name": "cfj-management-system",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/serve-website.mjs",
+    "check": "node scripts/check-website.mjs",
+    "test": "node --test scripts/serve-website.test.mjs scripts/booking-eligibility.test.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

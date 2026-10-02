@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nyito | CFJ web and Android code</title><style>body{font:16px/1.6 system-ui;background:#10151b;color:#edf2f7;padding:28px;margin:0}main{max-width:1120px;margin:auto}a{color:#80cfef}h2{color:#55d6ad}pre{background:#1c2229;border:1px solid #46505a;border-radius:8px;padding:18px;overflow:auto;font:14px/1.6 Consolas,monospace}code{overflow-wrap:anywhere}button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:#55d6ad;color:#10151b;cursor:pointer}li{margin:10px 0}.note{background:#26313a;border-left:4px solid #ff684e;padding:18px}.path{font-weight:bold}</style><main><a href="OPEN_PLAN.html">14-day schedule</a> · <a href="../START_HERE.html">All members</a><h1>Nyito: copy-and-paste code</h1><h2>Business Analyst</h2><p>Executable acceptance examples and written booking rules for both clients.</p><p class="note">Web: 30 September. Android: 1 October. Supporting specs/tests: 2 October. Review/integration: 3 October. Remaining work runs through 13 October 2026. Read CODE_TO_PUSH.md before copying. Review shared starter code and record your actual work; no contributions have been recorded on your behalf.</p><p>Create each file at its destination in your Git checkout. Copy only the code, not the heading or Markdown fences. Files under code/ are also ready to copy directly. Prerequisites and exact Git commands are in <a href="CODE_TO_PUSH.md">CODE_TO_PUSH.md</a>.</p><p id="copy-status" role="status" aria-live="polite"></p><section><h2>booking-acceptance.md</h2><p class="path">Save to: <code>docs/analysis/booking-acceptance.md</code></p><button type="button" data-copy="code-0">Copy complete file</button><pre><code id="code-0"># Booking acceptance rules
+
+These are proposed examples for review, not proof of client approval or passing acceptance tests.
+
+The website and Android examples share IDs BOOK-01 through BOOK-07. Nonhlanhla's tests apply these examples to Manqoba's preview policy. READY means a request may be sent, not that a booking succeeded. The eventual API must recheck permissions and availability.
+
+Decision priority: reject invalid capacity first; require an online connection; require sign-in; reject duplicate bookings; reject a full class; otherwise allow a request. Waiting-list behavior requires a separate explicit flow.
+
+Further acceptance checks for the eventual connected system:
+
+- Two requests for the final seat: only one server confirmation succeeds.
+- Repeating the same request after a network timeout does not create a second booking.
+- A confirmed website booking appears on Android after refresh.
+- A cancelled booking releases capacity once and is reflected on both clients.
+- A member cannot read another member's private booking or profile records.
+
+Review each scenario against the requirements. Record any agreed changes, reviewer, actual result and evidence link separately. Do not label these integration scenarios passed using only the preview-policy tests.
+</code></pre></section><section><h2>BookingExamples.kt</h2><p class="path">Save to: <code>mobile-app/app/src/test/java/za/co/cfjlifestylefitness/app/specification/BookingExamples.kt</code></p><button type="button" data-copy="code-1">Copy complete file</button><pre><code id="code-1">package za.co.cfjlifestylefitness.app.specification
+
+/** Business acceptance examples; compare IDs/expected outcomes with the website JSON. */
+data class BookingExample(
+    val id: String,
+    val online: Boolean,
+    val signedIn: Boolean,
+    val alreadyBooked: Boolean,
+    val spaces: Int,
+    val expected: String
+)
+
+object BookingExamples {
+    val all = listOf(
+        BookingExample(&quot;BOOK-01&quot;, true, true, false, 1, &quot;READY&quot;),
+        BookingExample(&quot;BOOK-02&quot;, false, true, false, 4, &quot;OFFLINE&quot;),
+        BookingExample(&quot;BOOK-03&quot;, true, false, false, 4, &quot;SIGN_IN_REQUIRED&quot;),
+        BookingExample(&quot;BOOK-04&quot;, true, true, true, 4, &quot;ALREADY_BOOKED&quot;),
+        BookingExample(&quot;BOOK-05&quot;, true, true, false, 0, &quot;FULL&quot;),
+        BookingExample(&quot;BOOK-06&quot;, true, true, false, -1, &quot;INVALID_CAPACITY&quot;),
+        BookingExample(&quot;BOOK-07&quot;, true, true, true, 0, &quot;ALREADY_BOOKED&quot;)
+    )
+}
+</code></pre></section><section><h2>booking-cases.json</h2><p class="path">Save to: <code>website/specifications/booking-cases.json</code></p><button type="button" data-copy="code-2">Copy complete file</button><pre><code id="code-2">[
+  {&quot;id&quot;:&quot;BOOK-01&quot;,&quot;description&quot;:&quot;An online signed-in member can request an available class&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:false,&quot;spaces&quot;:1,&quot;expected&quot;:&quot;READY&quot;},
+  {&quot;id&quot;:&quot;BOOK-02&quot;,&quot;description&quot;:&quot;An offline device cannot confirm a reservation&quot;,&quot;online&quot;:false,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:false,&quot;spaces&quot;:4,&quot;expected&quot;:&quot;OFFLINE&quot;},
+  {&quot;id&quot;:&quot;BOOK-03&quot;,&quot;description&quot;:&quot;A guest must sign in before requesting a class&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:false,&quot;alreadyBooked&quot;:false,&quot;spaces&quot;:4,&quot;expected&quot;:&quot;SIGN_IN_REQUIRED&quot;},
+  {&quot;id&quot;:&quot;BOOK-04&quot;,&quot;description&quot;:&quot;A member cannot request a duplicate booking&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:true,&quot;spaces&quot;:4,&quot;expected&quot;:&quot;ALREADY_BOOKED&quot;},
+  {&quot;id&quot;:&quot;BOOK-05&quot;,&quot;description&quot;:&quot;A class with no spaces cannot accept a booking&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:false,&quot;spaces&quot;:0,&quot;expected&quot;:&quot;FULL&quot;},
+  {&quot;id&quot;:&quot;BOOK-06&quot;,&quot;description&quot;:&quot;Invalid negative availability is rejected&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:false,&quot;spaces&quot;:-1,&quot;expected&quot;:&quot;INVALID_CAPACITY&quot;},
+  {&quot;id&quot;:&quot;BOOK-07&quot;,&quot;description&quot;:&quot;Duplicate status takes priority when the class is also full&quot;,&quot;online&quot;:true,&quot;signedIn&quot;:true,&quot;alreadyBooked&quot;:true,&quot;spaces&quot;:0,&quot;expected&quot;:&quot;ALREADY_BOOKED&quot;}
+]
+</code></pre></section></main><script>document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const code=document.getElementById(button.dataset.copy);try{await navigator.clipboard.writeText(code.textContent);document.getElementById('copy-status').textContent='Copied complete file. Paste into its listed destination.';}catch{const range=document.createRange();range.selectNodeContents(code);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);document.getElementById('copy-status').textContent='Code selected. Press Ctrl+C, then paste into its listed destination.';}}));</script></html>

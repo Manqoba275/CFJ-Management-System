@@ -16,6 +16,17 @@
 }
 
 /* Basic reset keeps sizing predictable across desktop and mobile. */
+.prototype-notice {
+  max-width: 1400px;
+  margin: 12px auto;
+  padding: 12px 24px;
+  border-left: 3px solid var(--amber);
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
 * {
   box-sizing: border-box;
 }

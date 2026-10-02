@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   /* Shared startup tasks run on every page. */
+  showPrototypeNotice();
   validateSession();
   enforceRoleAccess();
   setupRoleNavigation();
@@ -74,6 +75,14 @@ function init() {
   if (page === "library") setupLibraryPage();
   if (page === "marathon") setupMarathonPage();
   if (page === "reports") setupReportsPage();
+}
+
+function showPrototypeNotice() {
+  const notice = document.createElement("aside");
+  notice.className = "prototype-notice";
+  notice.setAttribute("aria-label", "Demo status");
+  notice.textContent = "Local demo: use fictional details. Payments and messages are simulated; changes stay in this browser and do not sync to the Android app yet.";
+  document.querySelector(".topbar")?.insertAdjacentElement("afterend", notice);
 }
 
 function enforceRoleAccess() {

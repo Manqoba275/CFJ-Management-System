@@ -1,0 +1,11 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView style="@style/Heading" android:text="@string/settings_heading" />
+    <TextView style="@style/Body" android:text="@string/settings_intro" />
+    <TextView style="@style/Body" android:text="@string/display_name" android:labelFor="@id/display_name" />
+    <EditText android:id="@+id/display_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textPersonName" android:autofillHints="name" android:hint="@string/name_hint" android:maxLength="60" android:layout_marginBottom="24dp" />
+    <TextView style="@style/Body" android:text="@string/goal_label" android:labelFor="@id/goal" />
+    <Spinner android:id="@+id/goal" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:layout_marginBottom="24dp" />
+    <Button android:id="@+id/save" style="@style/Action" android:text="@string/save" />
+    <Button android:id="@+id/reset" style="@style/Action" android:text="@string/reset" />
+    <TextView android:id="@+id/status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+</LinearLayout>

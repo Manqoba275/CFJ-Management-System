@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="class_request_place">Request place</string>
+    <string name="class_details_format">%1$s · %2$d spaces available</string>
+    <string name="class_request_label">Request a place in %1$s</string>
+    <string name="class_preview_ready">Ready to request — a place is confirmed only after a server response.</string>
+    <string name="class_preview_offline">Connect to the internet to request a place.</string>
+    <string name="class_preview_guest">Sign in to request a place.</string>
+    <string name="class_preview_duplicate">You have already booked this class.</string>
+    <string name="class_preview_full">This class is full.</string>
+    <string name="class_preview_invalid">Availability is not available. Please refresh.</string>
+</resources>
