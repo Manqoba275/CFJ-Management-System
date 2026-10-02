@@ -1,13 +1,13 @@
 <resources>
-    <style name="Theme.CFJ" parent="android:style/Theme.Material.NoActionBar">
+    <style name="BaseTheme.CFJ" parent="android:style/Theme.Material.NoActionBar">
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/muted</item>
     </style>
+    <style name="Theme.CFJ" parent="BaseTheme.CFJ" />
     <style name="Heading">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
