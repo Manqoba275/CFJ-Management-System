@@ -21,6 +21,12 @@ import android.widget.Toast
 
 class MainActivity : Activity() {
     private var screen = "home"
+    private val profileSync by lazy { ProfileSyncPanel(this) }
+
+    override fun onDestroy() {
+        profileSync.close()
+        super.onDestroy()
+    }
     private val preferences by lazy { getSharedPreferences("cfj_preview", MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,6 +96,7 @@ class MainActivity : Activity() {
         name.setText(preferences.getString("name", ""))
         goal.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, goals)
         goal.setSelection(goals.indexOf(preferences.getString("goal", goals.first())).coerceAtLeast(0))
+        profileSync.bind()
         findViewById<Button>(R.id.save).setOnClickListener {
             val value = MemberPreferences(name.text.toString().trim(), goal.selectedItem.toString())
             when (value.validate(goals)) {

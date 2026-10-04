@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    buildFeatures { buildConfig = true }
     namespace = "za.co.cfjlifestylefitness.app"
     compileSdk = 36
 
@@ -12,6 +13,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
+        testInstrumentationRunner = "za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -18,7 +18,7 @@
     <string name="timetable">View official timetable</string>
     <string name="booking_notice">Booking is not available in this preview. No class space is reserved by viewing this screen.</string>
     <string name="settings_heading">Make it yours.</string>
-    <string name="settings_intro">These preferences are saved on this phone. They do not create an account or sync to the website yet.</string>
+    <string name="settings_intro">Save preferences keeps changes on this phone. Development builds also offer a separate service-sync preview below. No member account is created.</string>
     <string name="display_name">Display name</string>
     <string name="name_hint">What should we call you?</string>
     <string name="goal_label">Your fitness goal</string>

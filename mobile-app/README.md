@@ -1,6 +1,6 @@
 # Kotlin Android app
 
-Native Android starter with Home, Classes and Settings screens, CFJ styling, official website/timetable links, validated local preferences, navigation and four JUnit validation tests. Preferences are stored on this phone only. Sign-in, SSO, actual bookings and shared member data are not implemented yet.
+Native Android starter with Home, Classes and Settings screens, CFJ styling, official website/timetable links, validated local preferences and navigation. Debug builds now offer explicit profile load/save against the synthetic development API: see [profile setup](../backend/PROFILE_API.md). Standard Save preferences remains local-only. Hosted sign-in, SSO, actual bookings, Oracle persistence and website profile synchronization are not implemented yet.
 
 ## Open and build
 
@@ -18,6 +18,8 @@ Debug APK: `app/build/outputs/apk/debug/app-debug.apk`. It is a development buil
 
 Implement registration/sign-in/Google SSO and member profile against the shared API before adding booking, attendance, payment history, exercise guides, friends and trainers. Configure the same identity project as the website. Store no database credentials in the app.
 
-Use a hosted HTTPS API for real-phone testing. localhost on a phone is the phone, not the development PC. The starter makes no API calls and does not pretend to reserve class spaces. Complete device testing on a physical Android phone before claiming assessment readiness.
+Use a hosted HTTPS API for production/real-account testing. localhost on a phone is the phone, not the development PC. The debug profile panel makes GET/PATCH API calls; class bookings remain unavailable. Local emulator and USB development instructions are in backend/PROFILE_API.md. Complete device testing on a physical Android phone before claiming assessment readiness.
+
+An optional instrumentation smoke test is included for the synthetic server: build `assembleDebugAndroidTest`, install the app and test APKs, then run `adb shell am instrument -w -e devToken <local-token> za.co.cfjlifestylefitness.app.test/za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation`. It loads, edits, reloads, checks stale/unauthorized calls and restores the original values. Do not use a production token or include the token in evidence. Expected output is PROFILE_SYNC_OK. The emulator needs sufficient available memory; a build pass alone does not establish this runtime test passed.
 
 Toolchain reference: https://developer.android.com/build/releases/agp-9-2-0-release-notes (checked 28 September 2026).
