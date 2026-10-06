@@ -21,10 +21,11 @@ Read [the implementation plan](docs/IMPLEMENTATION_PLAN.md), [requirements](docs
 
 ## Checks
 
-With Node.js 22 or later: `node scripts/check-website.mjs`.
-CI runs the same baseline validation on pushes and pull requests. Android build/test CI will be added with the actual Gradle project; the current checks do not claim to build an APK.
+With Node.js 22 or later: `npm test` and `npm run check`. These cover saved-state recovery, booking rules, the local server and development profile API.
+Android CI runs unit tests, lint and app/test APK builds. See mobile-app/README.md for local commands. A successful build does not establish physical-device behaviour.
 
 ## Release notes
 
 - Setup: recovered the existing prototype, retained repository history, established project structure, requirements traceability, and contribution rules.
-- Pending: database provisioning, API implementation, hosted authentication/SSO, Kotlin app, cross-device tests, deployment, real-phone demonstration video, and final evidence.
+- Week one: Kotlin starter, booking eligibility checks, local development profile API and Android sync panel; reviewed browser-state recovery. See [release notes](docs/release-notes.md) for verification and limitations.
+- Pending: Oracle integration, production API/identity, website-to-API profile connection, physical cross-device tests, deployment, real-phone demonstration video, and final assessment evidence.
