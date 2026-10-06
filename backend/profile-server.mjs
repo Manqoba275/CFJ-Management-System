@@ -5,6 +5,18 @@ import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const goals = ['Build strength', 'Weight loss', 'Muscle tone', 'Endurance'];
+export async function readProfileBody(stream) {
+  const chunks = [];
+  let size = 0;
+  for await (const chunk of stream) {
+    size += chunk.length;
+    if (size > 4096) throw Object.assign(new Error('body_too_large'), { status: 413 });
+    chunks.push(chunk);
+  }
+  // Decode once: a multi-byte name character can span network chunks.
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks)); }
+  catch { throw Object.assign(new Error('invalid_utf8'), { status: 400 }); }
+}
 export function validProfile(value) {
   return value && typeof value.displayName === 'string' && value.displayName.trim().length >= 2 &&
     value.displayName.trim().length <= 60 && goals.includes(value.goal);
@@ -32,11 +44,9 @@ export async function createProfileServer({ token, file }) {
     if (req.method !== 'PATCH') return reply(405, { error: 'method_not_allowed' });
     if (req.headers['content-type']?.split(';')[0] !== 'application/json') return reply(415, { error: 'json_required' });
     try {
-      let body = '';
-      for await (const chunk of req) {
-        body += chunk;
-        if (Buffer.byteLength(body) > 4096) { reply(413, { error: 'body_too_large' }); return; }
-      }
+      let body;
+      try { body = await readProfileBody(req); }
+      catch (error) { return reply(error.status || 400, { error: error.status === 413 ? 'body_too_large' : 'invalid_body' }); }
       let value;
       try { value = JSON.parse(body); } catch { return reply(400, { error: 'invalid_json' }); }
       if (!validProfile(value) || Object.keys(value).some(key => !['displayName', 'goal', 'version'].includes(key)) ||

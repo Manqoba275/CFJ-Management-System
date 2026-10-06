@@ -4,7 +4,20 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { createProfileServer } from './profile-server.mjs';
+import { createProfileServer, readProfileBody } from './profile-server.mjs';
+
+test('Unicode names survive every possible network byte boundary', async () => {
+  const body = JSON.stringify({ displayName: 'Zoë 🌍', goal: 'Endurance', version: 0 });
+  const bytes = Buffer.from(body);
+  for (let split = 1; split < bytes.length; split++) {
+    assert.equal(await readProfileBody([bytes.subarray(0, split), bytes.subarray(split)]), body);
+  }
+});
+
+test('body reader rejects malformed UTF-8 and excessive bytes', async () => {
+  await assert.rejects(readProfileBody([Buffer.from([0xc3])]), { status: 400 });
+  await assert.rejects(readProfileBody([Buffer.alloc(4097)]), { status: 413 });
+});
 
 test('profile API authenticates, validates, persists and rejects stale writes', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'cfj-profile-'));
@@ -32,7 +45,16 @@ test('profile API authenticates, validates, persists and rejects stale writes', 
     assert.deepEqual(competing.map(r => r.status).sort(), [200, 409]);
     const saved = await (await fetch(url, { headers })).json();
     assert.equal(saved.version, 1);
-    await close(); url = await start();
+    // A second client must reload before reapplying an edit after a conflict.
+    assert.equal((await patch({ ...initial, displayName: 'Zoë 🌍' })).status, 409);
     assert.deepEqual(await (await fetch(url, { headers })).json(), saved);
+    const refreshed = await (await fetch(url, { headers })).json();
+    const recovered = await patch({ ...refreshed, displayName: 'Zoë 🌍', goal: 'Endurance' });
+    assert.equal(recovered.status, 200);
+    const final = await recovered.json();
+    assert.equal(final.displayName, 'Zoë 🌍');
+    assert.equal(final.version, 2);
+    await close(); url = await start();
+    assert.deepEqual(await (await fetch(url, { headers })).json(), final);
   } finally { if (server?.listening) await close(); await rm(directory, { recursive: true, force: true }); }
 });

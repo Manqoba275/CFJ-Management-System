@@ -4,7 +4,17 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URI
 
-data class RemoteProfile(val displayName: String, val goal: String, val version: Long)
+data class RemoteProfile(val displayName: String, val goal: String, val version: Long) {
+    companion object {
+        fun fromFields(name: Any?, goal: Any?, version: Any?): RemoteProfile {
+            require(name is String && goal is String && (version is Int || version is Long)) { "Invalid service response." }
+            val revision = (version as Number).toLong()
+            require(revision in 0..9007199254740991L &&
+                MemberPreferences(name, goal).validate(listOf("Build strength", "Weight loss", "Muscle tone", "Endurance")) == null) { "Invalid service response." }
+            return RemoteProfile(name, goal, revision)
+        }
+    }
+}
 
 class ProfileApi(private val origin: String, private val token: String, allowLocal: Boolean = false) {
     init {
@@ -49,9 +59,8 @@ class ProfileApi(private val origin: String, private val token: String, allowLoc
                 output.toByteArray()
             }
             val json = JSONObject(String(bytes, Charsets.UTF_8))
-            val result = RemoteProfile(json.getString("displayName"), json.getString("goal"), json.getLong("version"))
-            require(MemberPreferences(result.displayName, result.goal).validate(listOf("Build strength", "Weight loss", "Muscle tone", "Endurance")) == null && result.version >= 0) { "Invalid service response." }
-            return result
+            // Do not coerce strings/fractional versions into a writable revision.
+            return RemoteProfile.fromFields(json.get("displayName"), json.get("goal"), json.get("version"))
         } finally { connection.disconnect() }
     }
 
