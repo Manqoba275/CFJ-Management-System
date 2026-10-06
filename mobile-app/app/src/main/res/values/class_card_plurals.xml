@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="class_spaces_available">
+        <item quantity="one">%1$d space available</item>
+        <item quantity="other">%1$d spaces available</item>
+    </plurals>
+</resources>
