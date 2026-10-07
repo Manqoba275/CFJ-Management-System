@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CFJ service desk</title>
+<style>body{margin:0;background:#101b19;color:#eef7f2;font:17px system-ui}main{max-width:850px;margin:auto;padding:32px}section{background:#20312b;padding:24px;margin:20px 0;border-radius:16px}input,button{font:inherit;padding:12px;margin:8px 0;box-sizing:border-box;max-width:100%}input{display:block;width:100%}button{background:#c8ef81;border:0;border-radius:8px;cursor:pointer}button:disabled{opacity:.5;cursor:wait}label{display:block}pre{white-space:pre-wrap;overflow-wrap:anywhere}small{color:#c6d8cf}#status{min-height:2em}h1{font-size:36px}</style></head>
+<body><main><h1>CFJ service desk</h1><p>Development service · synthetic members only.</p><p>Bookings, attendance and simulated payments are saved by the local API. No money is charged.</p>
+<section><label for="token">Development member or staff token</label><input id="token" type="password" autocomplete="off"><button id="refresh">Load service records</button><small>Open this page through the API at http://127.0.0.1:8787/service.html. Tokens stay in this page’s memory.</small></section>
+<p id="status" role="status" aria-live="polite"></p>
+<section><h2>Classes and bookings</h2><button id="book">Book demo strength class</button><div id="classes"></div><div id="bookings"></div></section>
+<section><h2>Staff: attendance and simulated payments</h2><label for="booking">Booking ID</label><input id="booking" autocomplete="off"><button id="attend">Record attendance</button><label for="amount">Simulated payment amount (ZAR)</label><input id="amount" type="number" min="0.01" max="100000" step="0.01" value="125.00"><button id="pay">Record simulated payment</button><p><small>After an uncertain response, retry without changing the booking or amount. The same request ID prevents duplicate records.</small></p></section>
+<section><h2>My attendance and payment history</h2><pre id="history">Load records to view history.</pre></section>
+</main><script>
+const el = id => document.getElementById(id);
+let pending = {};
+async function api(path, method = 'GET', body) {
+  const response = await fetch(path, { method, headers: { Authorization: `Bearer ${el('token').value.trim()}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page on the API server at port 8787.');
+  const data = await response.json();
+  if (!response.ok) throw Object.assign(new Error(data.error || 'Request failed'), { status: response.status });
+  return data;
+}
+async function refresh() {
+  const [classes, bookings, attendance, payments] = await Promise.all(['/classes', '/bookings', '/me/attendance', '/me/payments'].map(path => api('/api/v1' + path)));
+  el('classes').textContent = classes.map(c => `${c.name}: ${c.spaces} place(s) available`).join('\n');
+  el('bookings').replaceChildren();
+  for (const booking of bookings) {
+    const row = document.createElement('p'); row.textContent = `${booking.id} · ${booking.status} `;
+    if (booking.status === 'active') {
+      const cancel = document.createElement('button'); cancel.textContent = 'Cancel booking';
+      cancel.onclick = () => run(async () => { await api('/api/v1/bookings/' + encodeURIComponent(booking.id), 'DELETE'); await refresh(); });
+      row.append(cancel);
+    }
+    el('bookings').append(row);
+  }
+  el('history').textContent = JSON.stringify({ attendance, simulatedPayments: payments }, null, 2);
+}
+async function run(action) {
+  document.querySelectorAll('button,input').forEach(button => button.disabled = true);
+  el('status').textContent = 'Contacting service…';
+  try { await action(); el('status').textContent = 'Service records updated.'; }
+  catch (error) { el('status').textContent = `Not confirmed: ${error.message}. Reload or retry; no payment is charged.`; }
+  finally { document.querySelectorAll('button,input').forEach(button => button.disabled = false); }
+}
+el('refresh').onclick = () => run(refresh);
+el('book').onclick = () => run(async () => { await api('/api/v1/bookings', 'POST', { classId: 'C-DEMO' }); await refresh(); });
+async function record(kind) {
+  const bookingId = el('booking').value.trim();
+  if (!bookingId) throw new Error('Enter a booking ID');
+  const body = { bookingId };
+  if (kind === 'payments') {
+    const amount = el('amount').value;
+    if (!/^\d+(\.\d{1,2})?$/.test(amount)) throw new Error('Enter a positive amount with at most two decimal places');
+    body.amountCents = Math.round(Number(amount) * 100);
+    if (body.amountCents < 1 || body.amountCents > 10000000) throw new Error('Amount is out of range');
+  }
+  const fingerprint = JSON.stringify(body);
+  const previous = pending[kind];
+  const identity = el('token').value.trim();
+  if (previous && previous.identity !== identity) throw new Error('Return to the original staff token to resolve the unconfirmed request');
+  if (previous && previous.fingerprint !== fingerprint) throw new Error('Retry the previous unconfirmed record before changing its details');
+  const requestId = previous?.requestId || crypto.randomUUID();
+  pending[kind] = { requestId, fingerprint, identity };
+  try { await api('/api/v1/' + kind, 'POST', { ...body, requestId }); }
+  catch (error) { if (error.status >= 400 && error.status < 500) delete pending[kind]; throw error; }
+  delete pending[kind];
+  await refresh();
+}
+el('attend').onclick = () => run(() => record('attendance'));
+el('pay').onclick = () => run(() => record('payments'));
+el('token').oninput = () => { el('classes').textContent = ''; el('bookings').replaceChildren(); el('history').textContent = ''; el('status').textContent = 'Load records for this token.'; };
+</script></body></html>
