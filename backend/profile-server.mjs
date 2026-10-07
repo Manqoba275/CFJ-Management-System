@@ -23,7 +23,7 @@ export function validProfile(value) {
 }
 
 // Local development adapter only. Production requires verified identity and Oracle storage.
-export async function createProfileServer({ token, file }) {
+export async function createProfileServer({ token, file, operations }) {
   if (typeof token !== 'string' || token.length < 32) throw new Error('Set CFJ_DEV_TOKEN to a random token of at least 32 characters');
   let profile = { displayName: 'Demo Member', goal: goals[0], version: 0 };
   try {
@@ -37,7 +37,14 @@ export async function createProfileServer({ token, file }) {
       res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
       res.end(JSON.stringify(body));
     };
-    if (req.url !== '/api/v1/me') return reply(404, { error: 'not_found' });
+    if (req.url === '/service.html' && req.method === 'GET') {
+      try {
+        const page = await readFile(new URL('../website/service.html', import.meta.url));
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+        return res.end(page);
+      } catch { return reply(404, { error: 'not_found' }); }
+    }
+    if (req.url !== '/api/v1/me') return operations ? operations(req, res) : reply(404, { error: 'not_found' });
     const supplied = Buffer.from(req.headers.authorization || '');
     if (supplied.length !== secret.length || !timingSafeEqual(supplied, secret)) return reply(401, { error: 'unauthorized' });
     if (req.method === 'GET') { await pending; return reply(200, profile); }
@@ -67,6 +74,10 @@ export async function createProfileServer({ token, file }) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  const server = await createProfileServer({ token: process.env.CFJ_DEV_TOKEN, file: resolve('tmp/profile-api/member.json') });
+  const { createOperationsHandler } = await import('./operations.mjs');
+  const identities = [{ id: 'demo-member', role: 'member', token: process.env.CFJ_DEV_TOKEN || '' }];
+  if (process.env.CFJ_DEV_STAFF_TOKEN) identities.push({ id: 'demo-staff', role: 'staff', token: process.env.CFJ_DEV_STAFF_TOKEN });
+  const operations = await createOperationsHandler({ file: resolve('tmp/profile-api/operations.json'), identities });
+  const server = await createProfileServer({ token: process.env.CFJ_DEV_TOKEN, file: resolve('tmp/profile-api/member.json'), operations });
   server.listen(8787, '127.0.0.1', () => console.log('Development profile API: http://127.0.0.1:8787/api/v1/me (synthetic member only)'));
 }
