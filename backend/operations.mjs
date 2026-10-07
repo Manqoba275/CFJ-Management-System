@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
-import { readProfileBody } from './profile-server.mjs';
+import { readProfileBody } from './request-body.mjs';
 
 // Single-process development transactions. Production requires Oracle and verified identities.
 export async function createOperationsHandler({ file, identities }) {

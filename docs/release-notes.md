@@ -1,5 +1,7 @@
 # Week-one development review — 6 October 2026
 
+Update, 8 October: the development API now supports capacity-checked bookings, owner cancellation, staff attendance and simulated payment records with persisted retry IDs. The new website service desk calls this API. HTTP and browser checks passed; see backend/OPERATIONS_API.md and the Wednesday/Thursday evidence. This does not complete the Oracle, hosted identity or physical-device requirements listed below.
+
 This is a development checkpoint on `feature/team-and-app-setup`, not a production deployment or completed assessment submission.
 
 ## Working source

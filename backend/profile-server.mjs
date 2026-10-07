@@ -1,3 +1,5 @@
+import { readProfileBody } from './request-body.mjs';
+export { readProfileBody } from './request-body.mjs';
 import http from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
 import { readFile, writeFile, rename, mkdir } from 'node:fs/promises';
@@ -5,18 +7,6 @@ import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const goals = ['Build strength', 'Weight loss', 'Muscle tone', 'Endurance'];
-export async function readProfileBody(stream) {
-  const chunks = [];
-  let size = 0;
-  for await (const chunk of stream) {
-    size += chunk.length;
-    if (size > 4096) throw Object.assign(new Error('body_too_large'), { status: 413 });
-    chunks.push(chunk);
-  }
-  // Decode once: a multi-byte name character can span network chunks.
-  try { return new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks)); }
-  catch { throw Object.assign(new Error('invalid_utf8'), { status: 400 }); }
-}
 export function validProfile(value) {
   return value && typeof value.displayName === 'string' && value.displayName.trim().length >= 2 &&
     value.displayName.trim().length <= 60 && goals.includes(value.goal);
