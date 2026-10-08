@@ -1,6 +1,19 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CFJ service desk</title>
-<style>body{margin:0;background:#101b19;color:#eef7f2;font:17px system-ui}main{max-width:850px;margin:auto;padding:32px}section{background:#20312b;padding:24px;margin:20px 0;border-radius:16px}input,button{font:inherit;padding:12px;margin:8px 0;box-sizing:border-box;max-width:100%}input{display:block;width:100%}button{background:#c8ef81;border:0;border-radius:8px;cursor:pointer}button:disabled{opacity:.5;cursor:wait}label{display:block}pre{white-space:pre-wrap;overflow-wrap:anywhere}small{color:#c6d8cf}#status{min-height:2em}h1{font-size:36px}</style></head>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+body{margin:0;background:#0b1426;color:#f1f5fb;font:16px/1.6 system-ui,sans-serif}
+main{max-width:960px;margin:auto;padding:40px 24px}
+section{background:#15263f;border:1px solid #304766;padding:28px;margin:24px 0;border-radius:12px}
+input,button{font:inherit;padding:12px 16px;margin:8px 0;max-width:100%;border-radius:6px}
+input{display:block;width:100%;background:#0f1d33;color:#f1f5fb;border:1px solid #7185a2}
+button{background:#60a5fa;color:#0b1426;border:1px solid transparent;font-weight:650;cursor:pointer;min-height:48px}
+button:hover{background:#93c5fd}button:disabled{opacity:.55;cursor:wait}
+:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}
+label{display:block;font-weight:600}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+small{color:#b9c9df}#status{min-height:2em;color:#bfdbfe}h1{font-size:clamp(28px,5vw,40px);line-height:1.2;font-weight:700}h2{font-size:22px;font-weight:650}
+@media(max-width:560px){main{padding:24px 16px}section{padding:20px}button{width:100%}}
+</style></head>
 <body><main><h1>CFJ service desk</h1><p>Development service · synthetic members only.</p><p>Bookings, attendance and simulated payments are saved by the local API. No money is charged.</p>
 <section><label for="token">Development member or staff token</label><input id="token" type="password" autocomplete="off"><button id="refresh">Load service records</button><small>Open this page through the API at http://127.0.0.1:8787/service.html. Tokens stay in this page’s memory.</small></section>
 <p id="status" role="status" aria-live="polite"></p>

@@ -1,8 +1,8 @@
 <resources>
-    <color name="background">#0D1014</color>
-    <color name="panel">#1C2229</color>
-    <color name="text">#F8F4EF</color>
-    <color name="muted">#BFC7CD</color>
-    <color name="accent">#FF684E</color>
-    <color name="mint">#55D6AD</color>
+    <color name="background">#0B1426</color>
+    <color name="panel">#15263F</color>
+    <color name="text">#F1F5FB</color>
+    <color name="muted">#B9C9DF</color>
+    <color name="accent">#60A5FA</color>
+    <color name="mint">#93C5FD</color>
 </resources>
