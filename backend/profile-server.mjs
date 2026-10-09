@@ -65,7 +65,8 @@ export async function createProfileServer({ token, file, operations }) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const { createOperationsHandler } = await import('./operations.mjs');
-  const identities = [{ id: 'demo-member', role: 'member', token: process.env.CFJ_DEV_TOKEN || '' }];
+  const identities = [{ id: 'demo-member', role: 'member', token: process.env.CFJ_DEV_TOKEN || '', discoverable: true, displayName: 'Demo Member', goal: 'Build strength' }];
+  if (process.env.CFJ_DEV_PEER_TOKEN) identities.push({ id: 'demo-peer', role: 'member', token: process.env.CFJ_DEV_PEER_TOKEN, discoverable: true, displayName: 'Demo Training Partner', goal: 'Endurance' });
   if (process.env.CFJ_DEV_STAFF_TOKEN) identities.push({ id: 'demo-staff', role: 'staff', token: process.env.CFJ_DEV_STAFF_TOKEN });
   const operations = await createOperationsHandler({ file: resolve('tmp/profile-api/operations.json'), identities });
   const server = await createProfileServer({ token: process.env.CFJ_DEV_TOKEN, file: resolve('tmp/profile-api/member.json'), operations });

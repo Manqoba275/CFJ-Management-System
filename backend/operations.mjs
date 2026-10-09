@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { readProfileBody } from './request-body.mjs';
+import { isCommunityPath, communityRead, communityWrite } from './community.mjs';
 
 // Single-process development transactions. Production requires Oracle and verified identities.
 export async function createOperationsHandler({ file, identities }) {
@@ -11,6 +12,10 @@ export async function createOperationsHandler({ file, identities }) {
   try { state = JSON.parse(await readFile(file, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   if (!['classes', 'bookings', 'attendance', 'payments'].every(key => Array.isArray(state[key])) || !state.requests) throw new Error('Invalid operations store');
+  // Upgrade earlier development stores without discarding bookings or payments.
+  state.trainerRequests ??= [];
+  state.friendConnections ??= [];
+  if (!Array.isArray(state.trainerRequests) || !Array.isArray(state.friendConnections)) throw new Error('Invalid community store');
   let queue = Promise.resolve();
   return async (req, res) => {
     const reply = (code, data) => { res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(data)); };
@@ -20,6 +25,7 @@ export async function createOperationsHandler({ file, identities }) {
     const path = req.url;
     if (req.method === 'GET') {
       await queue;
+      if (isCommunityPath(path)) { const result = communityRead(path, state, actor, identities); return reply(result.status, result.data); }
       if (path === '/api/v1/classes') return reply(200, state.classes.map(c => ({ ...c, spaces: c.capacity - state.bookings.filter(b => b.classId === c.id && b.status === 'active').length })));
       if (path === '/api/v1/bookings') return reply(200, state.bookings.filter(b => actor.role === 'staff' || b.memberId === actor.id));
       if (path === '/api/v1/me/attendance') return reply(200, state.attendance.filter(a => a.memberId === actor.id));
@@ -27,7 +33,7 @@ export async function createOperationsHandler({ file, identities }) {
       return reply(404, { error: 'not_found' });
     }
     const cancel = /^\/api\/v1\/bookings\/([a-zA-Z0-9-]+)$/.exec(path);
-    if (!(req.method === 'DELETE' && cancel) && !(req.method === 'POST' && ['/api/v1/bookings', '/api/v1/attendance', '/api/v1/payments'].includes(path))) return reply(404, { error: 'not_found' });
+    if (!(req.method === 'DELETE' && cancel) && !(req.method === 'POST' && (isCommunityPath(path) || ['/api/v1/bookings', '/api/v1/attendance', '/api/v1/payments'].includes(path)))) return reply(404, { error: 'not_found' });
     let body = {};
     if (req.method === 'POST') {
       if (req.headers['content-type']?.split(';')[0] !== 'application/json') return reply(415, { error: 'json_required' });
@@ -39,6 +45,7 @@ export async function createOperationsHandler({ file, identities }) {
       const next = structuredClone(state);
       const fail = (status, error) => ({ status, data: { error } });
       function change() {
+        if (isCommunityPath(path)) return communityWrite(path, body, next, actor, identities);
         if (cancel) {
           const booking = next.bookings.find(b => b.id === cancel[1]);
           if (!booking || booking.memberId !== actor.id) return fail(404, 'booking_not_found');
