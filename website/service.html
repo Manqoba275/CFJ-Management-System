@@ -20,6 +20,7 @@ small{color:#b9c9df}#status{min-height:2em;color:#bfdbfe}h1{font-size:clamp(28px
 <section><h2>Classes and bookings</h2><button id="book">Book demo strength class</button><div id="classes"></div><div id="bookings"></div></section>
 <section><h2>Staff: attendance and simulated payments</h2><label for="booking">Booking ID</label><input id="booking" autocomplete="off"><button id="attend">Record attendance</button><label for="amount">Simulated payment amount (ZAR)</label><input id="amount" type="number" min="0.01" max="100000" step="0.01" value="125.00"><button id="pay">Record simulated payment</button><p><small>After an uncertain response, retry without changing the booking or amount. The same request ID prevents duplicate records.</small></p></section>
 <section><h2>My attendance and payment history</h2><pre id="history">Load records to view history.</pre></section>
+<section><h2>Member community</h2><p>Find a trainer, connect with a training partner and view sample exercise guides.</p><button id="community-load">Load trainers and members</button><div id="community"></div><button id="guides-load">View exercise guides</button><div id="guides"></div><small>Guides unlock after a simulated payment. Trainer requests remain pending.</small></section>
 </main><script>
 const el = id => document.getElementById(id);
 let pending = {};
@@ -27,7 +28,8 @@ async function api(path, method = 'GET', body) {
   const response = await fetch(path, { method, headers: { Authorization: `Bearer ${el('token').value.trim()}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
   if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page on the API server at port 8787.');
   const data = await response.json();
-  if (!response.ok) throw Object.assign(new Error(data.error || 'Request failed'), { status: response.status });
+  const messages = { paid_demo_membership_required: 'Sample guides require a simulated member payment', member_required: 'Use a member account for this action', connection_not_found: 'Connection unavailable; only the recipient can accept it', unauthorized: 'Access denied; check your token' };
+  if (!response.ok) throw Object.assign(new Error(messages[data.error] || data.error || 'Request failed'), { status: response.status });
   return data;
 }
 async function refresh() {
@@ -78,5 +80,24 @@ async function record(kind) {
 }
 el('attend').onclick = () => run(() => record('attendance'));
 el('pay').onclick = () => run(() => record('payments'));
-el('token').oninput = () => { el('classes').textContent = ''; el('bookings').replaceChildren(); el('history').textContent = ''; el('status').textContent = 'Load records for this token.'; };
+async function loadCommunity() {
+  el('community').replaceChildren();
+  const [trainers, members, requests, connections] = await Promise.all(['/trainers', '/members', '/me/trainer-requests', '/me/friend-connections'].map(path => api('/api/v1' + path)));
+  function row(text, label, action) {
+    const p = document.createElement('p'); p.textContent = text + ' ';
+    if (action) { const button = document.createElement('button'); button.textContent = label; button.onclick = () => run(async () => { await action(); await loadCommunity(); }); p.append(button); }
+    el('community').append(p);
+  }
+  for (const trainer of trainers) row(`${trainer.displayName} · ${trainer.specialty}`, 'Request trainer', () => api('/api/v1/trainer-requests', 'POST', { trainerId: trainer.id }));
+  for (const member of members) row(`${member.displayName} · ${member.goal}`, 'Connect', () => api('/api/v1/friend-connections', 'POST', { memberId: member.id }));
+  if (!members.length) row('No other discoverable members.', null, null);
+  for (const request of requests) row(`Trainer ${request.trainerId}: ${request.status}`, null, null);
+  for (const connection of connections) row(`${connection.fromId} → ${connection.toId}: ${connection.status}`, 'Accept (recipient only)', connection.status === 'pending' ? () => api(`/api/v1/friend-connections/${encodeURIComponent(connection.id)}/accept`, 'POST', {}) : null);
+}
+el('community-load').onclick = () => run(loadCommunity);
+el('guides-load').onclick = () => run(async () => {
+  el('guides').replaceChildren();
+  for (const guide of await api('/api/v1/exercises')) { const p = document.createElement('p'); p.textContent = `${guide.title} · ${guide.goal}: ${guide.instructions}`; el('guides').append(p); }
+});
+el('token').oninput = () => { el('community').replaceChildren(); el('guides').replaceChildren(); el('classes').textContent = ''; el('bookings').replaceChildren(); el('history').textContent = ''; el('status').textContent = 'Load records for this token.'; };
 </script></body></html>

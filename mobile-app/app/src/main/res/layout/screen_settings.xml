@@ -16,5 +16,13 @@
         <Button android:id="@+id/load_profile" style="@style/Action" android:text="@string/sync_load" />
         <Button android:id="@+id/sync_profile" style="@style/Action" android:text="@string/sync_save" />
         <TextView android:id="@+id/sync_status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+        <LinearLayout android:id="@+id/community_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView style="@style/Heading" android:text="@string/community_heading" />
+            <TextView style="@style/Body" android:text="@string/community_notice" />
+            <Button android:id="@+id/community_load" style="@style/Action" android:text="@string/community_load" />
+            <Button android:id="@+id/community_guides" style="@style/Action" android:text="@string/community_guides" />
+            <TextView android:id="@+id/community_status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+            <LinearLayout android:id="@+id/community_records" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
