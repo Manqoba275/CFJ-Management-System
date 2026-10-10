@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="20dp" android:background="@drawable/card">
+    <TextView android:id="@+id/class_name" style="@style/Heading" android:textSize="24sp" />
+    <TextView android:id="@+id/class_details" style="@style/Body" />
+    <TextView android:id="@+id/class_booking_status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+    <Button android:id="@+id/class_request" style="@style/Action" android:enabled="false" android:text="@string/class_request_place" />
+</LinearLayout>

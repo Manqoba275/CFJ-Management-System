@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CFJ class card preview</title>
+  <style>
+    body{margin:0;background:#0b1426;color:#f1f5fb;font:1rem/1.6 system-ui;padding:24px}
+    main{max-width:700px;margin:auto} a{color:#93c5fd}
+    .cfj-class-card{padding:24px;margin:20px 0;background:#15263f;border-radius:16px;border:1px solid #52606b}
+    h1{line-height:1.2} h2{margin-top:0} p{overflow-wrap:anywhere}
+    button,select{font:inherit;min-height:48px;padding:8px 14px;border-radius:8px}
+    button{background:#60a5fa;color:#0b1426;border:0;font-weight:700}
+    button:disabled{background:#56606b;color:white;cursor:not-allowed}
+    :focus-visible{outline:3px solid #93c5fd;outline-offset:4px}
+    select{max-width:100%;background:#15263f;color:#f1f5fb;border:1px solid #b9c9df}
+  </style>
+</head>
+<body>
+<main>
+  <a href="index.html">Back to CFJ</a>
+  <h1>Choose your next class.</h1>
+  <p>Component preview with fictional data. No booking or payment is made.</p>
+  <label for="scenario">Preview state</label>
+  <select id="scenario">
+    <option value="READY">Available</option><option value="FULL">Full</option>
+    <option value="OFFLINE">Offline</option><option value="SIGN_IN_REQUIRED">Guest</option>
+    <option value="ALREADY_BOOKED">Already booked</option>
+  </select>
+  <div id="card"></div>
+  <p id="feedback" role="status" aria-live="polite"></p>
+</main>
+<script type="module">
+  import { createClassCard } from './modules/class-card.mjs';
+  import { fitnessClassFromResponse } from './modules/fitness-class.mjs';
+  import { bookingEligibility } from './modules/booking-eligibility.mjs';
+  const scenario = document.querySelector('#scenario');
+  function render() {
+    const chosen = scenario.value;
+    const summary = fitnessClassFromResponse({id:'C-DEMO',name:'Strength Foundations',trainer:'Demo Coach',spaces:chosen === 'FULL' ? 0 : 4});
+    const result = bookingEligibility({online:chosen !== 'OFFLINE',signedIn:chosen !== 'SIGN_IN_REQUIRED',alreadyBooked:chosen === 'ALREADY_BOOKED',spaces:summary.spaces});
+    document.querySelector('#feedback').textContent = '';
+    document.querySelector('#card').replaceChildren(createClassCard(summary, result, () => {
+      document.querySelector('#feedback').textContent = 'Preview only: no place has been reserved.';
+    }));
+  }
+  scenario.addEventListener('change', render);
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView style="@style/Heading" android:text="@string/settings_heading" />
+    <TextView style="@style/Body" android:text="@string/settings_intro" />
+    <TextView style="@style/Body" android:text="@string/display_name" android:labelFor="@id/display_name" />
+    <EditText android:id="@+id/display_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textPersonName" android:autofillHints="name" android:hint="@string/name_hint" android:maxLength="60" android:layout_marginBottom="24dp" />
+    <TextView style="@style/Body" android:text="@string/goal_label" android:labelFor="@id/goal" />
+    <Spinner android:id="@+id/goal" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:layout_marginBottom="24dp" />
+    <Button android:id="@+id/save" style="@style/Action" android:text="@string/save" />
+    <Button android:id="@+id/reset" style="@style/Action" android:text="@string/reset" />
+    <TextView android:id="@+id/status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+    <LinearLayout android:id="@+id/profile_sync" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+        <TextView style="@style/Heading" android:text="@string/sync_heading" />
+        <TextView style="@style/Body" android:text="@string/sync_notice" />
+        <EditText android:id="@+id/api_origin" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textUri" android:hint="@string/sync_origin" android:text="@string/sync_default_origin" android:importantForAutofill="no" />
+        <EditText android:id="@+id/api_token" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textPassword" android:hint="@string/sync_token" android:importantForAutofill="no" android:saveEnabled="false" />
+        <Button android:id="@+id/load_profile" style="@style/Action" android:text="@string/sync_load" />
+        <Button android:id="@+id/sync_profile" style="@style/Action" android:text="@string/sync_save" />
+        <TextView android:id="@+id/sync_status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+        <LinearLayout android:id="@+id/community_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView style="@style/Heading" android:text="@string/community_heading" />
+            <TextView style="@style/Body" android:text="@string/community_notice" />
+            <Button android:id="@+id/community_load" style="@style/Action" android:text="@string/community_load" />
+            <Button android:id="@+id/community_guides" style="@style/Action" android:text="@string/community_guides" />
+            <TextView android:id="@+id/community_status" style="@style/Body" android:accessibilityLiveRegion="polite" />
+            <LinearLayout android:id="@+id/community_records" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

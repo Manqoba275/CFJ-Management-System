@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tshifhiwa | CFJ web and Android code</title><style>body{font:16px/1.6 system-ui;background:#10151b;color:#edf2f7;padding:28px;margin:0}main{max-width:1120px;margin:auto}a{color:#80cfef}h2{color:#55d6ad}pre{background:#1c2229;border:1px solid #46505a;border-radius:8px;padding:18px;overflow:auto;font:14px/1.6 Consolas,monospace}code{overflow-wrap:anywhere}button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:#55d6ad;color:#10151b;cursor:pointer}li{margin:10px 0}.note{background:#26313a;border-left:4px solid #ff684e;padding:18px}.path{font-weight:bold}</style><main><a href="OPEN_PLAN.html">14-day schedule</a> · <a href="../START_HERE.html">All members</a><h1>Tshifhiwa: copy-and-paste code</h1><h2>System Designer and Database Architect</h2><p>Matching website/Android data models and the shared class response contract.</p><p class="note">Web: 30 September. Android: 1 October. Supporting specs/tests: 2 October. Review/integration: 3 October. Remaining work runs through 13 October 2026. Read CODE_TO_PUSH.md before copying. Review shared starter code and record your actual work; no contributions have been recorded on your behalf.</p><p>Create each file at its destination in your Git checkout. Copy only the code, not the heading or Markdown fences. Files under code/ are also ready to copy directly. Prerequisites and exact Git commands are in <a href="CODE_TO_PUSH.md">CODE_TO_PUSH.md</a>.</p><p id="copy-status" role="status" aria-live="polite"></p><section><h2>class-response-contract.md</h2><p class="path">Save to: <code>docs/design/class-response-contract.md</code></p><button type="button" data-copy="code-0">Copy complete file</button><pre><code id="code-0"># Fitness class response contract
+
+The website and Kotlin model share four fields: `id` (nonblank string), `name` (nonblank string), `trainer` (nonblank display name), and `spaces` (non-negative whole number). IDs are stable identifiers, not array positions. Text fields must be trimmed before persistence; clients must render names as text rather than markup.
+
+Example using fictional data:
+
+```json
+{&quot;id&quot;:&quot;C-DEMO&quot;,&quot;name&quot;:&quot;Strength Foundations&quot;,&quot;trainer&quot;:&quot;Demo Coach&quot;,&quot;spaces&quot;:4}
+```
+
+`spaces` is a snapshot calculated from class capacity minus confirmed bookings. Do not let the client update that value directly. A booking request identifies a class; the server validates the member and capacity in one transaction. The UI showing READY does not reserve a seat.
+
+This DTO is a display projection, not an Oracle table definition. The database should keep trainers and bookings in normalized tables and join them for this response. Persistent entities, foreign keys, SQL migrations and a real API endpoint remain to be implemented.
+</code></pre></section><section><h2>FitnessClassSummary.kt</h2><p class="path">Save to: <code>mobile-app/app/src/main/java/za/co/cfjlifestylefitness/app/model/FitnessClassSummary.kt</code></p><button type="button" data-copy="code-1">Copy complete file</button><pre><code id="code-1">package za.co.cfjlifestylefitness.app.model
+
+/** Same field names as the website response contract; availability is a server snapshot. */
+data class FitnessClassSummary(val id: String, val name: String, val trainer: String, val spaces: Int) {
+    init {
+        require(id.isNotBlank()) { &quot;Class ID is required&quot; }
+        require(name.isNotBlank()) { &quot;Class name is required&quot; }
+        require(trainer.isNotBlank()) { &quot;Trainer name is required&quot; }
+        require(spaces &gt;= 0) { &quot;Spaces cannot be negative&quot; }
+    }
+}
+</code></pre></section><section><h2>fitness-class.mjs</h2><p class="path">Save to: <code>website/modules/fitness-class.mjs</code></p><button type="button" data-copy="code-2">Copy complete file</button><pre><code id="code-2">/** Shared response model. IDs are strings and availability is a non-negative integer. */
+export function fitnessClassFromResponse(value) {
+  if (value === null || typeof value !== 'object') throw new TypeError('Class data is required');
+  for (const key of ['id', 'name', 'trainer']) {
+    if (typeof value[key] !== 'string' || !value[key].trim()) throw new TypeError(`${key} is required`);
+  }
+  if (!Number.isSafeInteger(value.spaces) || value.spaces &lt; 0) throw new TypeError('Invalid spaces');
+  return Object.freeze({ id: value.id.trim(), name: value.name.trim(), trainer: value.trainer.trim(), spaces: value.spaces });
+}
+</code></pre></section></main><script>document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const code=document.getElementById(button.dataset.copy);try{await navigator.clipboard.writeText(code.textContent);document.getElementById('copy-status').textContent='Copied complete file. Paste into its listed destination.';}catch{const range=document.createRange();range.selectNodeContents(code);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);document.getElementById('copy-status').textContent='Code selected. Press Ctrl+C, then paste into its listed destination.';}}));</script></html>

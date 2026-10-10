@@ -9,8 +9,15 @@ Every member must contribute using their own GitHub account and push their own w
 5. Open a pull request describing the result, task reference, and verification. Another team member reviews it before merging. Preserve attribution when integrating work.
 6. Record the commit/PR link and test evidence in the progress tracker and Azure Boards. Documentation, SQL, tests, and accessibility work are meaningful contributions too.
 
-Repository owner: add all four members as collaborators and configure main-branch protection with pull-request review and available CI checks. These remote settings are pending usernames and repository permissions; this file does not enforce them.
+The supplied access screenshot shows Nyito22 and TshifhiwaThamagane accepted; Nonhlanhla (ST10451192) must still accept the pending invitation. Lecturer Pnkala is excluded from team assignments and their access remains unchanged. Configure main-branch review and CI protections separately; these instructions do not enforce folder-level permissions.
 
-Recommended responsibilities from the project plan: Sanele coordinates integration and API work; Tshifhiwa leads database design and migrations; Nyito leads requirements and acceptance checks; Nonhlanhla leads interface design and usability testing. All four must also own implementation or automated-test tasks suitable to their skills. These are proposed allocations, not evidence of completed work.
+Role ownership (confirmed by Manqoba):
+
+- Sanele Manqoba Mazibuko: Group Leader and Lead Software Developer; may change any area.
+- Nyito Ramudzuli: Business Analyst; requirements, use cases, business rules, acceptance criteria and traceability.
+- Tshifhiwa Thamagane: System Designer and Database Architect; architecture, ERD, Oracle SQL, data dictionary and database tests.
+- Nonhlanhla Chirwa: UI/UX Designer and Tester; wireframes, website/app layouts, accessibility and QA evidence.
+
+Every member pushes only work relevant to their role; cross-area integration belongs to Manqoba. This is a team review rule, not a technical GitHub path restriction. Follow [the dated two-week plans](docs/team/README.md). New branches and commit messages use project/task descriptions without assistant branding. Existing published history is retained.
 
 Keep private medical records, passwords, database exports, signing keys, and service-account files out of Git. Use synthetic demo data. Record AI assistance honestly in the submission.

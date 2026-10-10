@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">CFJ Fitness</string>
+    <string name="brand">CFJ LIFESTYLE FITNESS</string>
+    <string name="home">Home</string>
+    <string name="classes">Classes</string>
+    <string name="settings">Settings</string>
+    <string name="welcome">Build strength.\nFind your people.</string>
+    <string name="welcome_named">Welcome, %1$s.</string>
+    <string name="intro">Your fitness journey, together. Explore CFJ training and make this space your own.</string>
+    <string name="preview_notice">Development preview\nSign-in, bookings and shared member records will be available after the service connection is complete.</string>
+    <string name="explore">Explore training</string>
+    <string name="visit">Visit CFJ website</string>
+    <string name="classes_heading">Find your next session.</string>
+    <string name="classes_intro">Discover the training offered by CFJ. View the official timetable for current session details.</string>
+    <string name="crossfit">REF CrossFit Jozi\nStrength, conditioning and a supportive training community.</string>
+    <string name="hyrox">HYROX\nTraining that brings running and functional fitness together.</string>
+    <string name="cardio">Concept Cardio\nExplore CFJ cardio training on the official timetable.</string>
+    <string name="timetable">View official timetable</string>
+    <string name="booking_notice">Booking is not available in this preview. No class space is reserved by viewing this screen.</string>
+    <string name="settings_heading">Make it yours.</string>
+    <string name="settings_intro">Save preferences keeps changes on this phone. Development builds also offer a separate service-sync preview below. No member account is created.</string>
+    <string name="display_name">Display name</string>
+    <string name="name_hint">What should we call you?</string>
+    <string name="goal_label">Your fitness goal</string>
+    <string name="save">Save preferences</string>
+    <string name="saved">Preferences saved on this phone.</string>
+    <string name="invalid_name">Enter a name between 2 and 60 characters.</string>
+    <string name="invalid_goal">Choose a goal from the list.</string>
+    <string name="browser_unavailable">No browser is available to open this link.</string>
+    <string name="reset">Reset preferences</string>
+    <string name="reset_message">Remove the name and goal saved on this phone?</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="fitness_goals">
+        <item>Build strength</item>
+        <item>Weight loss</item>
+        <item>Muscle tone</item>
+        <item>Endurance</item>
+    </string-array>
+</resources>

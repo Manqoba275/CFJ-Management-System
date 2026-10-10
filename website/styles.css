@@ -1,21 +1,45 @@
 /* Global theme variables used by every page in the local app. */
 :root {
   color-scheme: dark;
-  --bg: #0d1014;
-  --bg-soft: #151a20;
-  --panel: rgba(25, 29, 35, .86);
-  --panel-solid: #1c2229;
+  --bg: #0b1426;
+  --bg-soft: #111f36;
+  --panel: rgba(21, 38, 63, .94);
+  --panel-solid: #15263f;
   --line: rgba(255, 255, 255, .14);
-  --text: #f8f4ef;
-  --muted: #bfc7cd;
-  --orange: #ff4d2e;
-  --amber: #f6c147;
-  --mint: #55d6ad;
+  --text: #f1f5fb;
+  --muted: #b9c9df;
+  --primary: #60a5fa;
+  --highlight: #bfdbfe;
+  --secondary: #93c5fd;
   --danger: #ff7864;
   --shadow: 0 26px 70px rgba(0, 0, 0, .42);
 }
 
 /* Basic reset keeps sizing predictable across desktop and mobile. */
+:focus-visible {
+  outline: 3px solid var(--highlight);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.prototype-notice {
+  max-width: 1400px;
+  margin: 12px auto;
+  padding: 12px 24px;
+  border-left: 3px solid var(--highlight);
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -40,8 +64,8 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 16% 3%, rgba(255, 77, 46, .18), transparent 28rem),
-    radial-gradient(circle at 88% 0%, rgba(85, 214, 173, .12), transparent 30rem);
+    radial-gradient(circle at 16% 3%, rgba(96, 165, 250, .18), transparent 28rem),
+    radial-gradient(circle at 88% 0%, rgba(147, 197, 253, .12), transparent 30rem);
 }
 
 a {
@@ -75,7 +99,7 @@ img {
   gap: 1rem;
   padding: .85rem clamp(1rem, 4vw, 4.5rem);
   border-bottom: 1px solid var(--line);
-  background: rgba(11, 14, 18, .88);
+  background: rgba(11, 20, 38, .96);
   backdrop-filter: blur(18px);
 }
 
@@ -83,7 +107,7 @@ img {
   display: flex;
   align-items: center;
   gap: .7rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .brand img {
@@ -115,7 +139,7 @@ img {
 }
 
 .nav-login {
-  border: 1px solid rgba(255, 77, 46, .5);
+  border: 1px solid rgba(96, 165, 250, .5);
 }
 
 /* Typography and reusable layout sections. */
@@ -127,17 +151,17 @@ p {
 }
 
 h1 {
-  max-width: 12ch;
+  max-width: 18ch;
   margin-bottom: 1rem;
-  font-size: clamp(3rem, 8vw, 6.3rem);
-  line-height: .92;
-  letter-spacing: 0;
+  font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+  line-height: 1.12;
+  letter-spacing: -.025em;
 }
 
 h2 {
   margin-bottom: 1rem;
-  font-size: clamp(1.9rem, 4vw, 3.8rem);
-  line-height: 1;
+  font-size: clamp(1.65rem, 3vw, 2.6rem);
+  line-height: 1.2;
   letter-spacing: 0;
 }
 
@@ -151,9 +175,9 @@ p {
 
 .eyebrow {
   margin-bottom: .65rem;
-  color: var(--mint);
+  color: var(--secondary);
   font-size: .78rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -170,7 +194,7 @@ label {
   padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 5vw, 5rem);
 }
 
-/* Overview hero uses a large athlete image with the bold gym aesthetic requested. */
+/* Overview hero balances training imagery with readable service information. */
 .hero-page {
   min-height: 86vh;
   display: grid;
@@ -178,7 +202,7 @@ label {
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
   background:
-    linear-gradient(90deg, rgba(13, 16, 20, .96), rgba(13, 16, 20, .68)),
+    linear-gradient(90deg, rgba(11, 20, 38, .96), rgba(11, 20, 38, .68)),
     url("assets/aesthetic-gym.jpg") center / cover no-repeat;
 }
 
@@ -208,7 +232,7 @@ label {
   inset: auto 8% -1.2rem 8%;
   height: 2.5rem;
   border-radius: 50%;
-  background: rgba(255, 77, 46, .26);
+  background: rgba(96, 165, 250, .26);
   filter: blur(16px);
 }
 
@@ -231,13 +255,13 @@ label {
   padding: .8rem 1rem;
   border: 1px solid transparent;
   border-radius: .5rem;
-  font-weight: 900;
+  font-weight: 700;
   transition: transform .2s ease, background .2s ease, border-color .2s ease;
 }
 
 .primary-button {
-  color: #160f0d;
-  background: linear-gradient(135deg, var(--orange), var(--amber));
+  color: #0b1426;
+  background: linear-gradient(135deg, var(--primary), var(--highlight));
 }
 
 .ghost-button {
@@ -267,19 +291,19 @@ label {
 }
 
 .members-hero {
-  background: linear-gradient(90deg, rgba(13,16,20,.96), rgba(13,16,20,.55)), url("assets/gym-hub.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(11,20,38,.96), rgba(11,20,38,.55)), url("assets/gym-hub.jpg") center / cover no-repeat;
 }
 
 .operations-hero {
-  background: linear-gradient(90deg, rgba(13,16,20,.96), rgba(13,16,20,.55)), url("assets/strength-class.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(11,20,38,.96), rgba(11,20,38,.55)), url("assets/strength-class.jpg") center / cover no-repeat;
 }
 
 .library-hero {
-  background: linear-gradient(90deg, rgba(13,16,20,.94), rgba(13,16,20,.5)), url("assets/boxing-workout.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(11,20,38,.94), rgba(11,20,38,.5)), url("assets/boxing-workout.jpg") center / cover no-repeat;
 }
 
 .reports-hero {
-  background: linear-gradient(90deg, rgba(13,16,20,.97), rgba(13,16,20,.6)), url("assets/mindset.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(11,20,38,.97), rgba(11,20,38,.6)), url("assets/mindset.jpg") center / cover no-repeat;
 }
 
 .page-hero div {
@@ -291,7 +315,7 @@ label {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   padding: 1rem clamp(1rem, 5vw, 5rem);
-  background: #11161c;
+  background: #101e34;
 }
 
 .metric-strip article,
@@ -324,7 +348,7 @@ label {
 
 .metric-strip b {
   display: block;
-  color: var(--amber);
+  color: var(--highlight);
   font-size: 2.2rem;
 }
 
@@ -370,7 +394,7 @@ label {
 .panel:hover,
 .manual-card:hover,
 .feature-lanes article:hover {
-  border-color: rgba(255, 77, 46, .52);
+  border-color: rgba(96, 165, 250, .52);
   transform: translateY(-3px);
   background: rgba(255, 255, 255, .075);
 }
@@ -395,7 +419,7 @@ label {
 /* Login and signup pages. */
 .auth-page {
   background:
-    linear-gradient(90deg, rgba(13,16,20,.98) 0 35%, rgba(13,16,20,.68)),
+    linear-gradient(90deg, rgba(11,20,38,.98) 0 35%, rgba(11,20,38,.68)),
     url("assets/login-jack.jpg") center / cover no-repeat fixed;
 }
 
@@ -476,7 +500,7 @@ label {
   align-items: end;
   padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 5vw, 5rem);
   background:
-    linear-gradient(90deg, rgba(13,16,20,.94), rgba(13,16,20,.46)),
+    linear-gradient(90deg, rgba(11,20,38,.94), rgba(11,20,38,.46)),
     url("assets/marathon-runners.jpg") center / cover no-repeat;
   border-bottom: 1px solid var(--line);
 }
@@ -494,12 +518,12 @@ label {
 .marathon-countdown {
   margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid rgba(85, 214, 173, .5);
+  border: 1px solid rgba(147, 197, 253, .5);
   border-radius: .75rem;
-  color: var(--amber);
-  background: rgba(85, 214, 173, .08);
+  color: var(--highlight);
+  background: rgba(147, 197, 253, .08);
   font-size: 1.25rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .marathon-gallery {
@@ -532,7 +556,7 @@ label {
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: .75rem;
-  background: rgba(17, 22, 28, .88);
+  background: rgba(16, 30, 52, .88);
   box-shadow: var(--shadow);
 }
 
@@ -546,7 +570,7 @@ label {
   gap: 1.5rem;
   align-items: center;
   padding: clamp(3rem, 7vw, 5rem) clamp(1rem, 5vw, 5rem);
-  background: #11161c;
+  background: #101e34;
 }
 
 .form-grid {
@@ -577,7 +601,7 @@ select {
 }
 
 select option {
-  background: #1b2229;
+  background: #15263f;
 }
 
 /* Member and operations components. */
@@ -592,9 +616,9 @@ select option {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  color: #1a100d;
-  background: linear-gradient(135deg, var(--orange), var(--amber));
-  font-weight: 1000;
+  color: #0b1426;
+  background: linear-gradient(135deg, var(--primary), var(--highlight));
+  font-weight: 750;
 }
 
 .profile-picture {
@@ -602,13 +626,13 @@ select option {
   place-items: center;
   width: 5rem;
   height: 5rem;
-  border: 2px solid rgba(255, 77, 46, .55);
+  border: 2px solid rgba(96, 165, 250, .55);
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--orange), var(--amber));
+  background: linear-gradient(135deg, var(--primary), var(--highlight));
   background-size: cover;
   background-position: center;
-  color: #1a100d;
-  font-weight: 1000;
+  color: #0b1426;
+  font-weight: 750;
 }
 
 .profile-picture.has-photo span {
@@ -663,7 +687,7 @@ select option {
   border: 1px solid var(--line);
   border-radius: .75rem;
   background:
-    linear-gradient(90deg, transparent 45%, rgba(85, 214, 173, .7) 50%, transparent 55%),
+    linear-gradient(90deg, transparent 45%, rgba(147, 197, 253, .7) 50%, transparent 55%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0 2px, transparent 2px 18px);
   animation: scan 2.4s linear infinite;
 }
@@ -672,7 +696,7 @@ select option {
   position: absolute;
   width: 2rem;
   height: 2rem;
-  border-color: var(--mint);
+  border-color: var(--secondary);
   border-style: solid;
 }
 
@@ -709,7 +733,7 @@ select option {
 .class-row:hover,
 .directory-card:hover,
 .manual-card:hover {
-  border-color: rgba(255, 77, 46, .6);
+  border-color: rgba(96, 165, 250, .6);
 }
 
 .class-row small,
@@ -730,11 +754,11 @@ hr {
 }
 
 .locked-guide.unlocked {
-  border-color: rgba(85, 214, 173, .55);
+  border-color: rgba(147, 197, 253, .55);
 }
 
 .locked-guide.locked {
-  border-color: rgba(255, 77, 46, .5);
+  border-color: rgba(96, 165, 250, .5);
 }
 
 .manual-grid {
@@ -757,8 +781,8 @@ hr {
 }
 
 .manual-card.selected-goal {
-  border-color: rgba(85, 214, 173, .72);
-  background: rgba(85, 214, 173, .08);
+  border-color: rgba(147, 197, 253, .72);
+  background: rgba(147, 197, 253, .08);
 }
 
 .goal-picker {
@@ -806,7 +830,7 @@ td {
 }
 
 th {
-  color: var(--amber);
+  color: var(--highlight);
   background: rgba(255,255,255,.055);
 }
 
@@ -828,7 +852,7 @@ body.admin-active .admin-only {
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: .75rem;
-  background: #171d23;
+  background: #15263f;
   color: var(--text);
   box-shadow: var(--shadow);
 }
@@ -855,9 +879,9 @@ body.admin-active .admin-only {
   z-index: 80;
   max-width: min(26rem, calc(100vw - 2rem));
   padding: .9rem 1rem;
-  border: 1px solid rgba(85, 214, 173, .55);
+  border: 1px solid rgba(147, 197, 253, .55);
   border-radius: .65rem;
-  background: #15221f;
+  background: #132b47;
   transform: translateY(150%);
   transition: transform .25s ease;
   box-shadow: var(--shadow);
@@ -875,7 +899,7 @@ body.admin-active .admin-only {
   align-items: center;
   padding: 2rem clamp(1rem, 5vw, 5rem);
   border-top: 1px solid var(--line);
-  background: #090c10;
+  background: #08101f;
 }
 
 .site-footer img {
@@ -981,7 +1005,7 @@ body.admin-active .admin-only {
 
 @media (max-width: 640px) {
   h1 {
-    font-size: clamp(2.6rem, 15vw, 4rem);
+    font-size: clamp(2rem, 9vw, 3rem);
   }
 
   .metric-strip,

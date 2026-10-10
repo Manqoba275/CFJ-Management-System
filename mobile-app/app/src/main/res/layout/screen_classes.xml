@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView style="@style/Heading" android:text="@string/classes_heading" />
+    <TextView style="@style/Body" android:text="@string/classes_intro" />
+    <TextView style="@style/Card" android:text="@string/crossfit" />
+    <TextView style="@style/Card" android:text="@string/hyrox" />
+    <TextView style="@style/Card" android:text="@string/cardio" />
+    <Button android:id="@+id/timetable" style="@style/Action" android:text="@string/timetable" />
+    <TextView style="@style/Body" android:text="@string/booking_notice" />
+</LinearLayout>

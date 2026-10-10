@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   /* Shared startup tasks run on every page. */
+  showPrototypeNotice();
   validateSession();
   enforceRoleAccess();
   setupRoleNavigation();
@@ -74,6 +75,14 @@ function init() {
   if (page === "library") setupLibraryPage();
   if (page === "marathon") setupMarathonPage();
   if (page === "reports") setupReportsPage();
+}
+
+function showPrototypeNotice() {
+  const notice = document.createElement("aside");
+  notice.className = "prototype-notice";
+  notice.setAttribute("aria-label", "Demo status");
+  notice.textContent = "Local demo: use fictional details. Payments and messages are simulated; changes stay in this browser and do not sync to the Android app yet.";
+  document.querySelector(".topbar")?.insertAdjacentElement("afterend", notice);
 }
 
 function enforceRoleAccess() {
@@ -175,6 +184,14 @@ function loadState() {
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
   const upgraded = { ...structuredClone(seed), ...savedState };
+  // Integrates the reviewed recovery fix from PR #2 (cec0207).
+  // Preserve valid records while repairing damaged saved collections.
+  for (const [key, fallback] of Object.entries(seed)) {
+    if (!Array.isArray(fallback)) continue;
+    upgraded[key] = Array.isArray(upgraded[key])
+      ? upgraded[key].filter((record) => record !== null && typeof record === "object" && !Array.isArray(record))
+      : structuredClone(fallback);
+  }
   seed.users.forEach((seedUser) => {
     if (!upgraded.users.some((user) => user.id === seedUser.id || user.email === seedUser.email)) {
       upgraded.users.push(seedUser);

@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView android:id="@+id/welcome" style="@style/Heading" android:text="@string/welcome" />
+    <TextView style="@style/Body" android:text="@string/intro" />
+    <Button android:id="@+id/explore" style="@style/Action" android:text="@string/explore" />
+    <Button android:id="@+id/visit" style="@style/Action" android:text="@string/visit" />
+    <TextView style="@style/Card" android:text="@string/preview_notice" />
+</LinearLayout>
