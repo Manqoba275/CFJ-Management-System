@@ -5,7 +5,7 @@ Proposed owners below come from the plan. Confirm due dates with the team; no co
 | Task | Proposed owner | Deadline | Status | Evidence |
 |---|---|---|---|---|
 | Review setup and onboard GitHub collaborators | Sanele | To agree | Setup prepared; onboarding pending | Setup branch |
-| Requirement acceptance scenarios | Nyito | To agree | Planned | Pending |
+| Requirement acceptance scenarios | Nyito | To agree | Scenarios prepared with AI assistance on 10 October; connected execution pending | [Acceptance scenarios and prototype smoke evidence](ACCEPTANCE_SCENARIOS.md) |
 | Oracle ERD, migrations and seed data | Tshifhiwa | To agree | Planned | Pending |
 | Shared API and authentication | Sanele | To agree | Planned | Pending |
 | Website API integration and accessibility | Nonhlanhla | To agree | Planned | Pending |
