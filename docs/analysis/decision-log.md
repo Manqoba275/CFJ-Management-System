@@ -14,6 +14,16 @@ Prepared 7 October 2026 for Day 7. No stakeholder meeting, approval or teammate 
 | DEC-08 | Which timezone defines classes and membership periods? | Africa/Johannesburg, subject to client approval; server computes boundaries. | Open | Month-end and class cutoff tests. |
 | DEC-09 | Which staff may correct records and what audit retention is needed? | Authorized staff only; preserve actor, time and reason. | Open | Privacy and accountability. |
 
+## Additional questions recorded 10 October
+
+| ID | Question | Proposed default | Status |
+|---|---|---|---|
+| DEC-10 | Who can request/review trainers and moderate reviews? | Eligible authenticated members; 1–5 rating; exact eligibility/moderation to agree. | Open |
+| DEC-11 | Which discovery fields and connection controls are permitted? | Explicit consent; minimal public fields; no self/duplicate requests. | Open |
+| DEC-12 | Who owns exercise content and which eligibility rules apply? | Approved guides with server-side monthly entitlement. | Open |
+| DEC-13 | What metrics, statuses, periods and exports should admin reports include? | Shared records, ZAR simulation labels and agreed business-time boundaries; minimal private fields. | Open |
+| DEC-14 | What marathon fields, consent, capacity, closing/cancellation and roster permissions apply? | Non-member registration allowed; no fee assumed; roster protected. | Open |
+
 ## Documented constraints
 
 The existing implementation plan requires a shared API, server-side identity/role verification, Oracle transaction rules and consistent web/Android data. The requirements explicitly describe simulated payments and messages. These are repository requirements, not new stakeholder sign-off.
