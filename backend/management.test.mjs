@@ -63,3 +63,9 @@ test('full events reject new registrations but permit a confirmed retry', () => 
   assert.equal(register(request(0), state).status, 200);
   assert.equal(state.registrations.length, 100);
 });
+
+test('development identities cannot share IDs or omit tokens', async () => {
+  const identities = [{ id: 'same-member', role: 'member', token: 'a'.repeat(40) }, { id: 'same-member', role: 'member', token: 'b'.repeat(40) }];
+  await assert.rejects(createOperationsHandler({ file: 'unused.json', identities }), /Invalid development identities/);
+  await assert.rejects(createOperationsHandler({ file: 'unused.json', identities: [{ id: 'member', role: 'member' }] }), /Invalid development identities/);
+});

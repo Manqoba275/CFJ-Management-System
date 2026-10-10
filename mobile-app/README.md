@@ -8,6 +8,8 @@ Open this `mobile-app` folder in Android Studio. Use its bundled JDK 21 and inst
 
 Create an ignored `local.properties` containing your own `sdk.dir` if Android Studio has not created it. Never commit another member's PC path.
 
+On Windows, escape the drive colon in this Java properties file, for example `sdk.dir=C\:/Users/YOUR_NAME/AppData/Local/Android/Sdk`. Forward slashes are supported. An unescaped colon may build but fails Android lint's `PropertyEscape` check.
+
 Windows: `gradlew.bat testDebugUnitTest lintDebug assembleDebug`
 
 Linux/macOS: `bash ./gradlew testDebugUnitTest lintDebug assembleDebug`

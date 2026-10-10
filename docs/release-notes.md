@@ -1,5 +1,11 @@
 # Week-one development review — 6 October 2026
 
+## Weekend development update — 10 October 2026
+
+Saturday's admin reports and public marathon registration are connected to the local API. Reports are restricted to admins and expose aggregates only. Non-members can register with consent; capacity, duplicate email, persisted retries and restart recovery are checked by the service. The blue website provides both flows. See `backend/MANAGEMENT_API.md`.
+
+Sunday's QA work was performed early on 10 October: duplicate identity rejection gained regression coverage, Android community failures now use safe messages, the Windows local SDK property was corrected, and report access wording was clarified. Browser QA confirmed registration and report permissions; the Node suite has 38 passing tests. Final Android pipeline checks are attached to PR #3. Production Oracle, hosted identities and physical-device acceptance remain pending.
+
 Update, 8 October: the development API now supports capacity-checked bookings, owner cancellation, staff attendance and simulated payment records with persisted retry IDs. The new website service desk calls this API. HTTP and browser checks passed; see backend/OPERATIONS_API.md and the Wednesday/Thursday evidence. This does not complete the Oracle, hosted identity or physical-device requirements listed below.
 
 This is a development checkpoint on `feature/team-and-app-setup`, not a production deployment or completed assessment submission.

@@ -7,8 +7,9 @@ import java.net.URI
 
 class CommunityApi(private val origin: String, private val token: String) {
     init {
-        ProfileApi.validateOrigin(origin, BuildConfig.DEBUG)
-        require(token.isNotBlank() && token.none { it.isWhitespace() }) { "Enter a valid access token." }
+        try { ProfileApi.validateOrigin(origin, BuildConfig.DEBUG) }
+        catch (_: Exception) { throw CommunityServiceFailure("Enter a valid HTTPS service address or the local debug address.") }
+        if (token.isBlank() || token.any { it.isWhitespace() }) throw CommunityServiceFailure("Enter a valid access token.")
     }
 
     fun list(path: String): List<JSONObject> {
@@ -34,10 +35,10 @@ class CommunityApi(private val origin: String, private val token: String) {
             }
             when (connection.responseCode) {
                 200, 201 -> Unit
-                401 -> error("Access denied. Check the member token.")
-                403 -> error(if (path == "/exercises") "Sample guides require a simulated member payment." else "This action requires a member account.")
-                404 -> error("Record unavailable. Only the recipient can accept a connection.")
-                else -> error("Request not confirmed. Reload or retry.")
+                401 -> throw CommunityServiceFailure("Access denied. Check the member token.")
+                403 -> throw CommunityServiceFailure(if (path == "/exercises") "Sample guides require a simulated member payment." else "This action requires a member account.")
+                404 -> throw CommunityServiceFailure("Record unavailable. Only the recipient can accept a connection.")
+                else -> throw CommunityServiceFailure("Request not confirmed. Reload or retry.")
             }
             return connection.inputStream.use { input ->
                 val output = java.io.ByteArrayOutputStream()

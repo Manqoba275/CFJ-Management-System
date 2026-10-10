@@ -39,7 +39,7 @@ class CommunityPanel(private val activity: Activity) {
                     busy = false
                     if (!activity.isDestroyed && container.isAttachedToWindow && current == revision) {
                         result.onSuccess { it(); status.setText(R.string.community_updated) }
-                            .onFailure { status.text = it.message ?: activity.getString(R.string.community_failed) }
+                            .onFailure { status.text = communityFailureMessage(it) }
                     }
                 }
             }

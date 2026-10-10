@@ -15,7 +15,7 @@ small{color:#b9c9df}#status{min-height:2em;color:#bfdbfe}h1{font-size:clamp(28px
 @media(max-width:560px){main{padding:24px 16px}section{padding:20px}button{width:100%}}
 </style></head>
 <body><main><h1>CFJ service desk</h1><p>Development service · synthetic members only.</p><p>Bookings, attendance and simulated payments are saved by the local API. No money is charged.</p>
-<section><label for="token">Development member or staff token</label><input id="token" type="password" autocomplete="off"><button id="refresh">Load service records</button><small>Open this page through the API at http://127.0.0.1:8787/service.html. Tokens stay in this page’s memory.</small></section>
+<section><label for="token">Development member, staff or admin token</label><input id="token" type="password" autocomplete="off"><button id="refresh">Load service records</button><small>Open this page through the API at http://127.0.0.1:8787/service.html. Tokens stay in this page’s memory.</small></section>
 <p id="status" role="status" aria-live="polite"></p>
 <section><h2>Classes and bookings</h2><button id="book">Book demo strength class</button><div id="classes"></div><div id="bookings"></div></section>
 <section><h2>Staff: attendance and simulated payments</h2><label for="booking">Booking ID</label><input id="booking" autocomplete="off"><button id="attend">Record attendance</button><label for="amount">Simulated payment amount (ZAR)</label><input id="amount" type="number" min="0.01" max="100000" step="0.01" value="125.00"><button id="pay">Record simulated payment</button><p><small>After an uncertain response, retry without changing the booking or amount. The same request ID prevents duplicate records.</small></p></section>
@@ -29,7 +29,7 @@ async function api(path, method = 'GET', body) {
   const response = await fetch(path, { method, headers: { Authorization: `Bearer ${el('token').value.trim()}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
   if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page on the API server at port 8787.');
   const data = await response.json();
-  const messages = { paid_demo_membership_required: 'Sample guides require a simulated member payment', member_required: 'Use a member account for this action', connection_not_found: 'Connection unavailable; only the recipient can accept it', unauthorized: 'Access denied; check your token' };
+  const messages = { admin_required: 'Use an admin account to view management reports', paid_demo_membership_required: 'Sample guides require a simulated member payment', member_required: 'Use a member account for this action', connection_not_found: 'Connection unavailable; only the recipient can accept it', unauthorized: 'Access denied; check your token' };
   if (!response.ok) throw Object.assign(new Error(messages[data.error] || data.error || 'Request failed'), { status: response.status });
   return data;
 }
