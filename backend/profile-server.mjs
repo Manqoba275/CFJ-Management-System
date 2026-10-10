@@ -27,9 +27,9 @@ export async function createProfileServer({ token, file, operations }) {
       res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
       res.end(JSON.stringify(body));
     };
-    if (req.url === '/service.html' && req.method === 'GET') {
+    if (['/service.html', '/registration.html'].includes(req.url) && req.method === 'GET') {
       try {
-        const page = await readFile(new URL('../website/service.html', import.meta.url));
+        const page = await readFile(new URL(`../website${req.url}`, import.meta.url));
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
         return res.end(page);
       } catch { return reply(404, { error: 'not_found' }); }
@@ -68,6 +68,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const identities = [{ id: 'demo-member', role: 'member', token: process.env.CFJ_DEV_TOKEN || '', discoverable: true, displayName: 'Demo Member', goal: 'Build strength' }];
   if (process.env.CFJ_DEV_PEER_TOKEN) identities.push({ id: 'demo-peer', role: 'member', token: process.env.CFJ_DEV_PEER_TOKEN, discoverable: true, displayName: 'Demo Training Partner', goal: 'Endurance' });
   if (process.env.CFJ_DEV_STAFF_TOKEN) identities.push({ id: 'demo-staff', role: 'staff', token: process.env.CFJ_DEV_STAFF_TOKEN });
+  if (process.env.CFJ_DEV_ADMIN_TOKEN) identities.push({ id: 'demo-admin', role: 'admin', token: process.env.CFJ_DEV_ADMIN_TOKEN });
   const operations = await createOperationsHandler({ file: resolve('tmp/profile-api/operations.json'), identities });
   const server = await createProfileServer({ token: process.env.CFJ_DEV_TOKEN, file: resolve('tmp/profile-api/member.json'), operations });
   server.listen(8787, '127.0.0.1', () => console.log('Development profile API: http://127.0.0.1:8787/api/v1/me (synthetic member only)'));
