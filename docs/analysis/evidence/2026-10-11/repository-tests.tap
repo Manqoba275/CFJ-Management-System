@@ -1,0 +1,208 @@
+TAP version 13
+# Subtest: Unicode names survive every possible network byte boundary
+ok 1 - Unicode names survive every possible network byte boundary
+  ---
+  duration_ms: 4.448335
+  type: 'test'
+  ...
+# Subtest: body reader rejects malformed UTF-8 and excessive bytes
+ok 2 - body reader rejects malformed UTF-8 and excessive bytes
+  ---
+  duration_ms: 0.936375
+  type: 'test'
+  ...
+# Subtest: profile API authenticates, validates, persists and rejects stale writes
+ok 3 - profile API authenticates, validates, persists and rejects stale writes
+  ---
+  duration_ms: 108.211969
+  type: 'test'
+  ...
+# Subtest: booking false / false / false / -1 / INVALID_CAPACITY
+ok 4 - booking false / false / false / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 1.893843
+  type: 'test'
+  ...
+# Subtest: booking false / false / true / -1 / INVALID_CAPACITY
+ok 5 - booking false / false / true / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.188334
+  type: 'test'
+  ...
+# Subtest: booking false / true / false / -1 / INVALID_CAPACITY
+ok 6 - booking false / true / false / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.168335
+  type: 'test'
+  ...
+# Subtest: booking false / true / true / -1 / INVALID_CAPACITY
+ok 7 - booking false / true / true / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.23208
+  type: 'test'
+  ...
+# Subtest: booking true / false / false / -1 / INVALID_CAPACITY
+ok 8 - booking true / false / false / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.252252
+  type: 'test'
+  ...
+# Subtest: booking true / false / true / -1 / INVALID_CAPACITY
+ok 9 - booking true / false / true / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.138149
+  type: 'test'
+  ...
+# Subtest: booking true / true / false / -1 / INVALID_CAPACITY
+ok 10 - booking true / true / false / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.106602
+  type: 'test'
+  ...
+# Subtest: booking true / true / true / -1 / INVALID_CAPACITY
+ok 11 - booking true / true / true / -1 / INVALID_CAPACITY
+  ---
+  duration_ms: 0.193182
+  type: 'test'
+  ...
+# Subtest: booking false / false / false / 0 / OFFLINE
+ok 12 - booking false / false / false / 0 / OFFLINE
+  ---
+  duration_ms: 0.22521
+  type: 'test'
+  ...
+# Subtest: booking false / false / true / 0 / OFFLINE
+ok 13 - booking false / false / true / 0 / OFFLINE
+  ---
+  duration_ms: 0.366274
+  type: 'test'
+  ...
+# Subtest: booking false / true / false / 0 / OFFLINE
+ok 14 - booking false / true / false / 0 / OFFLINE
+  ---
+  duration_ms: 0.192972
+  type: 'test'
+  ...
+# Subtest: booking false / true / true / 0 / OFFLINE
+ok 15 - booking false / true / true / 0 / OFFLINE
+  ---
+  duration_ms: 0.153242
+  type: 'test'
+  ...
+# Subtest: booking true / false / false / 0 / SIGN_IN_REQUIRED
+ok 16 - booking true / false / false / 0 / SIGN_IN_REQUIRED
+  ---
+  duration_ms: 0.245441
+  type: 'test'
+  ...
+# Subtest: booking true / false / true / 0 / SIGN_IN_REQUIRED
+ok 17 - booking true / false / true / 0 / SIGN_IN_REQUIRED
+  ---
+  duration_ms: 0.113942
+  type: 'test'
+  ...
+# Subtest: booking true / true / false / 0 / FULL
+ok 18 - booking true / true / false / 0 / FULL
+  ---
+  duration_ms: 0.087221
+  type: 'test'
+  ...
+# Subtest: booking true / true / true / 0 / ALREADY_BOOKED
+ok 19 - booking true / true / true / 0 / ALREADY_BOOKED
+  ---
+  duration_ms: 0.110297
+  type: 'test'
+  ...
+# Subtest: booking false / false / false / 1 / OFFLINE
+ok 20 - booking false / false / false / 1 / OFFLINE
+  ---
+  duration_ms: 0.097928
+  type: 'test'
+  ...
+# Subtest: booking false / false / true / 1 / OFFLINE
+ok 21 - booking false / false / true / 1 / OFFLINE
+  ---
+  duration_ms: 0.353665
+  type: 'test'
+  ...
+# Subtest: booking false / true / false / 1 / OFFLINE
+ok 22 - booking false / true / false / 1 / OFFLINE
+  ---
+  duration_ms: 0.084928
+  type: 'test'
+  ...
+# Subtest: booking false / true / true / 1 / OFFLINE
+ok 23 - booking false / true / true / 1 / OFFLINE
+  ---
+  duration_ms: 0.065229
+  type: 'test'
+  ...
+# Subtest: booking true / false / false / 1 / SIGN_IN_REQUIRED
+ok 24 - booking true / false / false / 1 / SIGN_IN_REQUIRED
+  ---
+  duration_ms: 0.060972
+  type: 'test'
+  ...
+# Subtest: booking true / false / true / 1 / SIGN_IN_REQUIRED
+ok 25 - booking true / false / true / 1 / SIGN_IN_REQUIRED
+  ---
+  duration_ms: 0.054512
+  type: 'test'
+  ...
+# Subtest: booking true / true / false / 1 / READY
+ok 26 - booking true / true / false / 1 / READY
+  ---
+  duration_ms: 0.050667
+  type: 'test'
+  ...
+# Subtest: booking true / true / true / 1 / ALREADY_BOOKED
+ok 27 - booking true / true / true / 1 / ALREADY_BOOKED
+  ---
+  duration_ms: 0.080982
+  type: 'test'
+  ...
+# Subtest: web rejects malformed capacity and unknown booking state
+ok 28 - web rejects malformed capacity and unknown booking state
+  ---
+  duration_ms: 0.188555
+  type: 'test'
+  ...
+# Subtest: preview serves the website while rejecting private paths and writes
+ok 29 - preview serves the website while rejecting private paths and writes
+  ---
+  duration_ms: 69.792608
+  type: 'test'
+  ...
+# Subtest: missing or invalid JSON restores demo data
+ok 30 - missing or invalid JSON restores demo data
+  ---
+  duration_ms: 11.495328
+  type: 'test'
+  ...
+# Subtest: damaged collections do not prevent startup or erase unrelated records
+ok 31 - damaged collections do not prevent startup or erase unrelated records
+  ---
+  duration_ms: 6.075255
+  type: 'test'
+  ...
+# Subtest: invalid collection entries are removed while valid entries survive
+ok 32 - invalid collection entries are removed while valid entries survive
+  ---
+  duration_ms: 3.197404
+  type: 'test'
+  ...
+# Subtest: valid empty collections and legacy records are preserved
+ok 33 - valid empty collections and legacy records are preserved
+  ---
+  duration_ms: 3.210484
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249.642366

@@ -1,0 +1,43 @@
+✔ booking false / false / false / -1 / INVALID_CAPACITY (1.356941ms)
+✔ booking false / false / true / -1 / INVALID_CAPACITY (0.204449ms)
+✔ booking false / true / false / -1 / INVALID_CAPACITY (0.150357ms)
+✔ booking false / true / true / -1 / INVALID_CAPACITY (0.170127ms)
+✔ booking true / false / false / -1 / INVALID_CAPACITY (0.139931ms)
+✔ booking true / false / true / -1 / INVALID_CAPACITY (0.137988ms)
+✔ booking true / true / false / -1 / INVALID_CAPACITY (0.117047ms)
+✔ booking true / true / true / -1 / INVALID_CAPACITY (0.157458ms)
+✔ booking false / false / false / 0 / OFFLINE (0.166221ms)
+✔ booking false / false / true / 0 / OFFLINE (0.306894ms)
+✔ booking false / true / false / 0 / OFFLINE (0.179822ms)
+✔ booking false / true / true / 0 / OFFLINE (0.128814ms)
+✔ booking true / false / false / 0 / SIGN_IN_REQUIRED (0.150818ms)
+✔ booking true / false / true / 0 / SIGN_IN_REQUIRED (0.089566ms)
+✔ booking true / true / false / 0 / FULL (0.139271ms)
+✔ booking true / true / true / 0 / ALREADY_BOOKED (0.089245ms)
+✔ booking false / false / false / 1 / OFFLINE (0.083547ms)
+✔ booking false / false / true / 1 / OFFLINE (1.337552ms)
+✔ booking false / true / false / 1 / OFFLINE (0.108695ms)
+✔ booking false / true / true / 1 / OFFLINE (0.131539ms)
+✔ booking true / false / false / 1 / SIGN_IN_REQUIRED (0.069395ms)
+✔ booking true / false / true / 1 / SIGN_IN_REQUIRED (0.065999ms)
+✔ booking true / true / false / 1 / READY (0.063175ms)
+✔ booking true / true / true / 1 / ALREADY_BOOKED (0.064398ms)
+✔ web rejects malformed capacity and unknown booking state (0.203407ms)
+✔ BOOK-01: An online signed-in member can request an available class (0.80662ms)
+✔ BOOK-02: An offline device cannot confirm a reservation (0.989506ms)
+✔ BOOK-03: A guest must sign in before requesting a class (0.129646ms)
+✔ BOOK-04: A member cannot request a duplicate booking (0.144859ms)
+✔ BOOK-05: A class with no spaces cannot accept a booking (0.139541ms)
+✔ BOOK-06: Invalid negative availability is rejected (0.123968ms)
+✔ BOOK-07: Duplicate status takes priority when the class is also full (0.117818ms)
+✔ reject malformed capacity and unknown booking status (0.21835ms)
+✔ class response rejects missing fields and negative availability (1.371142ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 86.881107
+Validated local links/assets in 12 pages and app.js syntax. Runtime and integration testing remain pending.
