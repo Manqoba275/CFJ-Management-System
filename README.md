@@ -4,15 +4,15 @@ Website and planned Kotlin Android application for CFJ Lifestyle Fitness.
 
 ## Setup status
 
-The existing HTML/CSS/JavaScript prototype is restored under `website/`. It uses browser localStorage and simulated payments/messages. It is not yet connected to a shared database or secure authentication. No Android APK exists yet.
+The HTML/CSS/JavaScript prototype under `website/` uses browser localStorage and simulated payments/messages. A separate connected service desk and registration page use the local development API. A native Kotlin debug APK is available; production database and hosted sign-in integration remain pending.
 
 Open `website/index.html` to preview the inherited prototype. Demo accounts are documented in `website/README.md`; use only fictional data.
 
 ## Project layout
 
 - `website/`: existing website to migrate to the shared API.
-- `mobile-app/`: planned native Kotlin Android client.
-- `backend/`: shared API setup and contract plan.
+- `mobile-app/`: native Kotlin preview, development API panels and release signing configuration.
+- `backend/`: local development API for profiles, bookings, attendance, simulated payments, community features, reports and event registration.
 - `database/`: Oracle database design and migration plan.
 - `docs/`: requirements, architecture, progress tracker, meeting evidence templates.
 - `.github/`: pull-request template and setup checks.
@@ -20,6 +20,8 @@ Open `website/index.html` to preview the inherited prototype. Demo accounts are 
 Read [the implementation plan](docs/IMPLEMENTATION_PLAN.md), [requirements](docs/REQUIREMENTS.md), and [team Git workflow](CONTRIBUTING.md).
 
 ## Checks
+
+See [deployment and installation](docs/deployment.md) for the static demo package, local API demonstration and Android signing setup. `npm run package:demo` prepares static hosting files; it does not publish them.
 
 With Node.js 22 or later: `npm test` and `npm run check`. These cover saved-state recovery, booking rules, the local server and development profile API.
 Android CI runs unit tests, lint and app/test APK builds. See mobile-app/README.md for local commands. A successful build does not establish physical-device behaviour.
