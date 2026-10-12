@@ -29,3 +29,23 @@ jobs:
           name: CFJ-Android-debug
           path: mobile-app/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Verify release packaging requires signing
+        working-directory: mobile-app
+        run: |
+          if bash ./gradlew assembleRelease --no-daemon > "$RUNNER_TEMP/release-guard.log" 2>&1; then
+            echo 'Unsigned release unexpectedly succeeded'
+            exit 1
+          fi
+          grep -F 'Release signing is not configured' "$RUNNER_TEMP/release-guard.log"
+      - name: Verify release signing with a temporary certificate
+        working-directory: mobile-app
+        run: |
+          export CFJ_RELEASE_STORE_FILE="$RUNNER_TEMP/cfj-verification.jks"
+          export CFJ_RELEASE_STORE_PASSWORD="$(openssl rand -hex 24)"
+          export CFJ_RELEASE_KEY_PASSWORD="$CFJ_RELEASE_STORE_PASSWORD"
+          export CFJ_RELEASE_KEY_ALIAS='verification-only'
+          echo "::add-mask::$CFJ_RELEASE_STORE_PASSWORD"
+          trap 'rm -f "$CFJ_RELEASE_STORE_FILE"' EXIT
+          keytool -genkeypair -keystore "$CFJ_RELEASE_STORE_FILE" -storepass:env CFJ_RELEASE_STORE_PASSWORD -keypass:env CFJ_RELEASE_KEY_PASSWORD -alias "$CFJ_RELEASE_KEY_ALIAS" -keyalg RSA -keysize 2048 -validity 2 -dname 'CN=CFJ Temporary Build Verification' -noprompt
+          bash ./gradlew lintRelease assembleRelease --no-daemon
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose app/build/outputs/apk/release/app-release.apk

@@ -1,5 +1,9 @@
 # Week-one development review — 6 October 2026
 
+## Deployment preparation — 12 October 2026
+
+Added `npm run package:demo` to prepare tracked static assets with checksums, excluding API-only pages. Added environment-based Android release signing and CI verification using an ephemeral certificate. Missing signing configuration prevents release packaging. See `docs/deployment.md` for installation and deployment steps. No public deployment or permanent release key is configured; the temporary verification build is not a distribution release.
+
 ## Weekend development update — 10 October 2026
 
 Saturday's admin reports and public marathon registration are connected to the local API. Reports are restricted to admins and expose aggregates only. Non-members can register with consent; capacity, duplicate email, persisted retries and restart recovery are checked by the service. The blue website provides both flows. See `backend/MANAGEMENT_API.md`.
