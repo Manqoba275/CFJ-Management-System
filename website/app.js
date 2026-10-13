@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   /* Shared startup tasks run on every page. */
-  showPrototypeNotice();
   validateSession();
   if (!enforceRoleAccess()) return;
   setupRoleNavigation();
@@ -75,14 +74,6 @@ function init() {
   if (page === "library") setupLibraryPage();
   if (page === "marathon") setupMarathonPage();
   if (page === "reports") setupReportsPage();
-}
-
-function showPrototypeNotice() {
-  const notice = document.createElement("aside");
-  notice.className = "prototype-notice";
-  notice.setAttribute("aria-label", "Demo status");
-  notice.textContent = "School project demo — not CFJ's official service. Use fictional details and a demo-only password. Payments and messages are simulated. Data stays in this browser; no Octiv or Android sync.";
-  document.querySelector(".topbar")?.insertAdjacentElement("afterend", notice);
 }
 
 function enforceRoleAccess() {
