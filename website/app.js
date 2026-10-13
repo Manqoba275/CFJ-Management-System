@@ -60,7 +60,7 @@ function init() {
   /* Shared startup tasks run on every page. */
   showPrototypeNotice();
   validateSession();
-  enforceRoleAccess();
+  if (!enforceRoleAccess()) return;
   setupRoleNavigation();
   setupFooter();
   setupRevealAnimation();
@@ -81,32 +81,38 @@ function showPrototypeNotice() {
   const notice = document.createElement("aside");
   notice.className = "prototype-notice";
   notice.setAttribute("aria-label", "Demo status");
-  notice.textContent = "Local demo: use fictional details. Payments and messages are simulated; changes stay in this browser and do not sync to the Android app yet.";
+  notice.textContent = "School project demo — not CFJ's official service. Use fictional details and a demo-only password. Payments and messages are simulated. Data stays in this browser; no Octiv or Android sync.";
   document.querySelector(".topbar")?.insertAdjacentElement("afterend", notice);
 }
 
 function enforceRoleAccess() {
+  const requiredRole = { members: 'member', operations: 'member', staff: 'staff', reports: 'admin' }[page];
+  if (requiredRole && state.session?.role !== requiredRole) {
+    location.replace(`${requiredRole}-login.html`);
+    return false;
+  }
   /* Admins only use admin pages; members and public users cannot use admin reports. */
   const memberPages = ["members", "operations"];
   if (state.session?.role === "admin" && memberPages.includes(page)) {
     location.href = "reports.html";
-    return;
+    return false;
   }
-  if (state.session?.role === "admin" && !["reports", "login", "admin-login", "marathon"].includes(page)) {
+  if (state.session?.role === "admin" && !["overview", "demo-info", "reports", "login", "admin-login", "marathon"].includes(page)) {
     location.href = "reports.html";
-    return;
+    return false;
   }
-  if (state.session?.role === "staff" && !["staff", "login", "staff-login", "marathon"].includes(page)) {
+  if (state.session?.role === "staff" && !["overview", "demo-info", "staff", "login", "staff-login", "marathon"].includes(page)) {
     location.href = "staff.html";
-    return;
+    return false;
   }
   if (page === "staff" && state.session?.role !== "staff") {
     location.href = "login.html";
-    return;
+    return false;
   }
   if (page === "reports" && state.session?.role !== "admin") {
     document.body.classList.remove("admin-active");
   }
+  return true;
 }
 
 function setupRoleNavigation() {
@@ -115,7 +121,10 @@ function setupRoleNavigation() {
   if (!nav) return;
   const role = state.session?.role || "public";
   const links = [
-    ["Overview", "index.html", role !== "staff" && role !== "admin"],
+    ["Home", "index.html", true],
+    ["Programmes", "index.html#programmes", role === "public"],
+    ["Memberships", "index.html#memberships", role === "public"],
+    ["Visit us", "index.html#visit", role === "public"],
     ["Join Marathon", "marathon.html", true],
     ["Members", "members.html", role === "member"],
     ["Operations", "operations.html", role === "member"],
@@ -137,27 +146,25 @@ function setupFooter() {
       ? `<a href="reports.html">Admin Reports</a>`
       : role === "staff"
         ? `<a href="staff.html">Staff Desk</a>`
-        : `<a href="index.html">Our System</a><a href="marathon.html">Join Marathon</a><a href="library.html">Training Manual</a><a href="login.html">Membership Access</a>`;
+        : `<a href="index.html#programmes">Programmes</a><a href="index.html#memberships">Membership options</a><a href="login.html">Demo sign in</a>`;
     const communityLinks = role === "staff" || role === "admin"
       ? `<a href="login.html" data-footer-logout="true">Logout</a>`
-      : `<a href="https://www.instagram.com/">Instagram</a><a href="https://www.facebook.com/">Facebook</a><a href="https://www.youtube.com/">YouTube</a>`;
+      : `<a href="https://cfjlifestylefitness.co.za/">Official CFJ website ↗</a><a href="https://cfjlifestylefitness.co.za/timetable/">Official timetable ↗</a>`;
     footer.innerHTML = `
       <div class="footer-brand">
         <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
-        <p>&copy; 2026 CFJ Lifestyle Fitness. All rights reserved.</p>
+        <p>Team Forge · School project, 2026. An independent demonstration; not CFJ's official booking service.</p>
       </div>
       <div class="footer-column">
         <h3>About</h3>
         ${aboutLinks}
       </div>
       <div class="footer-column">
-        <h3>Legal</h3>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#">Payment Terms</a>
+        <h3>About this demo</h3>
+        <a href="demo-info.html">Privacy, accounts & payments</a>
       </div>
       <div class="footer-column">
-        <h3>Community</h3>
+        <h3>Useful links</h3>
         ${communityLinks}
       </div>
     `;

@@ -55,3 +55,19 @@ test('valid empty collections and legacy records are preserved', () => {
   assert.deepEqual(state.payments, []);
   assert.match(state.classes[0].date, /^\d{4}-\d{2}-\d{2}$/);
 });
+
+test('private demo pages redirect before rendering for missing or incorrect roles', () => {
+  for (const [page, required] of Object.entries({ members: 'member', operations: 'member', staff: 'staff', reports: 'admin' })) {
+    for (const role of [null, 'member', 'staff', 'admin']) {
+      const redirects = [];
+      const result = runInNewContext(`${source}\nstate.session = testRole ? { role: testRole } : null; enforceRoleAccess();`, {
+        structuredClone, testRole: role,
+        localStorage: { getItem: () => null },
+        document: { body: { dataset: { page } }, querySelector: () => null, addEventListener: () => {} },
+        location: { replace: target => redirects.push(target) }
+      });
+      assert.equal(result, role === required);
+      assert.deepEqual(redirects, role === required ? [] : [`${required}-login.html`]);
+    }
+  }
+});

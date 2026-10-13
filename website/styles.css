@@ -1033,3 +1033,29 @@ body.admin-active .admin-only {
     padding-inline: 1rem;
   }
 }
+
+/* Public programme and onboarding pages. */
+.skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; background: var(--primary); color: #0b1426; padding: 12px; }
+.skip-link:focus { top: 12px; }
+.programme-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.programme-grid .panel { padding: 30px; }
+.programme-grid h3 { font-size: 1.6rem; margin: 16px 0; }
+.programme-grid p, .intro-steps p, .visit-panel p { color: var(--muted); line-height: 1.75; }
+.programme-grid a, .section-note a, .visit-panel a:not(.primary-button):not(.ghost-button) { color: var(--highlight); text-underline-offset: 4px; }
+.programme-number { font-size: .75rem; letter-spacing: .1em; color: var(--secondary); }
+.programme-grid .plan-highlight { font-size: 1.65rem; font-weight: 700; color: var(--highlight); }
+.hero-copy .hero-caption, .section-note { font-size: .9rem; line-height: 1.7; color: var(--muted); }
+.section-note { margin-top: 24px; }
+.intro-steps { padding-left: 28px; margin: 0; }
+.intro-steps li { padding: 0 0 18px 12px; }
+.intro-steps li::marker { color: var(--primary); font-weight: bold; }
+.visit-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 36px; }
+.visit-actions { display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+section[id] { scroll-margin-top: 120px; }
+@media (max-width: 800px) { .programme-grid, .visit-panel { grid-template-columns: 1fr; } .visit-panel { padding: 24px; } }
+@media (max-width: 980px) {
+  .topbar { position: relative; gap: 12px; padding: 18px; }
+  .topbar .nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .topbar .nav a { padding: 8px 10px; font-size: .9rem; }
+  .nav-login { align-self: flex-start; }
+}
