@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CFJ service desk</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+body{margin:0;background:#0b1426;color:#f1f5fb;font:16px/1.6 system-ui,sans-serif}
+main{max-width:960px;margin:auto;padding:40px 24px}
+section{background:#15263f;border:1px solid #304766;padding:28px;margin:24px 0;border-radius:12px}
+input,button{font:inherit;padding:12px 16px;margin:8px 0;max-width:100%;border-radius:6px}
+input{display:block;width:100%;background:#0f1d33;color:#f1f5fb;border:1px solid #7185a2}
+button{background:#60a5fa;color:#0b1426;border:1px solid transparent;font-weight:650;cursor:pointer;min-height:48px}
+button:hover{background:#93c5fd}button:disabled{opacity:.55;cursor:wait}
+:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}
+label{display:block;font-weight:600}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
+small{color:#b9c9df}#status{min-height:2em;color:#bfdbfe}h1{font-size:clamp(28px,5vw,40px);line-height:1.2;font-weight:700}h2{font-size:22px;font-weight:650}
+@media(max-width:560px){main{padding:24px 16px}section{padding:20px}button{width:100%}}
+</style></head>
+<body><main><h1>CFJ service desk</h1><p>Development service · synthetic members only.</p><p>Bookings, attendance and simulated payments are saved by the local API. No money is charged.</p>
+<section><label for="token">Development member, staff or admin token</label><input id="token" type="password" autocomplete="off"><button id="refresh">Load service records</button><small>Open this page through the API at http://127.0.0.1:8787/service.html. Tokens stay in this page’s memory.</small></section>
+<p id="status" role="status" aria-live="polite"></p>
+<section><h2>Classes and bookings</h2><button id="book">Book demo strength class</button><div id="classes"></div><div id="bookings"></div></section>
+<section><h2>Staff: attendance and simulated payments</h2><label for="booking">Booking ID</label><input id="booking" autocomplete="off"><button id="attend">Record attendance</button><label for="amount">Simulated payment amount (ZAR)</label><input id="amount" type="number" min="0.01" max="100000" step="0.01" value="125.00"><button id="pay">Record simulated payment</button><p><small>After an uncertain response, retry without changing the booking or amount. The same request ID prevents duplicate records.</small></p></section>
+<section><h2>My attendance and payment history</h2><pre id="history">Load records to view history.</pre></section>
+<section><h2>Member community</h2><p>Find a trainer, connect with a training partner and view sample exercise guides.</p><button id="community-load">Load trainers and members</button><div id="community"></div><button id="guides-load">View exercise guides</button><div id="guides"></div><small>Guides unlock after a simulated payment. Trainer requests remain pending.</small></section>
+<section><h2>Management reports</h2><p>Admin access required. Figures include simulated payments only.</p><button id="reports-load">Load management report</button><div id="reports"></div><p><a href="registration.html" style="color:#93c5fd">Public marathon registration</a></p></section>
+</main><script>
+const el = id => document.getElementById(id);
+let pending = {};
+async function api(path, method = 'GET', body) {
+  const response = await fetch(path, { method, headers: { Authorization: `Bearer ${el('token').value.trim()}`, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page on the API server at port 8787.');
+  const data = await response.json();
+  const messages = { admin_required: 'Use an admin account to view management reports', paid_demo_membership_required: 'Sample guides require a simulated member payment', member_required: 'Use a member account for this action', connection_not_found: 'Connection unavailable; only the recipient can accept it', unauthorized: 'Access denied; check your token' };
+  if (!response.ok) throw Object.assign(new Error(messages[data.error] || data.error || 'Request failed'), { status: response.status });
+  return data;
+}
+async function refresh() {
+  const [classes, bookings, attendance, payments] = await Promise.all(['/classes', '/bookings', '/me/attendance', '/me/payments'].map(path => api('/api/v1' + path)));
+  el('classes').textContent = classes.map(c => `${c.name}: ${c.spaces} place(s) available`).join('\n');
+  el('bookings').replaceChildren();
+  for (const booking of bookings) {
+    const row = document.createElement('p'); row.textContent = `${booking.id} · ${booking.status} `;
+    if (booking.status === 'active') {
+      const cancel = document.createElement('button'); cancel.textContent = 'Cancel booking';
+      cancel.onclick = () => run(async () => { await api('/api/v1/bookings/' + encodeURIComponent(booking.id), 'DELETE'); await refresh(); });
+      row.append(cancel);
+    }
+    el('bookings').append(row);
+  }
+  el('history').textContent = JSON.stringify({ attendance, simulatedPayments: payments }, null, 2);
+}
+async function run(action) {
+  document.querySelectorAll('button,input').forEach(button => button.disabled = true);
+  el('status').textContent = 'Contacting service…';
+  try { await action(); el('status').textContent = 'Service records updated.'; }
+  catch (error) { el('status').textContent = `Not confirmed: ${error.message}. Reload or retry; no payment is charged.`; }
+  finally { document.querySelectorAll('button,input').forEach(button => button.disabled = false); }
+}
+el('refresh').onclick = () => run(refresh);
+el('book').onclick = () => run(async () => { await api('/api/v1/bookings', 'POST', { classId: 'C-DEMO' }); await refresh(); });
+async function record(kind) {
+  const bookingId = el('booking').value.trim();
+  if (!bookingId) throw new Error('Enter a booking ID');
+  const body = { bookingId };
+  if (kind === 'payments') {
+    const amount = el('amount').value;
+    if (!/^\d+(\.\d{1,2})?$/.test(amount)) throw new Error('Enter a positive amount with at most two decimal places');
+    body.amountCents = Math.round(Number(amount) * 100);
+    if (body.amountCents < 1 || body.amountCents > 10000000) throw new Error('Amount is out of range');
+  }
+  const fingerprint = JSON.stringify(body);
+  const previous = pending[kind];
+  const identity = el('token').value.trim();
+  if (previous && previous.identity !== identity) throw new Error('Return to the original staff token to resolve the unconfirmed request');
+  if (previous && previous.fingerprint !== fingerprint) throw new Error('Retry the previous unconfirmed record before changing its details');
+  const requestId = previous?.requestId || crypto.randomUUID();
+  pending[kind] = { requestId, fingerprint, identity };
+  try { await api('/api/v1/' + kind, 'POST', { ...body, requestId }); }
+  catch (error) { if (error.status >= 400 && error.status < 500) delete pending[kind]; throw error; }
+  delete pending[kind];
+  await refresh();
+}
+el('attend').onclick = () => run(() => record('attendance'));
+el('pay').onclick = () => run(() => record('payments'));
+async function loadCommunity() {
+  el('community').replaceChildren();
+  const [trainers, members, requests, connections] = await Promise.all(['/trainers', '/members', '/me/trainer-requests', '/me/friend-connections'].map(path => api('/api/v1' + path)));
+  function row(text, label, action) {
+    const p = document.createElement('p'); p.textContent = text + ' ';
+    if (action) { const button = document.createElement('button'); button.textContent = label; button.onclick = () => run(async () => { await action(); await loadCommunity(); }); p.append(button); }
+    el('community').append(p);
+  }
+  for (const trainer of trainers) row(`${trainer.displayName} · ${trainer.specialty}`, 'Request trainer', () => api('/api/v1/trainer-requests', 'POST', { trainerId: trainer.id }));
+  for (const member of members) row(`${member.displayName} · ${member.goal}`, 'Connect', () => api('/api/v1/friend-connections', 'POST', { memberId: member.id }));
+  if (!members.length) row('No other discoverable members.', null, null);
+  for (const request of requests) row(`Trainer ${request.trainerId}: ${request.status}`, null, null);
+  for (const connection of connections) row(`${connection.fromId} → ${connection.toId}: ${connection.status}`, 'Accept (recipient only)', connection.status === 'pending' ? () => api(`/api/v1/friend-connections/${encodeURIComponent(connection.id)}/accept`, 'POST', {}) : null);
+}
+el('community-load').onclick = () => run(loadCommunity);
+el('guides-load').onclick = () => run(async () => {
+  el('guides').replaceChildren();
+  for (const guide of await api('/api/v1/exercises')) { const p = document.createElement('p'); p.textContent = `${guide.title} · ${guide.goal}: ${guide.instructions}`; el('guides').append(p); }
+});
+el('reports-load').onclick = () => run(async () => {
+  el('reports').replaceChildren();
+  const report = await api('/api/v1/admin/reports');
+  const lines = [`Active bookings: ${report.bookings.active}`, `Cancelled bookings: ${report.bookings.cancelled}`, `Attendance records: ${report.attendance}`, `Simulated payments: ${report.simulatedPayments.count} · R${(report.simulatedPayments.amountCents / 100).toFixed(2)}`, `Trainer requests: ${report.trainerRequests}`, `Connections: ${report.connections.pending} pending / ${report.connections.accepted} accepted`, ...report.events.map(e => `${e.name}: ${e.registrations} registrations / ${e.spaces} places remaining`), `Generated: ${report.generatedAt}`];
+  for (const line of lines) { const p = document.createElement('p'); p.textContent = line; el('reports').append(p); }
+});
+el('token').oninput = () => { el('reports').replaceChildren(); el('community').replaceChildren(); el('guides').replaceChildren(); el('classes').textContent = ''; el('bookings').replaceChildren(); el('history').textContent = ''; el('status').textContent = 'Load records for this token.'; };
+</script></body></html>

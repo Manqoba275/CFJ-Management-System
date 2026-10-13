@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.CFJ" parent="BaseTheme.CFJ">
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

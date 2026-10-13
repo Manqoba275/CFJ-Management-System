@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CFJ | Community marathon registration</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0b1426;color:#f1f5fb;font:16px/1.6 system-ui,sans-serif}main{max-width:720px;margin:auto;padding:40px 24px}section{background:#15263f;border:1px solid #304766;padding:28px;border-radius:12px}h1{font-size:clamp(28px,5vw,40px);line-height:1.2}label{display:block;margin-top:20px;font-weight:600}input,select,button{font:inherit;border-radius:6px;padding:12px;min-height:48px}input:not([type=checkbox]),select{width:100%;background:#0f1d33;border:1px solid #7185a2;color:#f1f5fb}input[type=checkbox]{min-height:auto;width:20px;height:20px}button{margin-top:24px;background:#60a5fa;color:#0b1426;border:0;font-weight:650;cursor:pointer}button:disabled{opacity:.55;cursor:wait}small{color:#b9c9df}a{color:#93c5fd}:focus-visible{outline:3px solid #bfdbfe;outline-offset:3px}#status{min-height:3em;overflow-wrap:anywhere}@media(max-width:560px){main{padding:24px 16px}section{padding:20px}}
+</style></head><body><main><p>CFJ LIFESTYLE FITNESS</p><h1>Community marathon</h1><p>Everyone is welcome. A gym membership is not required.</p><section><h2>Register your interest</h2><p><small>Local development event. Use synthetic details only. This does not reserve a place in a real event or charge money.</small></p>
+<form id="registration"><label for="event">Event</label><select id="event" required><option value="">Loading events…</option></select><label for="name">Full name</label><input id="name" autocomplete="name" required minlength="2" maxlength="60"><label for="email">Email</label><input id="email" type="email" autocomplete="email" required maxlength="254"><label><input id="consent" type="checkbox" required> I agree that these details may be stored for this demo registration.</label><button id="submit" disabled>Register</button></form><p id="status" role="status" aria-live="polite"></p><small>After a connection error, retry the same details. Keep your confirmation reference.</small></section><p><a href="service.html">Open member service desk</a></p></main>
+<script>
+const el = id => document.getElementById(id);
+let pending;
+async function request(path, body) {
+  const response = await fetch('/api/v1/public/' + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page through the local API at port 8787.');
+  const data = await response.json();
+  const messages = { invalid_registration: 'Check your name, email and consent.', registration_unavailable: 'Registration is unavailable for these details. Contact the event organiser.', event_full: 'This event is full.', request_id_reused: 'Retry the original details for this request.' };
+  if (!response.ok) throw Object.assign(new Error(messages[data.error] || 'Registration is not confirmed. Please retry.'), { status: response.status });
+  return data;
+}
+async function loadEvents() {
+  try {
+    const events = await request('events'); el('event').replaceChildren();
+    for (const event of events) { const option = document.createElement('option'); option.value = event.id; option.textContent = `${event.name} · ${event.spaces} places`; option.disabled = event.spaces === 0; el('event').append(option); }
+    el('submit').disabled = !events.some(e => e.spaces > 0);
+  } catch (error) { el('status').textContent = error.message; }
+}
+el('registration').onsubmit = async event => {
+  event.preventDefault();
+  const details = { eventId: el('event').value, displayName: el('name').value.trim(), email: el('email').value.trim().toLowerCase(), consent: el('consent').checked };
+  const fingerprint = JSON.stringify(details);
+  if (pending && pending.fingerprint !== fingerprint) { el('status').textContent = 'Retry your previous unconfirmed details before making changes.'; return; }
+  pending ??= { fingerprint, requestId: crypto.randomUUID() };
+  el('submit').disabled = true; el('status').textContent = 'Submitting registration…';
+  try {
+    const result = await request('registrations', { ...details, requestId: pending.requestId });
+    el('status').textContent = `Registered for the demo event. Your reference: ${result.reference}`;
+    pending = null; el('registration').reset(); await loadEvents();
+  } catch (error) {
+    if (error.status >= 400 && error.status < 500) pending = null;
+    el('status').textContent = error.message; el('submit').disabled = false;
+  }
+};
+loadEvents();
+</script></body></html>

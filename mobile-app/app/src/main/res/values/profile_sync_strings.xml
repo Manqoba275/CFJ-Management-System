@@ -1,0 +1,16 @@
+<resources>
+    <string name="sync_heading">Development profile sync</string>
+    <string name="sync_notice">Synthetic member only. Load replaces the form with the service profile. Save to service updates that profile and this phone. Hosted sign-in and Oracle are not connected yet.</string>
+    <string name="sync_origin">Service address</string>
+    <string name="sync_default_origin">http://10.0.2.2:8787</string>
+    <string name="sync_token">Development access token</string>
+    <string name="sync_load">Load from service</string>
+    <string name="sync_save">Save to service</string>
+    <string name="sync_load_first">Load the profile with these connection details before saving.</string>
+    <string name="sync_invalid">Enter a valid name and choose a fitness goal.</string>
+    <string name="sync_config_invalid">Enter a valid token and HTTPS address, or use the local emulator service.</string>
+    <string name="sync_loading">Contacting service…</string>
+    <string name="sync_loaded">Service profile loaded and cached on this phone.</string>
+    <string name="sync_saved">Profile saved by the service and cached on this phone.</string>
+    <string name="sync_failed">Could not contact the service. Local preferences are unchanged. Check the connection and load again.</string>
+</resources>

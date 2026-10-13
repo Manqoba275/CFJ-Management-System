@@ -1,0 +1,34 @@
+# Tshifhiwa Thamagane
+
+Role: **System Designer and Database Architect**
+
+GitHub: `TshifhiwaThamagane`
+
+Scope: Architecture diagrams, ERD, data dictionary, Oracle SQL migrations, seed data, constraints and database verification. Shared API contracts are in scope; unrelated UI code is not.
+
+## Daily plan
+
+| Day/date | Work to complete | Repository destination | Suggested commit after completion |
+|---|---|---|---|
+| 1: Wed 30 Sep 2026 | Review and copy web starter (System Designer and Database Architect) | `website/modules/fitness-class.mjs` | `feat: define website fitness class response model` |
+| 2: Thu 01 Oct 2026 | Review and copy Android starter (System Designer and Database Architect) | `mobile-app/app/src/main/java/za/co/cfjlifestylefitness/app/model/FitnessClassSummary.kt` | `feat: define Android fitness class data model` |
+| 3: Fri 02 Oct 2026 | Add supporting specs/tests and review shared behavior | `docs/design/class-response-contract.md` | `test: record tshifhiwa starter verification` |
+| 4: Sat 03 Oct 2026 | Review combined web/Android starter; fix confirmed issues within role | `See CODE_TO_PUSH.md and daily evidence` | `fix: address reviewed tshifhiwa starter issues` |
+| 5: Sun 04 Oct 2026 | Create synthetic seed records and count checks | `database/seeds/` | `test: add representative Oracle seed data` |
+| 6: Mon 05 Oct 2026 | Verify constraints and record real results | `database/tests/` | `test: verify database keys and invalid data rejection` |
+| 7: Tue 06 Oct 2026 | Review normalization and schema changes | `docs/design/schema-review.md` | `docs: record first-week database design review` |
+| 8: Wed 07 Oct 2026 | Implement booking capacity transaction design | `database/transactions/` | `feat: define safe class booking transactions` |
+| 9: Thu 08 Oct 2026 | Add attendance payment and event tables as needed | `database/migrations/` | `feat: extend Oracle schema for gym operations` |
+| 10: Fri 09 Oct 2026 | Define reporting queries and access views | `database/reports/` | `feat: add management report queries` |
+| 11: Sat 10 Oct 2026 | Review API field and error contracts | `docs/design/api-contract.md` | `docs: align API contracts with Oracle data model` |
+| 12: Sun 11 Oct 2026 | Test concurrent bookings and rollback behavior | `database/tests/` | `test: verify booking concurrency and rollback` |
+| 13: Mon 12 Oct 2026 | Document backup restore and connection setup | `database/OPERATIONS.md` | `docs: document database recovery and setup` |
+| 14: Tue 13 Oct 2026 | Finalize schema evidence and design handover | `docs/design/handover.md` | `docs: finalize system and database design evidence` |
+
+## Daily evidence
+
+For each task record: actual date, files changed, reason, checks and results, commit URL, PR URL, reviewer, and remaining blockers. Do not mark a planned task complete before its checks pass. Never put private records or credentials into evidence.
+
+## Copy-and-paste starter
+
+Open [COPY_AND_PASTE.html](COPY_AND_PASTE.html) for full web and Android code. Read [CODE_TO_PUSH.md](CODE_TO_PUSH.md) for dependencies, target paths and push commands.

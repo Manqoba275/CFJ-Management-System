@@ -1,0 +1,14 @@
+<resources>
+    <string name="community_heading">Member community</string>
+    <string name="community_notice">Synthetic members and trainers. Requests remain pending; sample guides unlock after a simulated payment. Uses the service address and token above.</string>
+    <string name="community_load">Load trainers and members</string>
+    <string name="community_guides">View exercise guides</string>
+    <string name="community_loading">Contacting service…</string>
+    <string name="community_updated">Service records loaded.</string>
+    <string name="community_failed">Request not confirmed. Reload or retry.</string>
+    <string name="community_saved">Saved. Load trainers and members to refresh your records.</string>
+    <string name="community_request_trainer">Request trainer</string>
+    <string name="community_connect">Connect</string>
+    <string name="community_accept">Accept (recipient only)</string>
+    <string name="community_empty">No other discoverable members.</string>
+</resources>
