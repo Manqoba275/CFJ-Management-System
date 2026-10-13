@@ -54,3 +54,28 @@ test('booking transactions, ownership, attendance and simulated payment retries 
     assert.equal((await (await call(loser, '/api/v1/classes')).json())[0].spaces, 0);
   } finally { if (server?.listening) await stop(); await rm(dir, { recursive: true, force: true }); }
 });
+
+test('concurrent bookings cannot exceed a weekly membership allowance', async () => {
+  const { writeFile } = await import('node:fs/promises');
+  const dir = await mkdtemp(join(tmpdir(), 'cfj-membership-'));
+  const identities = [{ id: 'member', role: 'member', token: 'membership-test-token'.padEnd(40, '-') }];
+  const classes = ['a', 'b', 'c', 'd'].map(id => ({ id, name: id, capacity: 10, date: '2026-10-13' }));
+  const memberships = [{ id: 'plan', memberId: 'member', plan: 'weekly3', status: 'active', startsOn: '2026-10-01', expiresOn: '2026-10-31' }];
+  let server;
+  try {
+    const file = join(dir, 'operations.json');
+    await writeFile(file, JSON.stringify({ classes, memberships, bookings: ['a', 'b'].map(classId => ({ id: classId, classId, memberId: 'member', membershipId: 'plan', date: '2026-10-13', status: 'active' })), attendance: [], payments: [], requests: {} }));
+    const operations = await createOperationsHandler({ file, identities });
+    server = await createProfileServer({ token: identities[0].token, file: join(dir, 'profile.json'), operations });
+    server.listen(0, '127.0.0.1'); await once(server, 'listening');
+    const base = `http://127.0.0.1:${server.address().port}`;
+    const headers = { Authorization: `Bearer ${identities[0].token}`, 'Content-Type': 'application/json' };
+    const results = await Promise.all(['c', 'd'].map(classId => fetch(base + '/api/v1/bookings', { method: 'POST', headers, body: JSON.stringify({ classId }) })));
+    assert.deepEqual(results.map(r => r.status).sort(), [201, 409]);
+    assert.equal((await results.find(r => r.status === 409).json()).error, 'membership_weekly_limit');
+    assert.deepEqual(await (await fetch(base + '/api/v1/me/memberships', { headers })).json(), memberships);
+  } finally {
+    if (server?.listening) await new Promise(resolve => server.close(resolve));
+    await rm(dir, { recursive: true, force: true });
+  }
+});

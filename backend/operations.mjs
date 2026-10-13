@@ -4,6 +4,7 @@ import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { readProfileBody } from './request-body.mjs';
 import { isCommunityPath, communityRead, communityWrite } from './community.mjs';
 import { publicEvents, register, managementReport } from './management.mjs';
+import { membershipEligibility } from './membership.mjs';
 
 // Single-process development transactions. Production requires Oracle and verified identities.
 export async function createOperationsHandler({ file, identities }) {
@@ -14,6 +15,14 @@ export async function createOperationsHandler({ file, identities }) {
   try { state = JSON.parse(await readFile(file, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   if (!['classes', 'bookings', 'attendance', 'payments'].every(key => Array.isArray(state[key])) || !state.requests) throw new Error('Invalid operations store');
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg' }).format(new Date());
+  state.classes = state.classes.map(c => ({ date: today, ...c }));
+  // Existing development fixtures receive explicitly synthetic unlimited memberships.
+  state.memberships ??= identities.filter(i => i.role === 'member').map(i => ({
+    id: `DEMO-${i.id}`, memberId: i.id, plan: 'unlimited', status: 'active',
+    startsOn: today, expiresOn: `${Number(today.slice(0, 4)) + 1}-12-31`, simulated: true
+  }));
+  if (!Array.isArray(state.memberships) || state.memberships.some(m => !m || typeof m !== 'object' || !m.id || !m.memberId)) throw new Error('Invalid membership store');
   // Upgrade earlier development stores without discarding bookings or payments.
   state.trainerRequests ??= [];
   state.friendConnections ??= [];
@@ -38,6 +47,7 @@ export async function createOperationsHandler({ file, identities }) {
       if (path === '/api/v1/bookings') return reply(200, state.bookings.filter(b => actor.role === 'staff' || b.memberId === actor.id));
       if (path === '/api/v1/me/attendance') return reply(200, state.attendance.filter(a => a.memberId === actor.id));
       if (path === '/api/v1/me/payments') return reply(200, state.payments.filter(p => p.memberId === actor.id));
+      if (path === '/api/v1/me/memberships') return reply(200, state.memberships.filter(m => m.memberId === actor.id));
       return reply(404, { error: 'not_found' });
     }
     const cancel = /^\/api\/v1\/bookings\/([a-zA-Z0-9-]+)$/.exec(path);
@@ -70,7 +80,10 @@ export async function createOperationsHandler({ file, identities }) {
           const active = next.bookings.filter(b => b.classId === session.id && b.status === 'active');
           if (active.some(b => b.memberId === actor.id)) return fail(409, 'already_booked');
           if (active.length >= session.capacity) return fail(409, 'class_full');
-          const booking = { id: randomUUID(), memberId: actor.id, classId: session.id, status: 'active' };
+          const memberships = next.memberships.filter(m => m.memberId === actor.id);
+          const membership = memberships.find(m => !membershipEligibility(m, session, next.bookings, next.classes, actor.id));
+          if (!membership) return fail(409, membershipEligibility(memberships[0], session, next.bookings, next.classes, actor.id));
+          const booking = { id: randomUUID(), memberId: actor.id, classId: session.id, status: 'active', date: session.date, membershipId: membership.id };
           next.bookings.push(booking);
           return { status: 201, data: booking };
         }

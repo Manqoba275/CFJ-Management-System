@@ -5,7 +5,7 @@
     "package:demo": "node scripts/package-demo.mjs",
     "start": "node scripts/serve-website.mjs",
     "check": "node scripts/check-website.mjs",
-    "test": "node --test scripts/serve-website.test.mjs scripts/booking-eligibility.test.mjs scripts/test-state.mjs backend/profile-server.test.mjs backend/operations.test.mjs backend/community.test.mjs backend/management.test.mjs",
+    "test": "node --test scripts/serve-website.test.mjs scripts/booking-eligibility.test.mjs scripts/test-state.mjs backend/profile-server.test.mjs backend/operations.test.mjs backend/membership.test.mjs backend/community.test.mjs backend/management.test.mjs",
     "start:api": "node backend/profile-server.mjs"
   },
   "engines": { "node": ">=22" }

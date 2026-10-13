@@ -25,3 +25,11 @@ Single-process writes are serialized, validated against the latest state, writte
 `npm test` covers simultaneous last-place requests, duplicate booking, foreign cancellation/history isolation, cancellation releasing capacity, attendance roles/duplicates, invalid payment amounts, idempotent retries, changed-payload rejection and persistence after restart. Profile tests remain included.
 
 This extends the local development API. Hosted sign-in, Oracle transactions, real member accounts, deployment and physical-device acceptance remain pending. The current demo has one member and one staff identity; automated tests inject a second synthetic member to verify isolation and capacity contention. The Android app still exposes profile sync and booking eligibility, not the new booking/attendance/payment screens.
+
+## Membership rules in the development API
+
+`GET /api/v1/me/memberships` returns only the caller's synthetic memberships. Booking transactions enforce an active membership covering the class date, 3/4/unlimited weekly sessions or 10/15/20 concession sessions (and one-session drop-ins). The membership check runs inside the same serialized transaction as capacity checks. New bookings retain their membership ID and date so a renewal does not consume the earlier package.
+
+For this school prototype, weeks run Monday-Sunday, validity dates are inclusive, and cancelling an un-attended booking releases its credit. These are explicit project assumptions, not confirmed CFJ/Octiv policies. Set `startsOn` and `expiresOn` when preparing synthetic memberships: concession10/15/20 correspond to 6/9/12 months. Package purchase, automatic expiry calculation, programme restrictions and cancellation cutoffs are not implemented.
+
+Existing development stores without memberships receive synthetic unlimited memberships to preserve classroom fixtures. Empty membership lists remain empty and booking is denied. There is no membership-purchase endpoint. Staff must not hand-edit live data; this remains local development JSON. The static hosted website is not connected to this API.
