@@ -12,6 +12,13 @@ The verified automated web, booking, synthetic profile API, and combined prepare
 - Android unit/build: **unverified**. Gradle 9.4.1 started with JDK 21, but the run produced no task result before being stopped.
 - Manual browser, screen-reader, emulator, and physical-phone checks: **not completed**.
 
+## Catch-up verification — 14 October 2026
+
+- Re-ran the full Node suite: **33 passed, 0 failed**.
+- Re-ran the prepared team-code check: **34 passed, 0 failed**; all 12 website pages and `app.js` syntax validated.
+- Re-tried the Android unit/build using JDK 21 and Gradle 9.4.1. Gradle started its daemon but produced no task output before the run was stopped; Android remains **unverified**.
+- Browser interaction, labelled screenshots, screen-reader checks, emulator checks, and physical-phone checks remain outstanding.
+
 ## Open defects and limits
 
 1. Profile editing accepts an empty name in the local prototype.
