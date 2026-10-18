@@ -8,5 +8,10 @@
     "test": "node --test scripts/serve-website.test.mjs scripts/booking-eligibility.test.mjs scripts/test-state.mjs backend/profile-server.test.mjs backend/operations.test.mjs backend/membership.test.mjs backend/community.test.mjs backend/management.test.mjs",
     "start:api": "node backend/profile-server.mjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "oracledb": "^26.0.0"
+  }
 }

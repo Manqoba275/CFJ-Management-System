@@ -13,11 +13,11 @@ export function validProfile(value) {
 }
 
 // Local development adapter only. Production requires verified identity and Oracle storage.
-export async function createProfileServer({ token, file, operations }) {
+export async function createProfileServer({ token, file, operations, store }) {
   if (typeof token !== 'string' || token.length < 32) throw new Error('Set CFJ_DEV_TOKEN to a random token of at least 32 characters');
   let profile = { displayName: 'Demo Member', goal: goals[0], version: 0 };
   try {
-    profile = JSON.parse(await readFile(file, 'utf8'));
+    profile = store ? await store.load() : JSON.parse(await readFile(file, 'utf8'));
     if (!validProfile(profile) || !Number.isSafeInteger(profile.version) || profile.version < 0) throw new Error('Invalid saved profile');
   } catch (error) { if (error.code !== 'ENOENT') throw error; }
   let pending = Promise.resolve();
@@ -27,7 +27,7 @@ export async function createProfileServer({ token, file, operations }) {
       res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
       res.end(JSON.stringify(body));
     };
-    if (['/service.html', '/registration.html'].includes(req.url) && req.method === 'GET') {
+    if (['/service.html', '/registration.html', '/profile-sync.html'].includes(req.url) && req.method === 'GET') {
       try {
         const page = await readFile(new URL(`../website${req.url}`, import.meta.url));
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -37,7 +37,10 @@ export async function createProfileServer({ token, file, operations }) {
     if (req.url !== '/api/v1/me') return operations ? operations(req, res) : reply(404, { error: 'not_found' });
     const supplied = Buffer.from(req.headers.authorization || '');
     if (supplied.length !== secret.length || !timingSafeEqual(supplied, secret)) return reply(401, { error: 'unauthorized' });
-    if (req.method === 'GET') { await pending; return reply(200, profile); }
+    if (req.method === 'GET') {
+      try { await pending; if (store) profile = await store.load(); return reply(200, profile); }
+      catch { return reply(503, { error: 'storage_unavailable' }); }
+    }
     if (req.method !== 'PATCH') return reply(405, { error: 'method_not_allowed' });
     if (req.headers['content-type']?.split(';')[0] !== 'application/json') return reply(415, { error: 'json_required' });
     try {
@@ -49,6 +52,10 @@ export async function createProfileServer({ token, file, operations }) {
       if (!validProfile(value) || Object.keys(value).some(key => !['displayName', 'goal', 'version'].includes(key)) ||
           !Number.isSafeInteger(value.version) || value.version < 0) return reply(400, { error: 'invalid_profile' });
       const update = pending.then(async () => {
+        if (store) {
+          const saved = await store.update(value);
+          return saved ? reply(200, saved) : reply(409, { error: 'profile_changed_reload' });
+        }
         if (value.version !== profile.version) return reply(409, { error: 'profile_changed_reload' });
         const next = { displayName: value.displayName.trim(), goal: value.goal, version: profile.version + 1 };
         await mkdir(dirname(file), { recursive: true });

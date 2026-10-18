@@ -10,6 +10,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check Oracle adapter syntax
+        run: |
+          node --check backend/oracle-profile-store.mjs
+          node --check backend/oracle-server.mjs
+          node --check scripts/verify-oracle-profile.mjs
       - name: Check website source and local assets
         run: node scripts/check-website.mjs
       - name: Test preview server and shared booking contract
