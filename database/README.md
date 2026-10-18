@@ -5,7 +5,7 @@ Oracle Free Lite runs locally in Ubuntu WSL2 using Podman. Container: cfj-oracle
 ## Schema
 Provision CFJ_APP in FREEPDB1 with CREATE SESSION, CREATE TABLE and a bounded quota on a dedicated tablespace. Never run the application as SYSTEM. Lite does not necessarily include USERS; this installation uses CFJ_DATA and a 50 MB account quota.
 
-Run 001_profiles.sql once as CFJ_APP. It creates members and profiles, with a foreign key, unique identity/email fields, allowed goals and version constraints. Both tables receive ten fictional records. Booking, attendance, payments and community still need relational migrations and integration.
+Run 001_profiles.sql once as CFJ_APP on a new schema. It creates members and profiles, with a foreign key, unique identity/email fields, allowed goals and version constraints. Both tables receive ten fictional records. Additive migrations 002 and 003 create the remaining 12 domain tables. See [design and execution instructions](design/README.md). Domain API integration is still outstanding; schema creation alone does not replace JSON storage.
 
 ## Run
 Install locked dependencies with npm ci. Set ORACLE_USER, ORACLE_PASSWORD, ORACLE_CONNECT_STRING and a random CFJ_DEV_TOKEN of at least 32 characters in an ignored .env.oracle file. Never include secret values in screenshots or client source.

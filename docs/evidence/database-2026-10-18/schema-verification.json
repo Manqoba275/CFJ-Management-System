@@ -1,0 +1,1523 @@
+{
+  "verifiedAt": "2026-10-18T18:25:57.734Z",
+  "environment": "local Oracle FREEPDB1",
+  "status": "PASS",
+  "counts": [
+    {
+      "table": "CFJ_ATTENDANCE",
+      "records": 10
+    },
+    {
+      "table": "CFJ_BOOKINGS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_CLASS_SESSIONS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_EVENTS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_EVENT_REGISTRATIONS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_FRIEND_CONNECTIONS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_MEMBERS",
+      "records": 20
+    },
+    {
+      "table": "CFJ_MEMBERSHIPS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_MESSAGES",
+      "records": 10
+    },
+    {
+      "table": "CFJ_PAYMENTS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_PROFILES",
+      "records": 20
+    },
+    {
+      "table": "CFJ_RESOURCES",
+      "records": 10
+    },
+    {
+      "table": "CFJ_TRAINERS",
+      "records": 10
+    },
+    {
+      "table": "CFJ_TRAINER_REQUESTS",
+      "records": 10
+    }
+  ],
+  "checks": [
+    "orphan membership rejected",
+    "invalid plan rejected",
+    "reversed membership dates rejected",
+    "negative class capacity rejected",
+    "fractional class capacity rejected",
+    "duplicate member-session booking rejected",
+    "another member membership rejected",
+    "invalid booking status rejected",
+    "double attendance rejected",
+    "zero payment rejected",
+    "fractional payment cents rejected",
+    "real payment claim rejected",
+    "duplicate payment request rejected",
+    "reciprocal friend duplicate rejected",
+    "self connection rejected",
+    "registration without consent rejected",
+    "duplicate event/email rejected",
+    "invalid library goal rejected",
+    "self message rejected",
+    "all schema constraints enabled and validated",
+    "committed fixture rows visible from a fresh connection"
+  ],
+  "columns": [
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "COLUMN_NAME": "ATTENDANCE_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "COLUMN_NAME": "BOOKING_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "COLUMN_NAME": "CHECKED_IN_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "COLUMN_NAME": "REQUEST_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 80,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "BOOKING_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "SESSION_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "MEMBERSHIP_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "STATUS",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 12,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "COLUMN_NAME": "BOOKED_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "COLUMN_NAME": "SESSION_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "COLUMN_NAME": "TITLE",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 400,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "COLUMN_NAME": "TRAINER_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "COLUMN_NAME": "STARTS_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "COLUMN_NAME": "CAPACITY",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "COLUMN_NAME": "EVENT_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "COLUMN_NAME": "TITLE",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 400,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "COLUMN_NAME": "STARTS_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "COLUMN_NAME": "CAPACITY",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "REGISTRATION_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "EVENT_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "DISPLAY_NAME",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 240,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "EMAIL",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 254,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "CONSENT",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 1,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "REQUEST_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 80,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "COLUMN_NAME": "REGISTERED_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "COLUMN_NAME": "CONNECTION_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "COLUMN_NAME": "FROM_MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "COLUMN_NAME": "TO_MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "COLUMN_NAME": "STATUS",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 12,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "COLUMN_NAME": "MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "COLUMN_NAME": "IDENTITY_UID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 128,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "COLUMN_NAME": "EMAIL",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 254,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "COLUMN_NAME": "CREATED_AT",
+      "DATA_TYPE": "TIMESTAMP(6)",
+      "DATA_LENGTH": 11,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "MEMBERSHIP_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "PLAN_CODE",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 20,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "STATUS",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 12,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "STARTS_ON",
+      "DATA_TYPE": "DATE",
+      "DATA_LENGTH": 7,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "COLUMN_NAME": "EXPIRES_ON",
+      "DATA_TYPE": "DATE",
+      "DATA_LENGTH": 7,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "MESSAGE_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "SENDER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "RECIPIENT_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "BODY",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 4000,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "SENT_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "COLUMN_NAME": "READ_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "Y"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "PAYMENT_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "BOOKING_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "AMOUNT_CENTS",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "CURRENCY",
+      "DATA_TYPE": "CHAR",
+      "DATA_LENGTH": 3,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "SIMULATED",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 1,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "REQUEST_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 80,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "COLUMN_NAME": "PAID_AT",
+      "DATA_TYPE": "TIMESTAMP(6) WITH TIME ZONE",
+      "DATA_LENGTH": 13,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": 6,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "COLUMN_NAME": "MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "COLUMN_NAME": "DISPLAY_NAME",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 240,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "COLUMN_NAME": "GOAL",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 30,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "COLUMN_NAME": "VERSION",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "COLUMN_NAME": "RESOURCE_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "COLUMN_NAME": "TITLE",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 400,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "COLUMN_NAME": "GOAL",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 30,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "COLUMN_NAME": "INSTRUCTIONS",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 4000,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "COLUMN_NAME": "REQUIRES_PAYMENT",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 1,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "COLUMN_NAME": "TRAINER_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "COLUMN_NAME": "DISPLAY_NAME",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 240,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "COLUMN_NAME": "SPECIALTY",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 240,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "COLUMN_NAME": "LANGUAGE",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 120,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "COLUMN_NAME": "REQUEST_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "COLUMN_NAME": "MEMBER_ID",
+      "DATA_TYPE": "NUMBER",
+      "DATA_LENGTH": 22,
+      "DATA_PRECISION": 10,
+      "DATA_SCALE": 0,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "COLUMN_NAME": "TRAINER_ID",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 40,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "COLUMN_NAME": "STATUS",
+      "DATA_TYPE": "VARCHAR2",
+      "DATA_LENGTH": 12,
+      "DATA_PRECISION": null,
+      "DATA_SCALE": null,
+      "NULLABLE": "N"
+    }
+  ],
+  "constraints": [
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008700",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008699",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008698",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008701",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008704",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008703",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_ATTENDANCE",
+      "CONSTRAINT_NAME": "SYS_C008702",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008689",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "CFJ_BOOKING_STATUS",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008691",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008690",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008688",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008687",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008693",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "CFJ_BOOKING_OWNER",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008696",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "SYS_C008695",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_BOOKINGS",
+      "CONSTRAINT_NAME": "CFJ_BOOKING_MEMBER_SESSION",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008682",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "CFJ_SESSION_CAPACITY",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008680",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008681",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008683",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008685",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_CLASS_SESSIONS",
+      "CONSTRAINT_NAME": "SYS_C008686",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "CONSTRAINT_NAME": "SYS_C008733",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "CONSTRAINT_NAME": "CFJ_EVENT_CAPACITY",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "CONSTRAINT_NAME": "SYS_C008734",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "CONSTRAINT_NAME": "SYS_C008735",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENTS",
+      "CONSTRAINT_NAME": "SYS_C008737",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008740",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008739",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008738",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008741",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "CFJ_EVENT_EMAIL_NORMAL",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "CFJ_EVENT_CONSENT",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008743",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008742",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008746",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008749",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "SYS_C008747",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_EVENT_REGISTRATIONS",
+      "CONSTRAINT_NAME": "CFJ_EVENT_EMAIL_UQ",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008726",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "CFJ_FRIEND_STATUS",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "CFJ_FRIEND_NOT_SELF",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008725",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008727",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008730",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008732",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_FRIEND_CONNECTIONS",
+      "CONSTRAINT_NAME": "SYS_C008731",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008652",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008653",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008654",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008655",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008656",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "CONSTRAINT_NAME": "SYS_C008657",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008665",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008666",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "CFJ_MS_DATES",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008667",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008668",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008669",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "CFJ_MS_PLAN",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "CFJ_MS_STATUS",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008673",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "SYS_C008675",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MEMBERSHIPS",
+      "CONSTRAINT_NAME": "CFJ_MS_OWNER",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008760",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "CFJ_MESSAGE_NOT_SELF",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "CFJ_MESSAGE_DATES",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008758",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008759",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008757",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008763",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008764",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_MESSAGES",
+      "CONSTRAINT_NAME": "SYS_C008765",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "CFJ_PAYMENT_SIMULATION",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "CFJ_PAYMENT_CURRENCY",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "CFJ_PAYMENT_AMOUNT",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008710",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008707",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008708",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008705",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008706",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008709",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008714",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008716",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PAYMENTS",
+      "CONSTRAINT_NAME": "SYS_C008715",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "CFJ_PROFILE_GOAL",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "SYS_C008660",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "SYS_C008659",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "SYS_C008658",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "CFJ_PROFILE_VERSION",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "SYS_C008663",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "CONSTRAINT_NAME": "SYS_C008664",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "CFJ_RESOURCE_PAID",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "CFJ_RESOURCE_GOAL",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "SYS_C008753",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "SYS_C008752",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "SYS_C008751",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "SYS_C008750",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_RESOURCES",
+      "CONSTRAINT_NAME": "SYS_C008756",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "CONSTRAINT_NAME": "SYS_C008677",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "CONSTRAINT_NAME": "SYS_C008676",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "CONSTRAINT_NAME": "SYS_C008678",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINERS",
+      "CONSTRAINT_NAME": "SYS_C008679",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008718",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008717",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "CFJ_TRAINER_REQ_STATUS",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008719",
+      "CONSTRAINT_TYPE": "C",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008721",
+      "CONSTRAINT_TYPE": "P",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008723",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "SYS_C008724",
+      "CONSTRAINT_TYPE": "R",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    },
+    {
+      "TABLE_NAME": "CFJ_TRAINER_REQUESTS",
+      "CONSTRAINT_NAME": "CFJ_TRAINER_REQ_PAIR",
+      "CONSTRAINT_TYPE": "U",
+      "STATUS": "ENABLED",
+      "VALIDATED": "VALIDATED"
+    }
+  ],
+  "limitations": [
+    "Domain API still uses JSON; schema creation does not integrate clients.",
+    "No hosted Oracle, phone acceptance or recovery test claimed.",
+    "Capacity and role rules need transactional API integration."
+  ]
+}
