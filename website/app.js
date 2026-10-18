@@ -155,6 +155,7 @@ function setupFooter() {
       <div class="footer-column">
         <h3>About this demo</h3>
         <a href="demo-info.html">Privacy, accounts & payments</a>
+        <a href="help.html">Help and instructions</a>
       </div>
       <div class="footer-column">
         <h3>Useful links</h3>
