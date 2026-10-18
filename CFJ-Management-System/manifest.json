@@ -1,0 +1,171 @@
+{
+  "sourceCommit": "ea094874eec1d63ebf0a368d9c8ce56a71c82930",
+  "note": "Working-tree static preview; synthetic data only. No API, database or hosted sign-in.",
+  "files": [
+    {
+      "path": "admin-login.html",
+      "bytes": 1501,
+      "sha256": "4b0c05edeb4d30121827ded05ccd908f23c95177af06d4708fc985e0d947e3b7"
+    },
+    {
+      "path": "app.js",
+      "bytes": 51377,
+      "sha256": "07b6cc8e8ff9f86a6b2ab88160c6aff4f576e1daa9db267c7e90822c4bd702de"
+    },
+    {
+      "path": "assets/aesthetic-gym.jpg",
+      "bytes": 40998,
+      "sha256": "8e596aee732df629d470e7502ba974e34f8f5f09d82016bf9f25cdfe698f414d"
+    },
+    {
+      "path": "assets/boxing-workout.jpg",
+      "bytes": 63276,
+      "sha256": "c9d494d2a7bf68c9985deaa80fb9e251168ebb617cdd7cccc8437750634b8dd5"
+    },
+    {
+      "path": "assets/cfj-hero.png",
+      "bytes": 212575,
+      "sha256": "96c73509561910003d230704d40e769605d5e6d9894baaf0101012820a79c83a"
+    },
+    {
+      "path": "assets/cfj-logo-app.png",
+      "bytes": 9482,
+      "sha256": "c8d7cffceab9a6f24f498251d93e3ddd0f26258bb81b7540d3ccb3044d03b8fb"
+    },
+    {
+      "path": "assets/cfj-logo-wide.png",
+      "bytes": 22055,
+      "sha256": "453b821bf7e66d38ea785d27b842c3ab01f47ea90fe686d2bbb16aace180959a"
+    },
+    {
+      "path": "assets/cfj-logo.png",
+      "bytes": 6392,
+      "sha256": "309453103269213be99678009ae45b8d454cd17b7573302cb8d1caf2608c0aa6"
+    },
+    {
+      "path": "assets/concept-reference.jpg",
+      "bytes": 89560,
+      "sha256": "7bd98a9aee74b0d98a03f0430996d54ccaa49569fd1ee1362fb770202c4f06e4"
+    },
+    {
+      "path": "assets/gym-hub.jpg",
+      "bytes": 14490,
+      "sha256": "6bc147a1f99f2ce1868dfc59285d5cdc111de0eca6f2055b6637c47a73025d21"
+    },
+    {
+      "path": "assets/login-example.jpg",
+      "bytes": 39417,
+      "sha256": "7951423cdff07c4fed67d91dee83185fb29c418bad3023d4714584081e0cdcd5"
+    },
+    {
+      "path": "assets/login-jack.jpg",
+      "bytes": 55830,
+      "sha256": "fcd5fe6672251cb197719d49177cd4747b139b20f29d244473d462ea34bd298e"
+    },
+    {
+      "path": "assets/marathon-heartbeat.jpg",
+      "bytes": 13048,
+      "sha256": "c1906d5435029db6feb218e45305f92226a2344a175a424feac563f7ab4d96b3"
+    },
+    {
+      "path": "assets/marathon-runners.jpg",
+      "bytes": 48612,
+      "sha256": "2107afc209052811b3090041f016b161dc16ddb199e98487afb312ce10037c55"
+    },
+    {
+      "path": "assets/marathon-start.jpg",
+      "bytes": 55773,
+      "sha256": "2c3e4fadd5ba2a84c248c96ed56ea200fd27e4f96f8f9f9da184a246fa8fc977"
+    },
+    {
+      "path": "assets/mindset.jpg",
+      "bytes": 12735,
+      "sha256": "37d36db8c5f69c24a29df75d8569250a9520b81c40d110e906b7fc31e2b6030b"
+    },
+    {
+      "path": "assets/strength-class.jpg",
+      "bytes": 72314,
+      "sha256": "0996c623c3ab61c062e7036cbf132447919ca2090a888ed62c25a3beb68c70d7"
+    },
+    {
+      "path": "assets/training-hero.jpg",
+      "bytes": 58286,
+      "sha256": "652bdd870aca3850944a07c8ef77ca875903c84d60804a78b7bf10568b764244"
+    },
+    {
+      "path": "demo-info.html",
+      "bytes": 2695,
+      "sha256": "5241a7ebbb11a461c982c4de4b291e0fc34334180e43629e2b91ca55f712dd70"
+    },
+    {
+      "path": "help.html",
+      "bytes": 3472,
+      "sha256": "ca4a02a17ca9acf3ba38eaae9ea78037b4395be227e0d5e0804c18771a2ed783"
+    },
+    {
+      "path": "index.html",
+      "bytes": 5698,
+      "sha256": "dd90ebf7d3a0a86b73119511815d70f0ea03c553f6da64187e8cd261f3b896ee"
+    },
+    {
+      "path": "library.html",
+      "bytes": 4374,
+      "sha256": "97d4a59017d68c4b70b47c7de8006f112db7dfd2d061fc0631948bb89401ea51"
+    },
+    {
+      "path": "login.html",
+      "bytes": 2697,
+      "sha256": "97231343a971a8691bef619b6b4855dc50990799c7f97359aa9936872e7fe464"
+    },
+    {
+      "path": "marathon.html",
+      "bytes": 3284,
+      "sha256": "c66385eac4e4749e79871bfa4a096d7e8485bcc2c64eb193ae702576fbbcbc47"
+    },
+    {
+      "path": "member-login.html",
+      "bytes": 1593,
+      "sha256": "ce1acab80ecb89407e2a18c0c836636eb9194e9d1cfbea74a5a7d8d172f623b3"
+    },
+    {
+      "path": "members.html",
+      "bytes": 5420,
+      "sha256": "80cff423ea7df87d96efa86a1f1085f7c0040f5e32c3eee8ac2b3bf0c7f3a0fa"
+    },
+    {
+      "path": "modules/booking-eligibility.mjs",
+      "bytes": 627,
+      "sha256": "83f0ec013ba9ecb862b71fc1a6b8d0ccb692e2697aa43a767b6cd5d9ebf63c2e"
+    },
+    {
+      "path": "operations.html",
+      "bytes": 5207,
+      "sha256": "dde0f320b9f925087c11df9c35dac7777b910f0b3cabb79d8be1e64895cc4139"
+    },
+    {
+      "path": "profile-sync.html",
+      "bytes": 2734,
+      "sha256": "94c9d3c984dd7c17295596ff9d85985b5655679a1dfcf1568ecfcef79e83ea0e"
+    },
+    {
+      "path": "reports.html",
+      "bytes": 5050,
+      "sha256": "1009cb5a2dcf03fd0cfa602132554b8cceca94e6d2bca630e3325544fb56aa7b"
+    },
+    {
+      "path": "staff-login.html",
+      "bytes": 1502,
+      "sha256": "3663163032e2b63bd2c50b902c9fb12ac89d8d6d7739e79c7135adee5ac38b96"
+    },
+    {
+      "path": "staff.html",
+      "bytes": 2853,
+      "sha256": "ce9360be8c29fd763f03d4cd4d96bd0ee91956e1501b37802124d61075f37b84"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 21075,
+      "sha256": "52b611539494c125734960f28eeac068856c66e85ae269399005756be5cbc808"
+    }
+  ]
+}
