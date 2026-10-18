@@ -8,12 +8,12 @@ import { publicEvents, register, managementReport } from './management.mjs';
 import { membershipEligibility } from './membership.mjs';
 
 // Single-process development transactions. Production requires Oracle and verified identities.
-export async function createOperationsHandler({ file, identities }) {
+export async function createOperationsHandler({ file, identities, store }) {
   if (!identities.length || identities.some(i => !i.id || !['member', 'staff', 'admin'].includes(i.role) || typeof i.token !== 'string' || i.token.length < 32) ||
       new Set(identities.map(i => i.id)).size !== identities.length ||
       new Set(identities.map(i => i.token)).size !== identities.length) throw new Error('Invalid development identities');
   let state = { classes: [{ id: 'C-DEMO', name: 'Demo strength class', capacity: 1 }], bookings: [], attendance: [], payments: [], requests: {} };
-  try { state = JSON.parse(await readFile(file, 'utf8')); }
+  try { state = store ? await store.load() : JSON.parse(await readFile(file, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   if (!['classes', 'bookings', 'attendance', 'payments'].every(key => Array.isArray(state[key])) || !state.requests) throw new Error('Invalid operations store');
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg' }).format(new Date());
@@ -41,6 +41,8 @@ export async function createOperationsHandler({ file, identities }) {
     if (!actor && !publicRead && !publicWrite) return reply(401, { error: 'unauthorized' });
     if (req.method === 'GET') {
       await queue;
+      // Reload database state for each request so other API instances are visible.
+      if (store) { try { state = await store.load(); } catch { return reply(503, { error: 'storage_unavailable' }); } }
       if (publicRead) return reply(200, publicEvents(state));
       if (path === '/api/v1/admin/reports') return actor.role === 'admin' ? reply(200, managementReport(state)) : reply(403, { error: 'admin_required' });
       if (isCommunityPath(path)) { const result = communityRead(path, state, actor, identities); return reply(result.status, result.data); }
@@ -62,7 +64,8 @@ export async function createOperationsHandler({ file, identities }) {
     }
     // Check and save each change in order so two requests cannot take the same last place.
     const operation = queue.then(async () => {
-      const next = structuredClone(state);
+      const applyChange = async current => {
+      const next = structuredClone(current);
       const fail = (status, error) => ({ status, data: { error } });
       function change() {
         if (publicWrite) return register(body, next);
@@ -86,7 +89,10 @@ export async function createOperationsHandler({ file, identities }) {
           const membership = memberships.find(m => !membershipEligibility(m, session, next.bookings, next.classes, actor.id));
           if (!membership) return fail(409, membershipEligibility(memberships[0], session, next.bookings, next.classes, actor.id));
           const booking = { id: randomUUID(), memberId: actor.id, classId: session.id, status: 'active', date: session.date, membershipId: membership.id };
-          next.bookings.push(booking);
+          const previous = next.bookings.find(b => b.memberId === actor.id && b.classId === session.id);
+          // Oracle retains one member/session row; rebooking reactivates a cancelled row.
+          if (previous) { booking.id = previous.id; Object.assign(previous, booking); }
+          else next.bookings.push(booking);
           return { status: 201, data: booking };
         }
         if (actor.role !== 'staff') return fail(403, 'staff_required');
@@ -108,6 +114,13 @@ export async function createOperationsHandler({ file, identities }) {
         return { status: 201, data: record };
       }
       const result = change();
+      return { result, next };
+      };
+      if (store) {
+        const result = await store.transact(applyChange);
+        return reply(result.status, result.data);
+      }
+      const { result, next } = await applyChange(state);
       if (result.status < 300) {
         await mkdir(dirname(file), { recursive: true });
         await writeFile(`${file}.next`, JSON.stringify(next), { mode: 0o600 });

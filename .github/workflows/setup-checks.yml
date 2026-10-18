@@ -21,6 +21,9 @@ jobs:
           node --check scripts/migrate-oracle.mjs
           node --check scripts/seed-oracle.mjs
           node --check scripts/verify-oracle-schema.mjs
+          node --check backend/oracle-operations-store.mjs
+          node --check scripts/verify-oracle-operations.mjs
+          node --check scripts/verify-oracle-recovery.mjs
       - name: Check website source and local assets
         run: node scripts/check-website.mjs
       - name: Test preview server and shared booking contract

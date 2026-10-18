@@ -14,4 +14,11 @@ try {
       await connection.execute(statement); console.log(`CREATED ${name}`);
     }
   }
+  // Migration 004 is additive; inspect columns individually after an interrupted DDL run.
+  for (const table of ['CFJ_ATTENDANCE','CFJ_PAYMENTS']) {
+    for (const [column, type] of [['RECORDED_BY','VARCHAR2(40)'],['ORIGINAL_REQUEST','VARCHAR2(80)']]) {
+      const found = await connection.execute('SELECT column_name FROM user_tab_columns WHERE table_name=:t AND column_name=:c',{t:table,c:column});
+      if (!found.rows.length) { await connection.execute(`ALTER TABLE ${table} ADD (${column} ${type})`); console.log(`ADDED ${table}.${column}`); }
+    }
+  }
 } finally { await connection.close(); }

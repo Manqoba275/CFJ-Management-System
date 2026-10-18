@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 
 export const events = [{ id: 'MARATHON-DEMO', name: 'CFJ community marathon — development event', capacity: 100 }];
 export function publicEvents(state) {
-  return events.map(event => ({ ...event, spaces: event.capacity - state.registrations.filter(r => r.eventId === event.id).length }));
+  return (state.events || events).map(event => ({ ...event, spaces: event.capacity - state.registrations.filter(r => r.eventId === event.id).length }));
 }
 export function register(body, state) {
   const fail = (status, error) => ({ status, data: { error } });
@@ -11,7 +11,7 @@ export function register(body, state) {
       typeof body.displayName !== 'string' || body.displayName.trim().length < 2 || body.displayName.trim().length > 60 ||
       typeof body.email !== 'string' || body.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email) ||
       body.consent !== true || typeof body.requestId !== 'string' || !/^[a-zA-Z0-9-]{20,80}$/.test(body.requestId)) return fail(400, 'invalid_registration');
-  const event = events.find(e => e.id === body.eventId);
+  const event = (state.events || events).find(e => e.id === body.eventId);
   if (!event) return fail(404, 'event_not_found');
   const details = { eventId: event.id, displayName: body.displayName.trim(), email: body.email.trim().toLowerCase(), consent: true };
   const fingerprint = JSON.stringify(details);
