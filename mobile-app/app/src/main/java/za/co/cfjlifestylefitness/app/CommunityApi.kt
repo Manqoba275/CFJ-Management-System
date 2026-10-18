@@ -1,3 +1,4 @@
+// Calls the community endpoints and turns service failures into errors the screen can explain.
 package za.co.cfjlifestylefitness.app
 
 import org.json.JSONArray

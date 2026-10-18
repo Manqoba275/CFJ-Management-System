@@ -1,3 +1,4 @@
+<!-- Defines shared text and control styles for the Android screens. -->
 <resources>
     <style name="BaseTheme.CFJ" parent="android:style/Theme.Material.NoActionBar">
         <item name="android:fontFamily">sans</item>

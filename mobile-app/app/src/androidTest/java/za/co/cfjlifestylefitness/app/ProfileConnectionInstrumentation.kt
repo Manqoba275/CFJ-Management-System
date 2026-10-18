@@ -1,3 +1,4 @@
+// Exercises the profile connection on an Android device. Running unit tests alone does not run this check.
 package za.co.cfjlifestylefitness.app
 
 import android.app.Activity

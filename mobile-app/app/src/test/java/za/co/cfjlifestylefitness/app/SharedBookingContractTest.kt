@@ -1,3 +1,4 @@
+// Keeps the Android booking preview aligned with the shared acceptance examples.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Assert.assertEquals

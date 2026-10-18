@@ -1,3 +1,4 @@
+# Runs the website and API checks on GitHub so failures are visible outside the developer’s computer.
 name: Setup checks
 on: [push, pull_request]
 permissions:

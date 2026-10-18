@@ -1,3 +1,4 @@
+// Builds an accessible class preview without treating a button click as a confirmed booking.
 /** UI component: textContent prevents class/trainer names being interpreted as HTML. */
 export function createClassCard(summary, result, onRequest) {
   const article = document.createElement('article');

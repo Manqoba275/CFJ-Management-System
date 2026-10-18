@@ -1,3 +1,4 @@
+// Checks whether a membership covers this class date and still has a session available.
 // School-project assumptions: Monday-Sunday weeks; inclusive validity dates;
 // an un-attended cancellation releases a reserved session. Not Octiv integration.
 export function validDate(value) {
@@ -13,16 +14,19 @@ export function membershipEligibility(membership, session, bookings, classes, me
   const weekly = { weekly3: 3, weekly4: 4, unlimited: Infinity };
   const credits = { concession10: 10, concession15: 15, concession20: 20, dropin: 1 };
   if (typeof membership.plan !== 'string' || (!Object.hasOwn(weekly, membership.plan) && !Object.hasOwn(credits, membership.plan))) return 'invalid_membership_plan';
+  // Cancelled bookings release a session; bookings from a different renewal do not use this plan.
   const active = bookings.filter(b => b.memberId === memberId && b.status === 'active' &&
     (!b.membershipId || b.membershipId === membership.id));
   if (Object.hasOwn(credits, membership.plan)) return active.length >= credits[membership.plan] ? 'membership_sessions_used' : null;
   const date = new Date(`${session.date}T00:00:00Z`);
+  // Count the whole Monday-to-Sunday week, regardless of which day the class falls on.
   date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7);
   const monday = date.toISOString().slice(0, 10);
   date.setUTCDate(date.getUTCDate() + 6);
   const sunday = date.toISOString().slice(0, 10);
   const used = active.filter(b => {
     const day = b.date || classes.find(c => c.id === b.classId)?.date;
+    // Count an unreadable booking date conservatively so damaged data cannot grant extra sessions.
     return !validDate(day) || (day >= monday && day <= sunday);
   }).length;
   return used >= weekly[membership.plan] ? 'membership_weekly_limit' : null;

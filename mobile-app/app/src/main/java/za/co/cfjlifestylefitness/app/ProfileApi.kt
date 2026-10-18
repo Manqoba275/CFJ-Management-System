@@ -1,3 +1,4 @@
+// Loads and saves a versioned profile. A version lets the API reject edits based on an out-of-date copy.
 package za.co.cfjlifestylefitness.app
 
 import org.json.JSONObject
@@ -30,6 +31,7 @@ class ProfileApi(private val origin: String, private val token: String, allowLoc
         try {
             connection.connectTimeout = 10000
             connection.readTimeout = 10000
+            // Do not forward the bearer token to a different address after a redirect.
             connection.instanceFollowRedirects = false
             connection.setRequestProperty("Authorization", "Bearer $token")
             connection.setRequestProperty("Accept", "application/json")
@@ -53,6 +55,7 @@ class ProfileApi(private val origin: String, private val token: String, allowLoc
                 while (true) {
                     val count = input.read(buffer)
                     if (count < 0) break
+                    // A profile response should stay small, even if the service returns unexpected data.
                     require(output.size() + count <= 16384) { "Invalid service response." }
                     output.write(buffer, 0, count)
                 }

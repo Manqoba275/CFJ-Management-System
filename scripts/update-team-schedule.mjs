@@ -1,3 +1,4 @@
+// Updates the stored two-week plans from the agreed start date. Planned dates are not proof of completed work.
 import { readFile, writeFile } from 'node:fs/promises';
 
 const members = ['Manqoba', 'Nyito', 'Tshifhiwa', 'Nonhlanhla'];

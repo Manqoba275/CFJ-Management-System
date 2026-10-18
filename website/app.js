@@ -1,3 +1,4 @@
+// Runs the browser-only website demo. These local records are separate from the Oracle profile service.
 /* CFJ local app state key: all demo data is stored in the browser for offline use. */
 const STORAGE_KEY = "cfj_multi_page_working_app";
 
@@ -76,6 +77,7 @@ function init() {
   if (page === "reports") setupReportsPage();
 }
 
+// These redirects guide the demo UI. Real data access must still be checked by the API.
 function enforceRoleAccess() {
   const requiredRole = { members: 'member', operations: 'member', staff: 'staff', reports: 'admin' }[page];
   if (requiredRole && state.session?.role !== requiredRole) {
@@ -179,6 +181,7 @@ function loadState() {
   }
 }
 
+// Repair damaged saved collections while keeping valid records, including deliberately empty lists.
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
   const upgraded = { ...structuredClone(seed), ...savedState };
@@ -621,6 +624,7 @@ function updateMarathonCountdown() {
   output.textContent = `${days} day${days === 1 ? "" : "s"} and ${hours} hour${hours === 1 ? "" : "s"} until the 06:00 start.`;
 }
 
+// Show the current browser demo places; these are not live reservations at the gym.
 function renderClasses(member) {
   /* Booking reduces spaces; if full, the member joins a waitlist instead. */
   const list = document.querySelector("#classList");
@@ -934,6 +938,7 @@ function addStaffMember(event) {
   showToast("Staff member added.");
 }
 
+// This records a simulated payment locally; it does not charge money or send a message.
 function recordPayment(memberId, amount, month, channel, method = "Online", allowDuplicate = false) {
   /* Payment confirms the selected month and simulates the SMS/email notice. */
   if (!amount || amount <= 0) return showToast("Enter a valid payment amount.");

@@ -1,3 +1,4 @@
+// Checks valid preferences and the input mistakes the settings screen needs to explain.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Assert.assertEquals

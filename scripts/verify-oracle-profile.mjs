@@ -1,3 +1,4 @@
+// Checks the real Oracle profile adapter using synthetic member 10, then restores that member’s profile fields.
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';

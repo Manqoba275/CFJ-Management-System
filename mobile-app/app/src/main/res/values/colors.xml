@@ -1,3 +1,4 @@
+<!-- Shared Android colours keep the app consistent with the blue website theme. -->
 <resources>
     <color name="background">#0B1426</color>
     <color name="panel">#15263F</color>

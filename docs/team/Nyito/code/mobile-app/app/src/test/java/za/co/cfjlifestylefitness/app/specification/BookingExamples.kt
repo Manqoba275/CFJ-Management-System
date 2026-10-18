@@ -1,3 +1,4 @@
+// Lists shared booking examples so the team can check the same expected behaviour on Android.
 package za.co.cfjlifestylefitness.app.specification
 
 /** Business acceptance examples; compare IDs/expected outcomes with the website JSON. */

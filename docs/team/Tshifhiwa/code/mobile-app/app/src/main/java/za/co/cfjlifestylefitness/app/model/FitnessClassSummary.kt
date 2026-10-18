@@ -1,3 +1,4 @@
+// Validates the class data the screen receives instead of trusting every service response.
 package za.co.cfjlifestylefitness.app.model
 
 /** Same field names as the website response contract; availability is a server snapshot. */

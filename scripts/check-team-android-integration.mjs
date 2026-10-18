@@ -1,3 +1,4 @@
+// Checks that the team Android starter pieces can be used together.
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 

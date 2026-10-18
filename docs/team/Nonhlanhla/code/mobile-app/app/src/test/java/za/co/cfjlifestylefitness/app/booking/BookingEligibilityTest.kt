@@ -1,3 +1,4 @@
+// Checks the team starter models and booking examples before they are integrated into the app.
 package za.co.cfjlifestylefitness.app.booking
 
 import org.junit.Assert.assertEquals

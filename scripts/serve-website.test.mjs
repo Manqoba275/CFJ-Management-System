@@ -1,3 +1,4 @@
+// Checks that the local preview serves public pages but rejects private paths and write requests.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createWebsiteServer } from './serve-website.mjs';

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Explains booking availability in the reusable class card. -->
 <resources>
     <string name="class_request_place">Request place</string>
     <string name="class_details_format">%1$s · %2$d spaces available</string>

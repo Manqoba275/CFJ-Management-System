@@ -1,3 +1,4 @@
+// Switches between home, classes and settings, and keeps the local preferences available across visits.
 package za.co.cfjlifestylefitness.app
 
 import android.app.Activity

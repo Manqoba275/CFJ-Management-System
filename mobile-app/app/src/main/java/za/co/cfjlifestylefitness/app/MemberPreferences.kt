@@ -1,3 +1,4 @@
+// Validates the name and training goal before the app stores them.
 package za.co.cfjlifestylefitness.app
 
 /** Local preview preferences only; the future API remains the authority for member records. */

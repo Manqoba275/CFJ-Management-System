@@ -1,3 +1,4 @@
+// Covers weekly resets, cancelled bookings and renewed memberships so session allowances stay consistent.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { membershipEligibility as eligible } from './membership.mjs';

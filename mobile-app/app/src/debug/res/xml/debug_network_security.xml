@@ -1,3 +1,4 @@
+<!-- Allows local HTTP development connections while keeping the release configuration separate. -->
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
     <domain-config cleartextTrafficPermitted="true">

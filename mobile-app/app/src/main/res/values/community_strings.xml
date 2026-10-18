@@ -1,3 +1,4 @@
+<!-- Messages and labels for community requests, including failure states. -->
 <resources>
     <string name="community_heading">Member community</string>
     <string name="community_notice">Synthetic members and trainers. Requests remain pending; sample guides unlock after a simulated payment. Uses the service address and token above.</string>

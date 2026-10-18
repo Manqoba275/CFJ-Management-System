@@ -1,3 +1,4 @@
+// Checks the booking preview against combinations of connection, sign-in and capacity states.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

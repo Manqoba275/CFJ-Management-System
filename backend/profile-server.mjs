@@ -1,3 +1,4 @@
+// Serves the development profile contract with either file storage or an injected database store.
 import { readProfileBody } from './request-body.mjs';
 export { readProfileBody } from './request-body.mjs';
 import http from 'node:http';
@@ -35,6 +36,7 @@ export async function createProfileServer({ token, file, operations, store }) {
       } catch { return reply(404, { error: 'not_found' }); }
     }
     if (req.url !== '/api/v1/me') return operations ? operations(req, res) : reply(404, { error: 'not_found' });
+    // Compare the whole bearer token without a character-by-character early exit.
     const supplied = Buffer.from(req.headers.authorization || '');
     if (supplied.length !== secret.length || !timingSafeEqual(supplied, secret)) return reply(401, { error: 'unauthorized' });
     if (req.method === 'GET') {
@@ -52,6 +54,7 @@ export async function createProfileServer({ token, file, operations, store }) {
       if (!validProfile(value) || Object.keys(value).some(key => !['displayName', 'goal', 'version'].includes(key)) ||
           !Number.isSafeInteger(value.version) || value.version < 0) return reply(400, { error: 'invalid_profile' });
       const update = pending.then(async () => {
+        // Let the database decide whether the version is current; an in-memory copy may already be stale.
         if (store) {
           const saved = await store.update(value);
           return saved ? reply(200, saved) : reply(409, { error: 'profile_changed_reload' });
@@ -60,6 +63,7 @@ export async function createProfileServer({ token, file, operations, store }) {
         const next = { displayName: value.displayName.trim(), goal: value.goal, version: profile.version + 1 };
         await mkdir(dirname(file), { recursive: true });
         await writeFile(`${file}.next`, JSON.stringify(next), { mode: 0o600 });
+        // Replace the saved file only after the complete new profile has been written.
         await rename(`${file}.next`, file);
         profile = next;
         reply(200, profile);

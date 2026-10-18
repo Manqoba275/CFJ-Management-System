@@ -1,3 +1,4 @@
+// Checks profile validation, access tokens and stale updates through real HTTP requests.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';

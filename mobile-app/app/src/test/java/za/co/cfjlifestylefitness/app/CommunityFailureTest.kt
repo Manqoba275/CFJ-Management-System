@@ -1,3 +1,4 @@
+// Checks the messages shown when a community request cannot be completed.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Assert.assertEquals

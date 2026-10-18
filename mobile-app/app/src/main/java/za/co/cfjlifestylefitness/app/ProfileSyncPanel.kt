@@ -1,3 +1,4 @@
+// Keeps profile requests off the UI thread and asks for a fresh load after an uncertain save.
 package za.co.cfjlifestylefitness.app
 
 import android.app.Activity

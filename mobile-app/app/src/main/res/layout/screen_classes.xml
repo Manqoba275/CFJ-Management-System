@@ -1,3 +1,4 @@
+<!-- Class screen layout, with room for booking status and community controls. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <TextView style="@style/Heading" android:text="@string/classes_heading" />
     <TextView style="@style/Body" android:text="@string/classes_intro" />

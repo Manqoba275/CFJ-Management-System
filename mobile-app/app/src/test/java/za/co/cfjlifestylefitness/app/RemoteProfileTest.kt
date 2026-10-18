@@ -1,3 +1,4 @@
+// Rejects malformed profile responses before they can become an editable local copy.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Assert.assertEquals

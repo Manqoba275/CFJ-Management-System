@@ -1,3 +1,4 @@
+// Checks which service addresses and access tokens the profile client will accept.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Test

@@ -1,3 +1,4 @@
+// Starts the local Oracle profile service. Connection details come from the environment, not the clients.
 import oracledb from 'oracledb';
 import { createProfileServer } from './profile-server.mjs';
 import { oracleProfileStore } from './oracle-profile-store.mjs';

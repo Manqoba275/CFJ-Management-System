@@ -1,3 +1,4 @@
+// Builds the website demo package from the project files.
 import { execFileSync } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { resolve, dirname, extname } from 'node:path';

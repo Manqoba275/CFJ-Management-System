@@ -1,3 +1,4 @@
+// Keeps public event registration separate from the totals that only administrators may request.
 import { randomUUID } from 'node:crypto';
 
 export const events = [{ id: 'MARATHON-DEMO', name: 'CFJ community marathon — development event', capacity: 100 }];
@@ -14,6 +15,7 @@ export function register(body, state) {
   if (!event) return fail(404, 'event_not_found');
   const details = { eventId: event.id, displayName: body.displayName.trim(), email: body.email.trim().toLowerCase(), consent: true };
   const fingerprint = JSON.stringify(details);
+  // Recognise a successful retry before checking capacity, even if the event has since filled up.
   const retry = state.registrations.find(r => r.requestId === body.requestId);
   if (retry) return retry.fingerprint === fingerprint ? { status: 200, data: { reference: retry.id, status: 'registered' } } : fail(409, 'request_id_reused');
   if (state.registrations.some(r => r.eventId === event.id && r.email === details.email)) return fail(409, 'registration_unavailable');

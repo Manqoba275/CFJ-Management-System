@@ -1,3 +1,4 @@
+// Checks browser state recovery and role redirects when stored demo data is missing or damaged.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';

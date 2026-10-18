@@ -1,3 +1,4 @@
+// Checks consent, private records and repeat requests so community features do not leak data or create duplicates.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';

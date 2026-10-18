@@ -1,3 +1,4 @@
+// Stores the development booking workflow in a local file. Its write queue protects one running process, not several servers.
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
@@ -59,6 +60,7 @@ export async function createOperationsHandler({ file, identities }) {
       catch (error) { return reply(error.status || 400, { error: 'invalid_body' }); }
       if (!body || Array.isArray(body) || typeof body !== 'object') return reply(400, { error: 'invalid_body' });
     }
+    // Check and save each change in order so two requests cannot take the same last place.
     const operation = queue.then(async () => {
       const next = structuredClone(state);
       const fail = (status, error) => ({ status, data: { error } });
@@ -93,6 +95,7 @@ export async function createOperationsHandler({ file, identities }) {
             typeof body.requestId !== 'string' || !/^[a-zA-Z0-9-]{8,80}$/.test(body.requestId)) return fail(400, 'invalid_record');
         if (path === '/api/v1/payments' && (!Number.isSafeInteger(body.amountCents) || body.amountCents < 1 || body.amountCents > 10000000)) return fail(400, 'invalid_amount');
         const key = `${actor.id}:${path}:${body.requestId}`;
+        // A retry may reuse its ID only when it carries the same booking and amount.
         const fingerprint = JSON.stringify([body.bookingId, body.amountCents ?? null]);
         if (next.requests[key]) return next.requests[key].fingerprint === fingerprint ? { status: 200, data: next.requests[key].record } : fail(409, 'request_id_reused');
         const booking = next.bookings.find(b => b.id === body.bookingId && b.status === 'active');

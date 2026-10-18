@@ -1,3 +1,4 @@
+// Checks the shared starter files together so a change in one member’s code does not break the others.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';

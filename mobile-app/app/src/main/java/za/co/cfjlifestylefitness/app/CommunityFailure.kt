@@ -1,3 +1,4 @@
+// Keeps community service failures distinct from unexpected app errors.
 package za.co.cfjlifestylefitness.app
 
 class CommunityServiceFailure(message: String) : Exception(message)

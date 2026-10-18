@@ -1,3 +1,4 @@
+// Prepares the team starter files for their integration checks.
 import { cp, copyFile, mkdir, mkdtemp, access } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve, dirname } from 'node:path';

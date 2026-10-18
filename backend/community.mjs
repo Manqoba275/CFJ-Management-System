@@ -1,3 +1,4 @@
+// Handles trainer requests and member connections. Only opted-in profile details belong in the public member list.
 import { randomUUID } from 'node:crypto';
 
 export const trainers = [
@@ -28,6 +29,7 @@ export function communityWrite(path, body, state, actor, identities) {
   const accept = /^\/api\/v1\/friend-connections\/([a-zA-Z0-9-]+)\/accept$/.exec(path);
   if (accept) {
     if (Object.keys(body).length) return fail(400, 'invalid_request');
+    // Only the person receiving the invitation can accept it.
     const connection = state.friendConnections.find(r => r.id === accept[1] && r.toId === actor.id);
     if (!connection) return fail(404, 'connection_not_found');
     connection.status = 'accepted';

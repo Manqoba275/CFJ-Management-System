@@ -1,3 +1,4 @@
+// Exercises booking, attendance and simulated payments through HTTP, including concurrent requests and restarts.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';

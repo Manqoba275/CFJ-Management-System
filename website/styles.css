@@ -1,3 +1,4 @@
+/* Keeps the shared blue theme, forms and responsive layouts consistent across the website. */
 /* Global theme variables used by every page in the local app. */
 :root {
   color-scheme: dark;

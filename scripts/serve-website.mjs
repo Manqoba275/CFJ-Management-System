@@ -1,3 +1,4 @@
+// Serves only website files for local preview, keeping repository files and credentials out of the response.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve, dirname, extname, sep } from 'node:path';

@@ -1,3 +1,4 @@
+// Configures Android builds, SDK versions and signing. Release builds must not silently use a debug certificate.
 plugins {
     id("com.android.application")
 }

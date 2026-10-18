@@ -1,3 +1,4 @@
+// Builds the team copy-and-paste guides from the starter files so the examples stay together.
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 

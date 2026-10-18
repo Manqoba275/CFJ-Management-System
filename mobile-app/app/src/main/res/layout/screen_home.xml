@@ -1,3 +1,4 @@
+<!-- Home screen layout for the Android preview. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <TextView android:id="@+id/welcome" style="@style/Heading" android:text="@string/welcome" />
     <TextView style="@style/Body" android:text="@string/intro" />

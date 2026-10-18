@@ -1,3 +1,4 @@
+<!-- Keeps app labels in resources so the screens do not need to repeat their text in Kotlin. -->
 <resources>
     <string name="app_name">CFJ Fitness</string>
     <string name="brand">CFJ LIFESTYLE FITNESS</string>

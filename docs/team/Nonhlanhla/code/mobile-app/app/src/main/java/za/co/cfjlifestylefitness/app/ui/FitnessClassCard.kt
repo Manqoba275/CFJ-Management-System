@@ -1,3 +1,4 @@
+// Binds a class summary to its card and explains why requesting a place may be unavailable.
 package za.co.cfjlifestylefitness.app.ui
 
 import android.view.LayoutInflater

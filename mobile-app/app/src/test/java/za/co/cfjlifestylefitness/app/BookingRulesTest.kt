@@ -1,3 +1,4 @@
+// Checks the booking rules for guests, offline members and full classes.
 package za.co.cfjlifestylefitness.app
 
 import org.junit.Assert.assertEquals

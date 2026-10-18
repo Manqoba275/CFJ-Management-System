@@ -1,3 +1,4 @@
+// Defines the Android project modules and where Gradle may download dependencies.
 pluginManagement {
     repositories {
         google()

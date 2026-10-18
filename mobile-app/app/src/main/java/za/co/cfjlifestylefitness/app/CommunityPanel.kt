@@ -1,3 +1,4 @@
+// Connects the community controls to background requests so network work does not block the screen.
 package za.co.cfjlifestylefitness.app
 
 import android.app.Activity

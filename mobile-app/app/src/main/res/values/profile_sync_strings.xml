@@ -1,3 +1,4 @@
+<!-- Messages for loading and saving profiles, including conflicts and connection failures. -->
 <resources>
     <string name="sync_heading">Development profile sync</string>
     <string name="sync_notice">Synthetic member only. Load replaces the form with the service profile. Save to service updates that profile and this phone. Hosted sign-in and Oracle are not connected yet.</string>

@@ -1,3 +1,4 @@
+// Chooses the booking preview state before a request is sent. The server still decides whether a place is available.
 package za.co.cfjlifestylefitness.app.booking
 
 /** Preview eligibility only. READY is not a booking confirmation from the API. */

@@ -1,3 +1,4 @@
+// Checks a class response before the website uses its name and available spaces.
 /** Shared response model. IDs are strings and availability is a non-negative integer. */
 export function fitnessClassFromResponse(value) {
   if (value === null || typeof value !== 'object') throw new TypeError('Class data is required');

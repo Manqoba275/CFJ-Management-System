@@ -1,3 +1,4 @@
+// Checks event capacity, safe retries and report access using temporary development data.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';
