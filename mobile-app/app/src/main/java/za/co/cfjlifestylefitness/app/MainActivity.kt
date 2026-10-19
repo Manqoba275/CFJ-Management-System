@@ -22,10 +22,12 @@ import android.widget.Toast
 
 class MainActivity : Activity() {
     private var screen = "home"
+    private val fitness by lazy { FitnessPanel(this) { showScreen("classes") } }
     private val profileSync by lazy { ProfileSyncPanel(this) }
     private val community by lazy { CommunityPanel(this) }
 
     override fun onDestroy() {
+        fitness.close()
         profileSync.close()
         community.close()
         super.onDestroy()
@@ -59,6 +61,7 @@ class MainActivity : Activity() {
     }
 
     private fun showScreen(destination: String) {
+        fitness.close()
         screen = destination
         val container = findViewById<FrameLayout>(R.id.content)
         container.removeAllViews()
@@ -83,10 +86,7 @@ class MainActivity : Activity() {
             }
             "settings" -> setupPreferences()
             else -> {
-                val name = preferences.getString("name", "").orEmpty()
-                if (name.isNotBlank()) findViewById<TextView>(R.id.welcome).text = getString(R.string.welcome_named, name)
-                findViewById<Button>(R.id.explore).setOnClickListener { showScreen("classes") }
-                findViewById<Button>(R.id.visit).setOnClickListener { openSite("https://cfjlifestylefitness.co.za/") }
+                fitness.show(findViewById(R.id.training_home))
             }
         }
         Log.d("CFJ", "Opened $destination screen") // Never log member values or credentials.
