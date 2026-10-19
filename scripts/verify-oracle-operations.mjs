@@ -17,7 +17,7 @@ async function call(server,actor,path,method='GET',body) {
 }
 try {
  for(const member of [a,b]) {
-  await c.execute('INSERT INTO cfj_members(member_id,identity_uid,email) VALUES(:id,:uid,:email)',{id:member,uid:`${tag}-${member}`,email:`${tag}-${member}@example.invalid`});
+  await c.execute('INSERT INTO cfj_members(member_id,identity_uid,email) VALUES(:id,:firebase_uid,:email)',{id:member,firebase_uid:`${tag}-${member}`,email:`${tag}-${member}@example.invalid`});
   await c.execute("INSERT INTO cfj_memberships(membership_id,member_id,plan_code,status,starts_on,expires_on) VALUES(:id,:member,'weekly3','active',DATE '2026-01-01',DATE '2027-12-31')",{id:`${tag}-${member}`,member});
  }
  for(let i=0;i<5;i++)await c.execute("INSERT INTO cfj_class_sessions(session_id,title,trainer_id,starts_at,capacity) VALUES(:id,'Synthetic API verification','SEED-TRAINER-1',TO_TIMESTAMP_TZ('2026-10-19 10:00:00 +02:00','YYYY-MM-DD HH24:MI:SS TZH:TZM'),:capacity)",{id:`${tag}-${i}`,capacity:i===0?1:10});
