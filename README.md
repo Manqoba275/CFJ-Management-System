@@ -6,6 +6,7 @@ Website and native Kotlin Android application for **CFJ Lifestyle Fitness**, bui
 |---|---|
 | **Live website** | https://gym-management-system-11sn.onrender.com/ |
 | **Demonstration video** | <!-- REPLACE THIS LINE WITH THE UNLISTED YOUTUBE LINK BEFORE SUBMISSION --> _link to be added before submission_ |
+| **Task 2 report** | [docs/report/CFJ_WIL_Task_2_Report.pdf](docs/report/CFJ_WIL_Task_2_Report.pdf) |
 | **User guide** | [docs/user-guide/USER_GUIDE.md](docs/user-guide/USER_GUIDE.md) |
 | **Evidence index** | [docs/evidence/README_EVIDENCE_INDEX.md](docs/evidence/README_EVIDENCE_INDEX.md) |
 | **Tests** | `npm test` — 51 web/API tests; 6 authentication-boundary tests; 16 Android unit tests |
@@ -116,8 +117,8 @@ See [database/README.md](database/README.md) and [database/design/](database/des
 | Android unit tests | 16 passed | `mobile-app/app/src/test` |
 | Android build + lint | build OK, 0 errors, 22 warnings | `docs/evidence/firebase-oracle-2026-10-19/android-build.txt` |
 | Website structure | 17 pages passed | `npm run check` |
-| GitHub Actions (Android) | success on `78a36ff` | [run 39290661715](https://github.com/Manqoba275/CFJ-Management-System/actions/runs/39290661715) |
-| GitHub Actions (setup checks) | success on `78a36ff` | [run 39290661879](https://github.com/Manqoba275/CFJ-Management-System/actions/runs/39290661879) |
+| GitHub Actions (Android) | success on `12c0312` | [run 39309331362](https://github.com/Manqoba275/CFJ-Management-System/actions/runs/39309331362) |
+| GitHub Actions (setup checks) | success on `12c0312` | [run 39309331410](https://github.com/Manqoba275/CFJ-Management-System/actions/runs/39309331410) |
 
 ## Evidence
 

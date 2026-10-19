@@ -1,3 +1,34 @@
+# Task 2 release — 19 October 2026
+
+This release is the XISD6329 Task 2 submission version (tag `task2-submission`, commit `12c0312`). It consolidates the Firebase account work, the Oracle identity gate, the Android training dashboard, the evidence set and the deployment readiness changes.
+
+## Added
+
+- Firebase email/password account screens on the website (`website/account.html`) and Android (`AccountActivity.kt`): create account, sign in, email verification, resend/refresh verification, password reset and sign out.
+- Google sign-in: website popup flow and Android Credential Manager exchange where Google Play Services are installed.
+- Backend Firebase ID-token gate (`backend/firebase-gate.mjs`, `backend/firebase-oracle-server.mjs`): signature, expiry, issuer and audience checks; `email_verified` requirement; member-only role; UID mapping to `cfj_members.identity_uid`; sanitised errors; no client-supplied role accepted.
+- Android training dashboard with three illustrated beginner movements, written technique, sets/reps, rest timer and a local completed-session count.
+- API readiness endpoint `/healthz` and bounded Oracle call timeouts; configurable bind host for deployment.
+- `render.yaml` blueprint and `docs/DEPLOY_API_RENDER.md` for the remaining hosted API/Oracle deployment.
+- Evidence index, live Oracle verification set, canonical APK checksum and honest phone-evidence record.
+
+## Verified on 19 October 2026
+
+- Local Oracle: migrations 001–004 applied and idempotent; schema verification **PASS** — 14 tables, 160 rows, 21 checks, all constraints ENABLED and VALIDATED.
+- Operations/API verification: **PASS** — 15 checks across two independent HTTP servers (last-seat booking, idempotent payments, attendance, weekly allowance, reports, event capacity, fresh-connection persistence).
+- Web/API regression suite: **51 passed, 0 failed**.
+- Android: debug build, 16 unit tests and lint passed; GitHub Actions Android and setup workflows succeeded at `78a36ff`.
+- Phone: a user-supplied screenshot shows the account screen at "Email verified. Signed in." on a physical phone.
+
+## Not included / still unproven
+
+- Hosted API and hosted Oracle database; no public API URL or cloud database connection is configured.
+- Google sign-in acceptance on Android (the available Huawei phone has no Google Play Services) and full Google consent/callback on the website.
+- ADB-documented installation of the canonical APK and a recorded physical-device acceptance run.
+- The narrated demonstration video, Azure DevOps board history, Microsoft Teams meeting evidence and organisation feedback.
+
+The API and database remain local to the development computer. Do not read this release as evidence of cloud hosting or completed physical-device acceptance.
+
 # Week-one development review — 6 October 2026
 
 ## Deployment preparation — 12 October 2026
