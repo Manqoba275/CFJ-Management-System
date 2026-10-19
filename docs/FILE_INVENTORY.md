@@ -14,6 +14,6 @@ Search covered relevant names in Downloads, OneDrive, Desktop, source repositori
 - `C:/Users/mtung/Downloads/XISD6329_Task1_Study_Guide (2).pdf` and `XISD6329MM.docx`: additional related documents found, not reviewed in this setup.
 - Supplied announcement and folder images: reviewed for tracking expectations and layout.
 
-Existing remote: https://github.com/Manqoba275/CFJ-Management-System.git . Main originally contained a short README, empty plan, wireframe filenames (both contain only a newline, not actual images) and website/mobile placeholders. The website branch contained HTML pages in a differently named folder, with no app.js/styles/assets listed. Setup retains main history and restores the complete local prototype on codex/project-setup.
+Existing remote: https://github.com/Manqoba275/CFJ-Management-System.git . Main originally contained a short README, empty plan, wireframe filenames (both contain only a newline, not actual images) and website/mobile placeholders. The website branch contained HTML pages in a differently named folder, with no app.js/styles/assets listed. Setup retains main history and restores the complete local prototype on the original project setup branch.
 
 Historical remote mentioned in the older final report: https://github.com/Manqoba275/cfj-website-updated.git . It is not the selected current project repository.

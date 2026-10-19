@@ -1,6 +1,8 @@
 # Shared API — planned contract
 
-Implementation pending. Use Node.js with node-oracledb and server-side identity-token verification. Keep Oracle credentials on the server. Both clients call the same versioned HTTPS endpoints.
+Bookings, cancellations, staff attendance and simulated payment records now have a local development implementation and connected web service desk. See [OPERATIONS_API.md](OPERATIONS_API.md) for tokens, endpoints, transaction boundaries and testing. Production Oracle/identity work remains pending.
+
+The development profile endpoint is implemented: see [PROFILE_API.md](PROFILE_API.md) for running it and connecting Android Settings. It uses one token-selected synthetic member and ignored local JSON persistence. Production implementation remains pending: use Node.js with node-oracledb and server-side identity-token verification. Keep Oracle credentials on the server. Both clients must call the same versioned HTTPS endpoints.
 
 Proposed endpoints: GET/PATCH /api/v1/me; GET /api/v1/classes; POST /api/v1/bookings; DELETE /api/v1/bookings/{id}; POST /api/v1/attendance; GET /api/v1/me/payments; POST /api/v1/payments (staff/admin simulated recording); GET /api/v1/exercises; GET /api/v1/trainers; POST /api/v1/trainer-requests; POST /api/v1/friend-connections; POST /api/v1/marathon-registrations; GET /api/v1/admin/reports.
 

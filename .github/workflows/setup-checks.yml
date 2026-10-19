@@ -1,3 +1,4 @@
+# Runs the website and API checks on GitHub so failures are visible outside the developer’s computer.
 name: Setup checks
 on: [push, pull_request]
 permissions:
@@ -10,7 +11,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check Oracle adapter syntax
+        run: |
+          node --check backend/oracle-profile-store.mjs
+          node --check backend/oracle-server.mjs
+          node --check scripts/verify-oracle-profile.mjs
+          node --check scripts/migrate-oracle.mjs
+          node --check scripts/seed-oracle.mjs
+          node --check scripts/verify-oracle-schema.mjs
+          node --check backend/oracle-operations-store.mjs
+          node --check scripts/verify-oracle-operations.mjs
+          node --check scripts/verify-oracle-recovery.mjs
       - name: Check website source and local assets
         run: node scripts/check-website.mjs
-      - name: Test saved-state recovery
-        run: node --test scripts/test-state.mjs
+      - name: Test preview server and shared booking contract
+        run: npm test

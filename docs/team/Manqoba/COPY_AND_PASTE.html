@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manqoba | CFJ web and Android code</title><style>body{font:16px/1.6 system-ui;background:#10151b;color:#edf2f7;padding:28px;margin:0}main{max-width:1120px;margin:auto}a{color:#80cfef}h2{color:#55d6ad}pre{background:#1c2229;border:1px solid #46505a;border-radius:8px;padding:18px;overflow:auto;font:14px/1.6 Consolas,monospace}code{overflow-wrap:anywhere}button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:#55d6ad;color:#10151b;cursor:pointer}li{margin:10px 0}.note{background:#26313a;border-left:4px solid #ff684e;padding:18px}.path{font-weight:bold}</style><main><a href="OPEN_PLAN.html">14-day schedule</a> · <a href="../START_HERE.html">All members</a><h1>Manqoba: copy-and-paste code</h1><h2>Lead Software Developer</h2><p>Booking preview rules for both clients; integration across all folders.</p><p class="note">Web: 30 September. Android: 1 October. Supporting specs/tests: 2 October. Review/integration: 3 October. Remaining work runs through 13 October 2026. Read CODE_TO_PUSH.md before copying. Review shared starter code and record your actual work; no contributions have been recorded on your behalf.</p><p>Create each file at its destination in your Git checkout. Copy only the code, not the heading or Markdown fences. Files under code/ are also ready to copy directly. Prerequisites and exact Git commands are in <a href="CODE_TO_PUSH.md">CODE_TO_PUSH.md</a>.</p><p id="copy-status" role="status" aria-live="polite"></p><section><h2>BookingEligibility.kt</h2><p class="path">Save to: <code>mobile-app/app/src/main/java/za/co/cfjlifestylefitness/app/booking/BookingEligibility.kt</code></p><button type="button" data-copy="code-0">Copy complete file</button><pre><code id="code-0">package za.co.cfjlifestylefitness.app.booking
+
+/** Preview eligibility only. READY is not a booking confirmation from the API. */
+object BookingEligibility {
+    enum class Result { INVALID_CAPACITY, OFFLINE, SIGN_IN_REQUIRED, ALREADY_BOOKED, FULL, READY }
+
+    fun evaluate(online: Boolean, signedIn: Boolean, alreadyBooked: Boolean, spaces: Int): Result = when {
+        spaces &lt; 0 -&gt; Result.INVALID_CAPACITY
+        !online -&gt; Result.OFFLINE
+        !signedIn -&gt; Result.SIGN_IN_REQUIRED
+        alreadyBooked -&gt; Result.ALREADY_BOOKED
+        spaces == 0 -&gt; Result.FULL
+        else -&gt; Result.READY
+    }
+}
+</code></pre></section><section><h2>booking-eligibility.mjs</h2><p class="path">Save to: <code>website/modules/booking-eligibility.mjs</code></p><button type="button" data-copy="code-1">Copy complete file</button><pre><code id="code-1">/** Preview eligibility only. The API must recheck identity and capacity in a transaction. */
+export function bookingEligibility({ online, signedIn, alreadyBooked, spaces }) {
+  if (!Number.isSafeInteger(spaces) || spaces &lt; 0) return 'INVALID_CAPACITY';
+  if (online !== true) return 'OFFLINE';
+  if (signedIn !== true) return 'SIGN_IN_REQUIRED';
+  if (alreadyBooked === true) return 'ALREADY_BOOKED';
+  if (alreadyBooked !== false) return 'INVALID_BOOKING_STATE';
+  return spaces === 0 ? 'FULL' : 'READY';
+}
+</code></pre></section></main><script>document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{const code=document.getElementById(button.dataset.copy);try{await navigator.clipboard.writeText(code.textContent);document.getElementById('copy-status').textContent='Copied complete file. Paste into its listed destination.';}catch{const range=document.createRange();range.selectNodeContents(code);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);document.getElementById('copy-status').textContent='Code selected. Press Ctrl+C, then paste into its listed destination.';}}));</script></html>
