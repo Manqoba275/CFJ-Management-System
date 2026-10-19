@@ -1,0 +1,6 @@
+<!-- Adjusts the Android theme for API 27 and newer. -->
+<resources>
+    <style name="Theme.CFJ" parent="BaseTheme.CFJ">
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

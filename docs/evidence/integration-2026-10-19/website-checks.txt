@@ -1,0 +1,5 @@
+
+> check
+> node scripts/check-website.mjs
+
+Validated local links/assets in 16 pages, inline scripts and app.js syntax. Runtime and integration testing remain separate.

@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-18T18:24:21.552Z",
+  "checks": [
+    "unauthorized request rejected",
+    "two API instances: one concurrent update succeeds and one conflicts",
+    "other API instance reads committed update",
+    "invalid goal rejected",
+    "fresh database connection reads committed data",
+    "synthetic profile restored"
+  ],
+  "tables": [
+    {
+      "TABLE_NAME": "CFJ_MEMBERS",
+      "RECORDS": 20
+    },
+    {
+      "TABLE_NAME": "CFJ_PROFILES",
+      "RECORDS": 20
+    }
+  ],
+  "status": "PASS"
+}

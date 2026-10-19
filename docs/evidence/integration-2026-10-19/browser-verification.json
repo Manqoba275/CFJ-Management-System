@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-18T23:13:11.009Z",
+  "storage": "isolated file-backed development API",
+  "checks": [
+    "Browser created booking through API",
+    "Independent HTTP client read the same active booking",
+    "Independent client cancelled booking",
+    "Browser reload displayed cancellation"
+  ],
+  "passed": 4,
+  "limitations": [
+    "Not a physical Android-device test",
+    "Not a hosted Oracle test",
+    "Development tokens only"
+  ]
+}

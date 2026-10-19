@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- Tests profile reads and writes through the API. Open this page on the profile service, not the static preview. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CFJ shared profile</title>
+<style>body{margin:0;background:#0b1426;color:#eef5ff;font:18px system-ui}main{max-width:740px;margin:60px auto;padding:32px}section{background:#15263f;padding:28px;border-radius:16px}label{display:block;margin:18px 0}input,select,button{font:inherit;padding:12px;border-radius:8px;box-sizing:border-box}input,select{display:block;width:100%;margin-top:6px}button{background:#76b5ff;color:#071729;border:0;margin:8px 12px 8px 0;cursor:pointer}small{color:#b3c9e4}#status{min-height:30px}pre{white-space:pre-wrap}</style></head>
+<body><main><small>CFJ LIFESTYLE FITNESS</small><h1>Shared member profile</h1><p>Load and update the profile through the API.</p><section>
+<label>Development access token<input id="token" type="password" autocomplete="off"></label>
+<button id="load">Load profile</button>
+<label>Display name<input id="name" maxlength="60" minlength="2"></label>
+<label>Training goal<select id="goal"><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select></label>
+<button id="save" disabled>Save profile</button><p id="status" role="status"></p><pre id="result"></pre>
+</section><p><small>Local development identity. The token stays in memory. This screen does not provide hosted sign in.</small></p></main>
+<script>
+// Keep the version returned by the API so saving an older copy produces a conflict instead of lost work.
+let version; const el=id=>document.getElementById(id);
+async function call(method){
+ // Prevent another save while this request is unresolved; reload after a failure.
+ el('save').disabled=true;
+ try{
+ const response=await fetch('/api/v1/me',{method,headers:{Authorization:'Bearer '+el('token').value,'Content-Type':'application/json'},...(method==='PATCH'?{body:JSON.stringify({displayName:el('name').value,goal:el('goal').value,version})}:{})});
+ const data=await response.json();
+ if(!response.ok)throw new Error(data.error==='profile_changed_reload'?'Another client changed this profile. Reload before saving.':data.error);
+ version=data.version;el('name').value=data.displayName;el('goal').value=data.goal;el('result').textContent=JSON.stringify(data,null,2);
+ el('status').textContent=method==='GET'?'Profile loaded from the API.':'Profile saved through the API.';el('save').disabled=false;
+ }catch(error){el('status').textContent=error.message;}
+}
+el('load').onclick=()=>call('GET');el('save').onclick=()=>call('PATCH');
+</script></body></html>

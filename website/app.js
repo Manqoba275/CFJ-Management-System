@@ -1,3 +1,4 @@
+// Runs the browser-only website demo. These local records are separate from the Oracle profile service.
 /* CFJ local app state key: all demo data is stored in the browser for offline use. */
 const STORAGE_KEY = "cfj_multi_page_working_app";
 
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", init);
 function init() {
   /* Shared startup tasks run on every page. */
   validateSession();
-  enforceRoleAccess();
+  if (!enforceRoleAccess()) return;
   setupRoleNavigation();
   setupFooter();
   setupRevealAnimation();
@@ -76,28 +77,35 @@ function init() {
   if (page === "reports") setupReportsPage();
 }
 
+// These redirects guide the demo UI. Real data access must still be checked by the API.
 function enforceRoleAccess() {
+  const requiredRole = { members: 'member', operations: 'member', staff: 'staff', reports: 'admin' }[page];
+  if (requiredRole && state.session?.role !== requiredRole) {
+    location.replace(`${requiredRole}-login.html`);
+    return false;
+  }
   /* Admins only use admin pages; members and public users cannot use admin reports. */
   const memberPages = ["members", "operations"];
   if (state.session?.role === "admin" && memberPages.includes(page)) {
     location.href = "reports.html";
-    return;
+    return false;
   }
-  if (state.session?.role === "admin" && !["reports", "login", "admin-login", "marathon"].includes(page)) {
+  if (state.session?.role === "admin" && !["overview", "demo-info", "reports", "login", "admin-login", "marathon"].includes(page)) {
     location.href = "reports.html";
-    return;
+    return false;
   }
-  if (state.session?.role === "staff" && !["staff", "login", "staff-login", "marathon"].includes(page)) {
+  if (state.session?.role === "staff" && !["overview", "demo-info", "staff", "login", "staff-login", "marathon"].includes(page)) {
     location.href = "staff.html";
-    return;
+    return false;
   }
   if (page === "staff" && state.session?.role !== "staff") {
     location.href = "login.html";
-    return;
+    return false;
   }
   if (page === "reports" && state.session?.role !== "admin") {
     document.body.classList.remove("admin-active");
   }
+  return true;
 }
 
 function setupRoleNavigation() {
@@ -106,7 +114,10 @@ function setupRoleNavigation() {
   if (!nav) return;
   const role = state.session?.role || "public";
   const links = [
-    ["Overview", "index.html", role !== "staff" && role !== "admin"],
+    ["Home", "index.html", true],
+    ["Programmes", "index.html#programmes", role === "public"],
+    ["Memberships", "index.html#memberships", role === "public"],
+    ["Visit us", "index.html#visit", role === "public"],
     ["Join Marathon", "marathon.html", true],
     ["Members", "members.html", role === "member"],
     ["Operations", "operations.html", role === "member"],
@@ -128,27 +139,26 @@ function setupFooter() {
       ? `<a href="reports.html">Admin Reports</a>`
       : role === "staff"
         ? `<a href="staff.html">Staff Desk</a>`
-        : `<a href="index.html">Our System</a><a href="marathon.html">Join Marathon</a><a href="library.html">Training Manual</a><a href="login.html">Membership Access</a>`;
+        : `<a href="index.html#programmes">Programmes</a><a href="index.html#memberships">Membership options</a><a href="login.html">Demo sign in</a>`;
     const communityLinks = role === "staff" || role === "admin"
       ? `<a href="login.html" data-footer-logout="true">Logout</a>`
-      : `<a href="https://www.instagram.com/">Instagram</a><a href="https://www.facebook.com/">Facebook</a><a href="https://www.youtube.com/">YouTube</a>`;
+      : `<a href="https://cfjlifestylefitness.co.za/">Official CFJ website ↗</a><a href="https://cfjlifestylefitness.co.za/timetable/">Official timetable ↗</a>`;
     footer.innerHTML = `
       <div class="footer-brand">
         <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
-        <p>&copy; 2026 CFJ Lifestyle Fitness. All rights reserved.</p>
+        <p>Team Forge · School project, 2026. An independent demonstration; not CFJ's official booking service.</p>
       </div>
       <div class="footer-column">
         <h3>About</h3>
         ${aboutLinks}
       </div>
       <div class="footer-column">
-        <h3>Legal</h3>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#">Payment Terms</a>
+        <h3>About this demo</h3>
+        <a href="demo-info.html">Privacy, accounts & payments</a>
+        <a href="help.html">Help and instructions</a>
       </div>
       <div class="footer-column">
-        <h3>Community</h3>
+        <h3>Useful links</h3>
         ${communityLinks}
       </div>
     `;
@@ -172,9 +182,18 @@ function loadState() {
   }
 }
 
+// Repair damaged saved collections while keeping valid records, including deliberately empty lists.
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
   const upgraded = { ...structuredClone(seed), ...savedState };
+  // Integrates the reviewed recovery fix from PR #2 (cec0207).
+  // Preserve valid records while repairing damaged saved collections.
+  for (const [key, fallback] of Object.entries(seed)) {
+    if (!Array.isArray(fallback)) continue;
+    upgraded[key] = Array.isArray(upgraded[key])
+      ? upgraded[key].filter((record) => record !== null && typeof record === "object" && !Array.isArray(record))
+      : structuredClone(fallback);
+  }
   seed.users.forEach((seedUser) => {
     if (!upgraded.users.some((user) => user.id === seedUser.id || user.email === seedUser.email)) {
       upgraded.users.push(seedUser);
@@ -606,6 +625,7 @@ function updateMarathonCountdown() {
   output.textContent = `${days} day${days === 1 ? "" : "s"} and ${hours} hour${hours === 1 ? "" : "s"} until the 06:00 start.`;
 }
 
+// Show the current browser demo places; these are not live reservations at the gym.
 function renderClasses(member) {
   /* Booking reduces spaces; if full, the member joins a waitlist instead. */
   const list = document.querySelector("#classList");
@@ -919,6 +939,7 @@ function addStaffMember(event) {
   showToast("Staff member added.");
 }
 
+// This records a simulated payment locally; it does not charge money or send a message.
 function recordPayment(memberId, amount, month, channel, method = "Online", allowDuplicate = false) {
   /* Payment confirms the selected month and simulates the SMS/email notice. */
   if (!amount || amount <= 0) return showToast("Enter a valid payment amount.");

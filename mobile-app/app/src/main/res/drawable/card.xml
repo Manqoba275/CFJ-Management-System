@@ -1,0 +1,5 @@
+<!-- Shared card background used to group related information on Android screens. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/panel" />
+    <corners android:radius="16dp" />
+</shape>
