@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1014794356097-gh27hj599g6eppvaj81nhkvn32ig9ra2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "za.co.cfjlifestylefitness.app",
+            "certificate_hash": "165bba2bc92886fd8af69f5c70d08f023023e0ef"
+          }
+        },
+        {
           "client_id": "1014794356097-hg2vv06hl7fqkaukr4ql17557jsvst7k.apps.googleusercontent.com",
           "client_type": 3
         }

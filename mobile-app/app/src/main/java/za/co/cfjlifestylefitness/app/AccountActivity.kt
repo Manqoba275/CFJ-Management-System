@@ -8,6 +8,8 @@ import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 
 class AccountActivity : Activity() {
+    private val google by lazy { GoogleAccount(this) }
+    override fun onDestroy() { google.close(); super.onDestroy() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val auth = FirebaseAuth.getInstance()
@@ -40,6 +42,7 @@ class AccountActivity : Activity() {
         }
         action("Sign in") { credentials(false) }
         action("Create account") { credentials(true) }
+        action("Continue with Google") { busy(true); google.signIn { result -> busy(false); password.text.clear(); status.text = result } }
         action("Send verification email") {
             val user = auth.currentUser
             if(user == null) status.text = "Sign in first."
@@ -54,7 +57,7 @@ class AccountActivity : Activity() {
             if(!android.util.Patterns.EMAIL_ADDRESS.matcher(address).matches()) status.text = "Enter your email address."
             else { busy(true); auth.sendPasswordResetEmail(address).addOnCompleteListener(this) { busy(false); status.text = "If this account is eligible, a reset email will arrive. Check your inbox." } }
         }
-        action("Sign out") { auth.signOut(); password.text.clear(); refresh() }
+        action("Sign out") { auth.signOut(); password.text.clear(); busy(true); google.clear { cleared -> busy(false); refresh(); if(!cleared) status.text = "Signed out of CFJ. Google account chooser state could not be cleared." } }
         refresh()
     }
 }
