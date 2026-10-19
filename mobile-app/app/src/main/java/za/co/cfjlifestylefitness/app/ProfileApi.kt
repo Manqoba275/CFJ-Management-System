@@ -33,7 +33,7 @@ class ProfileApi(private val origin: String, private val token: String, allowLoc
             connection.readTimeout = 10000
             // Do not forward the bearer token to a different address after a redirect.
             connection.instanceFollowRedirects = false
-            connection.setRequestProperty("Authorization", "Bearer $token")
+            connection.setRequestProperty("Authorization", "Bearer ${FirebaseAccess.resolve(token)}")
             connection.setRequestProperty("Accept", "application/json")
             if (profile != null) {
                 connection.requestMethod = "PATCH"

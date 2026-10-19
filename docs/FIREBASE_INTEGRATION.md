@@ -11,3 +11,5 @@ Outstanding: Android Google SSO/signing fingerprints, server-side Firebase ID-to
 The google-services.json file is a Firebase client configuration, not a service-account private key. Never commit service-account credentials. Restrict project access and configure authorized domains/providers in Firebase.
 
 Website account.html now uses the registered web client configuration. It supports email/password, Google popup, verification, reset and logout using session persistence. login.html links to it. It does not populate demo role/localStorage state. Authorize the actual website domain in Firebase before Google sign-in testing. Real account testing and hosted publication remain separate verification steps.
+
+Update 19 October: Firebase-to-Oracle verification, UID mapping and member-only gateway code is now implemented in backend/firebase-oracle-server.mjs; see FIREBASE_ORACLE_CONNECTION.md. Android Firebase build/tests/lint now pass with BoM 34.7.0. Live database integration remains unverified because Oracle is unavailable and no verified account UID has been linked.

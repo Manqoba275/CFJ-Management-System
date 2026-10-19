@@ -35,3 +35,26 @@ try {
  el('reset').onclick=()=>{if(!el('email').reportValidity())return;run(async()=>{await sendPasswordResetEmail(auth,el('email').value.trim());return 'If this account is eligible, a reset email will arrive.';});};
  el('logout').onclick=()=>run(async()=>{await signOut(auth);return 'Signed out.';});
 } catch { el('status').textContent='Account service could not initialise. Check browser storage permissions and reload.'; document.querySelectorAll('button').forEach(b=>b.disabled=true); }
+// Send a fresh ID token directly to the chosen API, never through demo localStorage.
+async function memberApi(path, method='GET', body) {
+ const user=auth.currentUser;
+ if(!user || !user.emailVerified) throw Error('verified_account_required');
+ const origin=new URL(el('api-origin').value);
+ if(origin.username || origin.password || origin.search || origin.hash || origin.pathname!=='/' || !(origin.protocol==='https:' || (origin.protocol==='http:' && ['127.0.0.1','localhost'].includes(origin.hostname)))) throw Error('invalid_api_origin');
+ const response=await fetch(origin.origin+'/api/v1'+path,{method,redirect:'error',headers:{Authorization:'Bearer '+await user.getIdToken(), 'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
+ if(!response.ok)throw Error('member_api_failed');
+ return response.json();
+}
+async function loadMemberRecords() {
+ const uid=auth.currentUser?.uid;
+ const [memberships,classes,bookings]=await Promise.all(['/me/memberships','/classes','/bookings'].map(p=>memberApi(p)));
+ if(!uid || auth.currentUser?.uid!==uid)throw Error('account_changed');
+ const records=el('api-records');records.replaceChildren();
+ function row(text,label,action){const p=document.createElement('p');p.textContent=text;if(action){const b=document.createElement('button');b.textContent=label;b.onclick=()=>run(async()=>{await action();return loadMemberRecords();});p.append(b);}records.append(p);}
+ memberships.forEach(m=>row(`${m.plan} · ${m.status} · expires ${m.expiresOn}`));
+ classes.forEach(c=>row(`${c.name} · ${c.spaces} spaces`,'Book',()=>memberApi('/bookings','POST',{classId:c.id})));
+ bookings.forEach(b=>row(`${b.classId} · ${b.status}`,'Cancel',b.status==='active'?()=>memberApi('/bookings/'+encodeURIComponent(b.id),'DELETE'):null));
+ return 'Shared member records loaded from the API.';
+}
+el('api-load').onclick=()=>run(loadMemberRecords);
+onAuthStateChanged(auth,()=>el('api-records').replaceChildren());

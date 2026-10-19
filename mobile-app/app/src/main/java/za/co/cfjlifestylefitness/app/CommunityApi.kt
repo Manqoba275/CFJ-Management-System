@@ -33,7 +33,7 @@ class CommunityApi(private val origin: String, private val token: String) {
             connection.readTimeout = 10000
             connection.instanceFollowRedirects = false
             connection.requestMethod = method
-            connection.setRequestProperty("Authorization", "Bearer $token")
+            connection.setRequestProperty("Authorization", "Bearer ${FirebaseAccess.resolve(token)}")
             connection.setRequestProperty("Accept", "application/json")
             if (body != null) {
                 connection.doOutput = true

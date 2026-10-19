@@ -21,6 +21,11 @@ class ProfileSyncPanel(private val activity: Activity) {
         if (!BuildConfig.DEBUG) return
         val origin = activity.findViewById<EditText>(R.id.api_origin)
         val token = activity.findViewById<EditText>(R.id.api_token)
+        com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.let {
+            token.setText("firebase:${it.uid}")
+            token.isEnabled = false
+            origin.setText("http://127.0.0.1:8789")
+        }
         val name = activity.findViewById<EditText>(R.id.display_name)
         val goal = activity.findViewById<Spinner>(R.id.goal)
         val status = activity.findViewById<TextView>(R.id.sync_status)

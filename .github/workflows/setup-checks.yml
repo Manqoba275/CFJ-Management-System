@@ -24,6 +24,9 @@ jobs:
           node --check backend/oracle-operations-store.mjs
           node --check scripts/verify-oracle-operations.mjs
           node --check scripts/verify-oracle-recovery.mjs
+          node --check backend/firebase-oracle-server.mjs
+          node --check backend/oracle-identity-store.mjs
+          node --check scripts/link-firebase-member.mjs
       - name: Check website source and local assets
         run: node scripts/check-website.mjs
       - name: Test preview server and shared booking contract
