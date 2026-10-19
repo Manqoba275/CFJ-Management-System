@@ -71,8 +71,28 @@ class CommunityPanel(private val activity: Activity) {
                 val members = api.list("/members")
                 val requests = api.list("/me/trainer-requests")
                 val connections = api.list("/me/friend-connections")
+                val memberships = api.list("/me/memberships")
+                val classes = api.list("/classes")
+                val bookings = api.list("/bookings")
                 val render: () -> Unit = {
                     records.removeAllViews()
+                    message("Shared membership and bookings")
+                    memberships.forEach { m -> message("${m.getString("plan")} · ${m.getString("status")} · ${m.getString("expiresOn")}") }
+                    classes.forEach { session ->
+                        message("${session.getString("name")} · ${session.getString("date")} · ${session.getInt("spaces")} spaces")
+                        button("Book this class") { send("/bookings", JSONObject().put("classId", session.getString("id"))) }
+                    }
+                    bookings.forEach { booking ->
+                        message("${booking.getString("classId")}: ${booking.getString("status")}")
+                        if (booking.getString("status") == "active") button("Cancel booking") {
+                            run { client ->
+                                client.cancelBooking(booking.getString("id"))
+                                val saved: () -> Unit = { records.removeAllViews(); message("Booking cancelled through the API. Reload to see current availability.") }
+                                saved
+                            }
+                        }
+                    }
+                    if (bookings.isEmpty()) message("No shared bookings yet.")
                     trainers.forEach { t ->
                         message("${t.getString("displayName")} · ${t.getString("specialty")}")
                         button(activity.getString(R.string.community_request_trainer)) { send("/trainer-requests", JSONObject().put("trainerId", t.getString("id"))) }

@@ -20,16 +20,22 @@ class CommunityApi(private val origin: String, private val token: String) {
 
     fun send(path: String, body: JSONObject) { request(path, body) }
 
-    private fun request(path: String, body: JSONObject?): String {
+    // Cancellation uses the same API record that the website displays.
+    fun cancelBooking(id: String) {
+        require(id.matches(Regex("[a-zA-Z0-9-]+"))) { "Invalid booking reference." }
+        request("/bookings/$id", null, "DELETE")
+    }
+
+    private fun request(path: String, body: JSONObject?, method: String = if (body == null) "GET" else "POST"): String {
         val connection = URI("${origin.trimEnd('/')}/api/v1$path").toURL().openConnection() as HttpURLConnection
         try {
             connection.connectTimeout = 10000
             connection.readTimeout = 10000
             connection.instanceFollowRedirects = false
+            connection.requestMethod = method
             connection.setRequestProperty("Authorization", "Bearer $token")
             connection.setRequestProperty("Accept", "application/json")
             if (body != null) {
-                connection.requestMethod = "POST"
                 connection.doOutput = true
                 connection.setRequestProperty("Content-Type", "application/json")
                 connection.outputStream.use { it.write(body.toString().toByteArray(Charsets.UTF_8)) }
@@ -39,6 +45,7 @@ class CommunityApi(private val origin: String, private val token: String) {
                 401 -> throw CommunityServiceFailure("Access denied. Check the member token.")
                 403 -> throw CommunityServiceFailure(if (path == "/exercises") "Sample guides require a simulated member payment." else "This action requires a member account.")
                 404 -> throw CommunityServiceFailure("Record unavailable. Only the recipient can accept a connection.")
+                409 -> throw CommunityServiceFailure("The booking could not be changed. Reload to check capacity, membership or attendance.")
                 else -> throw CommunityServiceFailure("Request not confirmed. Reload or retry.")
             }
             return connection.inputStream.use { input ->
