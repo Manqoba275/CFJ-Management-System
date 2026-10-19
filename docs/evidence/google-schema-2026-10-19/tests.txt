@@ -1,0 +1,63 @@
+
+> test
+> node --test scripts/serve-website.test.mjs scripts/booking-eligibility.test.mjs scripts/test-state.mjs backend/profile-server.test.mjs backend/operations.test.mjs backend/membership.test.mjs backend/community.test.mjs backend/management.test.mjs backend/messages.test.mjs backend/firebase-gate.test.mjs backend/class-contract.test.mjs
+
+✔ class endpoint satisfies the shared trainer and availability contract (4262.4835ms)
+✔ community consent, retries, private records and paid guide access survive restart (6568.9525ms)
+✔ missing and rejected tokens never reach Oracle (14.4571ms)
+✔ unverified account never reaches Oracle (0.5237ms)
+✔ verified unmapped account is refused (2.452ms)
+✔ client admin claims cannot grant staff access (9.1324ms)
+✔ foreign origin is refused before storage (1.0881ms)
+✔ database failure returns sanitized 503 (0.6663ms)
+✔ public registration persists; only admins see accurate aggregate reports (6193.0233ms)
+✔ full events reject new registrations but permit a confirmed retry (93.6186ms)
+✔ development identities cannot share IDs or omit tokens (2.1426ms)
+✔ weekly limits count Monday through Sunday and reset on Monday (14.2326ms)
+✔ concession credits, cancellations and renewal ownership are respected (1.0653ms)
+✔ invalid and expired memberships fail closed; validity includes final day (5.9379ms)
+✔ messages require an accepted connection and do not leak to another member (59.2715ms)
+✔ booking transactions, ownership, attendance and simulated payment retries persist (9020.13ms)
+✔ concurrent bookings cannot exceed a weekly membership allowance (1484.0389ms)
+✔ Unicode names survive every possible network byte boundary (17.7469ms)
+✔ body reader rejects malformed UTF-8 and excessive bytes (3.1547ms)
+✔ profile API authenticates, validates, persists and rejects stale writes (6577.3423ms)
+✔ booking false / false / false / -1 / INVALID_CAPACITY (3.0356ms)
+✔ booking false / false / true / -1 / INVALID_CAPACITY (0.303ms)
+✔ booking false / true / false / -1 / INVALID_CAPACITY (5.5799ms)
+✔ booking false / true / true / -1 / INVALID_CAPACITY (0.7922ms)
+✔ booking true / false / false / -1 / INVALID_CAPACITY (71.1937ms)
+✔ booking true / false / true / -1 / INVALID_CAPACITY (0.9602ms)
+✔ booking true / true / false / -1 / INVALID_CAPACITY (1.9521ms)
+✔ booking true / true / true / -1 / INVALID_CAPACITY (6.5951ms)
+✔ booking false / false / false / 0 / OFFLINE (115.653ms)
+✔ booking false / false / true / 0 / OFFLINE (37.096ms)
+✔ booking false / true / false / 0 / OFFLINE (1.7769ms)
+✔ booking false / true / true / 0 / OFFLINE (430.4353ms)
+✔ booking true / false / false / 0 / SIGN_IN_REQUIRED (5.5651ms)
+✔ booking true / false / true / 0 / SIGN_IN_REQUIRED (1867.652ms)
+✔ booking true / true / false / 0 / FULL (9.1603ms)
+✔ booking true / true / true / 0 / ALREADY_BOOKED (28.1552ms)
+✔ booking false / false / false / 1 / OFFLINE (1.0853ms)
+✔ booking false / false / true / 1 / OFFLINE (1.6651ms)
+✔ booking false / true / false / 1 / OFFLINE (0.9259ms)
+✔ booking false / true / true / 1 / OFFLINE (0.3002ms)
+✔ booking true / false / false / 1 / SIGN_IN_REQUIRED (0.1451ms)
+✔ booking true / false / true / 1 / SIGN_IN_REQUIRED (0.1373ms)
+✔ booking true / true / false / 1 / READY (0.1408ms)
+✔ booking true / true / true / 1 / ALREADY_BOOKED (0.223ms)
+✔ web rejects malformed capacity and unknown booking state (0.4951ms)
+✔ preview serves the website while rejecting private paths and writes (1332.8031ms)
+✔ missing or invalid JSON restores demo data (37.754ms)
+✔ damaged collections do not prevent startup or erase unrelated records (20.7274ms)
+✔ invalid collection entries are removed while valid entries survive (39.9339ms)
+✔ valid empty collections and legacy records are preserved (43.1678ms)
+✔ private demo pages redirect before rendering for missing or incorrect roles (232.5477ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25184.8108

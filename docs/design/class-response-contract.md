@@ -10,4 +10,4 @@ Example using fictional data:
 
 `spaces` is a snapshot calculated from class capacity minus confirmed bookings. Do not let the client update that value directly. A booking request identifies a class; the server validates the member and capacity in one transaction. The UI showing READY does not reserve a seat.
 
-This DTO is a display projection, not an Oracle table definition. The database should keep trainers and bookings in normalized tables and join them for this response. Persistent entities, foreign keys, SQL migrations and a real API endpoint remain to be implemented.
+This DTO is a display projection, not an Oracle table definition. The database should keep trainers and bookings in normalized tables and join them for this response. GET /api/v1/classes now supplies this projection. The Oracle adapter joins trainer names from cfj_trainers; development fixtures use an explicit unassigned-trainer label. The active persistent schema and adapter exist; live Oracle verification remains pending.

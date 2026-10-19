@@ -1,27 +1,16 @@
-# Shared API contract proposal
+# Current shared API contract
 
-All endpoints use HTTPS. The API verifies the identity-provider token and derives the member identity server-side. Clients never connect directly to Oracle.
+Both clients send a Firebase ID token in Authorization: Bearer. The Firebase listener requires a verified email and an existing cfj_members.identity_uid mapping. It never accepts a member ID or role supplied by the browser as authentication.
 
-## Class summary
-GET /api/classes returns an array of objects shaped like:
-{"id":"C-DEMO","name":"Strength Foundations","trainer":"Demo Coach","spaces":4}
+- GET /api/v1/classes returns id, name, trainer, date, capacity and spaces. Trainer names are joined from cfj_trainers for Oracle; development fixtures without one show Trainer to be assigned. spaces is a snapshot, not a reservation.
+- GET /api/v1/me/memberships returns the authenticated member's entitlements.
+- GET /api/v1/bookings returns the member's bookings.
+- POST /api/v1/bookings accepts {"classId":"SEED-CLASS-1"}. Success is 201 with status active. Membership, ownership, duplicate and capacity rules are checked server-side. IDs must come from the class response, not this example.
+- DELETE /api/v1/bookings/{id} cancels an owned booking and returns 200 with status cancelled. It refuses cancellation after attendance. A cancelled row can be reactivated by a later eligible booking.
+- GET/PATCH /api/v1/me uses profile version checks; stale writes return 409.
 
-id, name and trainer are trimmed non-empty strings. spaces is a non-negative integer calculated by the server from capacity and confirmed bookings. This is a read-only snapshot and does not reserve a seat.
+Missing/invalid tokens return 401; unverified or unmapped identities return 403. Foreign ownership returns 404, conflicts 409, invalid bodies 400 and unavailable storage 503. Do not expose SQL errors or tokens.
 
-## Create booking
-POST /api/classes/{classId}/bookings requires authentication. The request may contain an idempotency key; it must not choose a member ID or claim available spaces.
+The Firebase gateway currently grants member access only. Development staff/admin tokens belong to the separate local-only development server. Hosted staff/admin authentication is still outstanding.
 
-Success: HTTP 201 with booking ID, class ID and CONFIRMED status.
-- 400 invalid or missing input
-- 401 missing/invalid identity token
-- 403 authenticated identity not permitted to book
-- 404 class not found
-- 409 class full, duplicate booking or class not open
-- 500 unexpected failure with generic response and server-side diagnostics
-
-## Cancellation
-DELETE /api/bookings/{bookingId} requires authentication and ownership or staff permission. Successful cancellation returns 200/204 and repeated cancellation should be idempotent. The server locks the class row and updates the booking transactionally.
-
-Return only approved public fields in directory responses. Never return passwords, tokens, payment card data, medical details or SQL exception text. Use bind parameters. Enforce staff/admin authorization on every API request, not only in the UI.
-
-This is a proposed contract; no live endpoint is asserted to exist.
+The former /api/classes/{id}/bookings and CONFIRMED examples were design proposals; they are not the implemented route or status. The active store serializes writes inside Oracle using table locks before rule validation, rather than the proposal's class-row-lock algorithm. This is a small prototype implementation; load and concurrency testing remain required.

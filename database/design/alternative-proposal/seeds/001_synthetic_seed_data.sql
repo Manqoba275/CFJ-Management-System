@@ -42,4 +42,4 @@ EXCEPTION WHEN OTHERS THEN
  RAISE;
 END;
 /
--- Run database/tests/constraints_and_seed_checks.sql and verify 10 rows per table.
+-- Run database/design/alternative-proposal/tests/constraints_and_seed_checks.sql and verify 10 rows per table.

@@ -29,7 +29,7 @@ CREATE TABLE fitness_class (
  class_name VARCHAR2(120) NOT NULL,
  trainer_id VARCHAR2(64) NOT NULL REFERENCES trainer(trainer_id),
  starts_at TIMESTAMP NOT NULL,
- capacity NUMBER(4) NOT NULL CHECK (capacity > 0),
+ capacity NUMBER NOT NULL CHECK (capacity BETWEEN 1 AND 9999 AND capacity = TRUNC(capacity)),
  status VARCHAR2(16) DEFAULT 'SCHEDULED' NOT NULL CHECK (status IN ('SCHEDULED','CANCELLED','COMPLETED')),
  created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL
 );
@@ -73,6 +73,8 @@ CREATE TABLE friend_connection (
  CONSTRAINT ck_friend_not_self CHECK (member_id <> friend_member_id),
  CONSTRAINT uq_friend_pair UNIQUE (member_id,friend_member_id)
 );
+-- Prevent a reversed duplicate connection as well as the original direction.
+CREATE UNIQUE INDEX uq_friend_undirected ON friend_connection (LEAST(member_id,friend_member_id),GREATEST(member_id,friend_member_id));
 CREATE TABLE trainer_request (
  request_id VARCHAR2(64) PRIMARY KEY,
  member_id VARCHAR2(64) NOT NULL REFERENCES member(member_id),
@@ -85,7 +87,7 @@ CREATE TABLE trainer_review (
  review_id VARCHAR2(64) PRIMARY KEY,
  member_id VARCHAR2(64) NOT NULL REFERENCES member(member_id),
  trainer_id VARCHAR2(64) NOT NULL REFERENCES trainer(trainer_id),
- rating NUMBER(1) NOT NULL CHECK (rating BETWEEN 1 AND 5),
+ rating NUMBER NOT NULL CHECK (rating BETWEEN 1 AND 5 AND rating = TRUNC(rating)),
  review_text VARCHAR2(2000),
  created_at TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
  CONSTRAINT uq_member_trainer_review UNIQUE (member_id,trainer_id)
@@ -94,7 +96,7 @@ CREATE TABLE marathon_event (
  event_id VARCHAR2(64) PRIMARY KEY,
  event_name VARCHAR2(160) NOT NULL,
  event_date DATE NOT NULL,
- capacity NUMBER(6) NOT NULL CHECK (capacity > 0),
+ capacity NUMBER NOT NULL CHECK (capacity BETWEEN 1 AND 999999 AND capacity = TRUNC(capacity)),
  status VARCHAR2(16) DEFAULT 'OPEN' NOT NULL CHECK (status IN ('OPEN','CLOSED','CANCELLED'))
 );
 CREATE TABLE marathon_registration (

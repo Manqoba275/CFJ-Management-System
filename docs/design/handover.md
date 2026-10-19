@@ -1,3 +1,5 @@
+> Reconciled 19 October 2026: this historical design is retained under database/design/alternative-proposal. Use database/OPERATIONS.md for the active cfj_* schema and docs/design/api-contract.md for implemented endpoints. No automatic data migration between the two designs is claimed.
+
 # Database design handover
 
 ## Deliverables on this branch

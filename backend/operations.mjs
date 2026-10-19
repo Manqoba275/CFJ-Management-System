@@ -46,7 +46,7 @@ export async function createOperationsHandler({ file, identities, store }) {
       if (publicRead) return reply(200, publicEvents(state));
       if (path === '/api/v1/admin/reports') return actor.role === 'admin' ? reply(200, managementReport(state)) : reply(403, { error: 'admin_required' });
       if (isCommunityPath(path)) { const result = communityRead(path, state, actor, identities); return reply(result.status, result.data); }
-      if (path === '/api/v1/classes') return reply(200, state.classes.map(c => ({ ...c, spaces: c.capacity - state.bookings.filter(b => b.classId === c.id && b.status === 'active').length })));
+      if (path === '/api/v1/classes') return reply(200, state.classes.map(c => ({ ...c, trainer: c.trainer || 'Trainer to be assigned', spaces: c.capacity - state.bookings.filter(b => b.classId === c.id && b.status === 'active').length })));
       if (path === '/api/v1/bookings') return reply(200, state.bookings.filter(b => actor.role === 'staff' || b.memberId === actor.id));
       if (path === '/api/v1/me/attendance') return reply(200, state.attendance.filter(a => a.memberId === actor.id));
       if (path === '/api/v1/me/payments') return reply(200, state.payments.filter(p => p.memberId === actor.id));

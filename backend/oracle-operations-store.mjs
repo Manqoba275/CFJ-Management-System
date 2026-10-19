@@ -11,7 +11,7 @@ async function rows(c, sql) {
 }
 async function load(c) {
   const state={requests:{}};
-  state.classes=(await rows(c,"SELECT session_id,title,capacity,TO_CHAR(starts_at AT TIME ZONE 'Africa/Johannesburg','YYYY-MM-DD') AS day FROM cfj_class_sessions")).map(r=>({id:r.SESSION_ID,name:r.TITLE,capacity:r.CAPACITY,date:r.DAY}));
+  state.classes=(await rows(c,"SELECT s.session_id,s.title,s.capacity,t.display_name AS trainer,TO_CHAR(s.starts_at AT TIME ZONE 'Africa/Johannesburg','YYYY-MM-DD') AS day FROM cfj_class_sessions s JOIN cfj_trainers t ON t.trainer_id=s.trainer_id")).map(r=>({id:r.SESSION_ID,name:r.TITLE,trainer:r.TRAINER,capacity:r.CAPACITY,date:r.DAY}));
   state.memberships=(await rows(c,"SELECT membership_id,member_id,plan_code,status,TO_CHAR(starts_on,'YYYY-MM-DD') AS starts_on,TO_CHAR(expires_on,'YYYY-MM-DD') AS expires_on FROM cfj_memberships")).map(r=>({id:r.MEMBERSHIP_ID,memberId:sid(r.MEMBER_ID),plan:r.PLAN_CODE,status:r.STATUS,startsOn:r.STARTS_ON,expiresOn:r.EXPIRES_ON,simulated:true}));
   state.bookings=(await rows(c,'SELECT * FROM cfj_bookings')).map(r=>({id:r.BOOKING_ID,memberId:sid(r.MEMBER_ID),classId:r.SESSION_ID,membershipId:r.MEMBERSHIP_ID,status:r.STATUS,date:state.classes.find(s=>s.id===r.SESSION_ID).date}));
   for(const [key,table,id,stamp,path] of [['attendance','cfj_attendance','ATTENDANCE_ID','CHECKED_IN_AT','attendance'],['payments','cfj_payments','PAYMENT_ID','PAID_AT','payments']]) {
