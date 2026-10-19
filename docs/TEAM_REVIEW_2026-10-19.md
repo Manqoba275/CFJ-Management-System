@@ -29,3 +29,13 @@ No new commits dated 19 October from Nyito or Tshifhiwa were found among fetched
 Android assembleDebug, testDebugUnitTest and lintDebug passed after pinning Firebase BoM 34.7.0 for compiler compatibility: 16 tests, zero failures; lint zero errors and 22 warnings. New APK SHA256: 9DA227D7B8F50F34F84D5BD0155536FCCCEB09A21537367A3F9645C7EEEE7B76.
 
 44 existing web/API tests and six added authentication-boundary tests passed. Static checks passed for 17 pages. Invalid-token rejection was also exercised using Firebase Admin SDK. Live Oracle/Firebase verification is blocked by local Oracle ECONNREFUSED and missing verified test-account mapping. ADB reported the phone offline; no new phone installation/runtime result is claimed.
+
+## Additional merge discovered during review
+
+At 13:32 SAST, main gained merge d5ad4c7 (PR #4), bringing in Tshifhiwa's earlier database-design commits. His contribution is relevant to the database role and includes schema, seeds, transaction guidance and shared class DTOs. The integration branch was merged with this updated main without conflicts.
+
+Integration issue requiring reconciliation: that design creates unprefixed app_user/member/booking tables and string IDs/statuses, whereas the implemented adapter uses cfj_members/cfj_bookings, numeric member IDs and different status contracts. It also has no equivalent membership-entitlement table used by the current booking rules. Applying it will not populate the API's cfj_* tables. The active schema is now explicitly identified in database/README.md and OPERATIONS.md; the alternative design has been retained unchanged.
+
+Additional review points: the alternative friend_connection unique key permits both directions of the same pair, and NUMBER(4)/NUMBER(1) columns can round fractional capacity/rating values before constraints inspect them. Confirm intended rules and add executable negative tests before adopting that schema. The new class DTO requires trainer, which is not guaranteed by the current development classes route; it is not yet wired to that route.
+
+The supplied APK was built from the Firebase/API implementation preceding this documentation/design merge (29e2992 code), and its checksum above identifies the exact file. The later unused class DTO was not part of that APK. Do not substitute branch HEAD for the APK's tested source reference.

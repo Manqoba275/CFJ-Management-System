@@ -1,3 +1,4 @@
+> Integration status, 19 October 2026: the running API uses the `cfj_*` schema from `database/001_profiles.sql` through `004_api_retries.sql`. The unprefixed tables in `database/migrations`, `seeds`, `reports` and `tests` are Tshifhiwa's alternative design contribution, not migrations for that API. Do not run both sets as a single migration chain. Reconcile requirements and data mappings before adopting that alternative. See `docs/TEAM_REVIEW_2026-10-19.md`.
 # Oracle database operations
 
 ## Current status
