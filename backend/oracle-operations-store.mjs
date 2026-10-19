@@ -60,12 +60,12 @@ async function persist(c,before,next) {
 export function oracleOperationsStore(pool) {
   return {
     async load() {
-      const c=await pool.getConnection();
+      const c=await pool.getConnection(); c.callTimeout=8000;
       try { await c.execute('SET TRANSACTION READ ONLY'); return await load(c); }
       finally {await c.rollback();await c.close();}
     },
     async transact(change) {
-      const c=await pool.getConnection();
+      const c=await pool.getConnection(); c.callTimeout=8000;
       try {
         // A coarse lock is intentional for this small school prototype. It serializes writers
         // across processes, including weekly limits across different sessions. Scale later with row locks.

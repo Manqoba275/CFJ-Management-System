@@ -8,12 +8,12 @@ import { publicEvents, register, managementReport } from './management.mjs';
 import { membershipEligibility } from './membership.mjs';
 
 // Single-process development transactions. Production requires Oracle and verified identities.
-export async function createOperationsHandler({ file, identities, store }) {
+export async function createOperationsHandler({ file, identities, store, lazyLoad = false }) {
   if (!identities.length || identities.some(i => !i.id || !['member', 'staff', 'admin'].includes(i.role) || typeof i.token !== 'string' || i.token.length < 32) ||
       new Set(identities.map(i => i.id)).size !== identities.length ||
       new Set(identities.map(i => i.token)).size !== identities.length) throw new Error('Invalid development identities');
   let state = { classes: [{ id: 'C-DEMO', name: 'Demo strength class', capacity: 1 }], bookings: [], attendance: [], payments: [], requests: {} };
-  try { state = store ? await store.load() : JSON.parse(await readFile(file, 'utf8')); }
+  try { state = store ? (lazyLoad ? state : await store.load()) : JSON.parse(await readFile(file, 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
   if (!['classes', 'bookings', 'attendance', 'payments'].every(key => Array.isArray(state[key])) || !state.requests) throw new Error('Invalid operations store');
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg' }).format(new Date());

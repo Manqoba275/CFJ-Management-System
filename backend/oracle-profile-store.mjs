@@ -5,7 +5,7 @@ import oracledb from 'oracledb';
 export function oracleProfileStore(pool, memberId = 1) {
   return {
     async load() {
-      const connection = await pool.getConnection();
+      const connection = await pool.getConnection(); connection.callTimeout = 8000;
       try {
         const result = await connection.execute(
           'SELECT display_name, goal, version FROM cfj_profiles WHERE member_id = :id',
@@ -17,7 +17,7 @@ export function oracleProfileStore(pool, memberId = 1) {
     },
     // Match the saved version in SQL so a later edit cannot silently overwrite another client’s change.
     async update(value) {
-      const connection = await pool.getConnection();
+      const connection = await pool.getConnection(); connection.callTimeout = 8000;
       try {
         const result = await connection.execute(
           'UPDATE cfj_profiles SET display_name = :name, goal = :goal, version = version + 1 WHERE member_id = :id AND version = :version',
