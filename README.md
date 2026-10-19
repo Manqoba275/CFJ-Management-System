@@ -5,7 +5,7 @@ Website and native Kotlin Android application for **CFJ Lifestyle Fitness**, bui
 | | |
 |---|---|
 | **Live website** | https://gym-management-system-11sn.onrender.com/ |
-| **Demonstration video** | <!-- REPLACE THIS LINE WITH THE UNLISTED YOUTUBE LINK BEFORE SUBMISSION --> _link to be added before submission_ |
+| **Demonstration video** | <!-- REPLACE THIS LINE WITH THE UNLISTED YOUTUBE LINK BEFORE SUBMISSION --> Not included in this repository copy - see the Task 2 report |
 | **Task 2 report** | [docs/report/CFJ_WIL_Task_2_Report.pdf](docs/report/CFJ_WIL_Task_2_Report.pdf) |
 | **User guide** | [docs/user-guide/USER_GUIDE.md](docs/user-guide/USER_GUIDE.md) |
 | **Evidence index** | [docs/evidence/README_EVIDENCE_INDEX.md](docs/evidence/README_EVIDENCE_INDEX.md) |
