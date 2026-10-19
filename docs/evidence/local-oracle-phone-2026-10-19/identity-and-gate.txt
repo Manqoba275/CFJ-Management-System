@@ -1,0 +1,1 @@
+Latest repeat: Oracle NJS-040 connection request timeout. Earlier UID mapping succeeded; no current authenticated end-to-end acceptance.

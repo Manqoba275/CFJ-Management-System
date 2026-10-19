@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "verifiedAt": "2026-10-19T13:15:09.817Z",
+  "environment": "local Oracle; two independent HTTP servers",
+  "checks": [
+    "unauthenticated protected request rejected",
+    "member denied admin report",
+    "two independent servers: last place booked once",
+    "other server sees committed booking",
+    "another member cannot cancel booking",
+    "cancellation and rebooking reuse the constrained booking row",
+    "payment retries survive other instance and reject changed amount",
+    "attendance persists and prevents later cancellation",
+    "weekly allowance protected across different sessions and servers",
+    "recipient-only acceptance and persisted private message",
+    "trainer request stored and visible across servers",
+    "paid synthetic member reads Oracle resource catalog",
+    "public Oracle event capacity and idempotent registration",
+    "admin report reads persisted relational state",
+    "fresh database connection confirms one payment record"
+  ],
+  "fixtureCleanup": "completed",
+  "limitations": [
+    "Development identities only; not Firebase SSO.",
+    "No hosted database or phone acceptance claimed."
+  ]
+}

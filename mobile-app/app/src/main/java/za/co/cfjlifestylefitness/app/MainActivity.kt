@@ -49,6 +49,7 @@ class MainActivity : Activity() {
             }
             insets
         }
+        findViewById<Button>(R.id.top_home).setOnClickListener { showScreen("home") }
         findViewById<Button>(R.id.nav_home).setOnClickListener { showScreen("home") }
         findViewById<Button>(R.id.nav_classes).setOnClickListener { showScreen("classes") }
         findViewById<Button>(R.id.nav_settings).setOnClickListener { showScreen("settings") }

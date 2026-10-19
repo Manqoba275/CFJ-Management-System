@@ -60,6 +60,7 @@ class FitnessPanel(private val activity: Activity, private val openClub: () -> U
     fun show(root: LinearLayout) {
         close(); container = root; root.removeAllViews()
         text(root, "TRAIN WITH PURPOSE", 12f, true)
+        root.addView(ExerciseIllustration(activity, 0), LinearLayout.LayoutParams(-1, dp(180)))
         text(root, "Your next rep\nstarts here.", 34f, true)
         text(root, "Home movement. Club connection. Your pace.")
         text(root, "${history.getInt("sessions", 0)} sessions completed on this phone", 14f)
@@ -68,6 +69,14 @@ class FitnessPanel(private val activity: Activity, private val openClub: () -> U
         }
         card(root, "The gym manual", "Learn the movement before adding the effort. Understand reps, sets and recovery.", "Explore exercise guides") { manual() }
         card(root, "Your CFJ club", "Explore classes, manage your account and connect with your training community.", "Explore CFJ classes", openClub)
+        text(root, "EXPLORE THE WEBSITE", 12f, true)
+        text(root, "Website sections open in your browser. Website preview data remains separate from shared Oracle records.", 14f)
+        listOf("Memberships" to "index.html#memberships", "Events" to "marathon.html", "Training library" to "library.html", "Members and trainers" to "members.html", "Help and support" to "help.html").forEach { (label, page) ->
+            button(root, label) {
+                try { activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://gym-management-system-11sn.onrender.com/" + page))) }
+                catch (_: android.content.ActivityNotFoundException) { text(root, "No browser is available.") }
+            }
+        }
         button(root, "My account") { activity.startActivity(Intent(activity, AccountActivity::class.java)) }
     }
 
@@ -89,6 +98,7 @@ class FitnessPanel(private val activity: Activity, private val openClub: () -> U
     private fun detail(index: Int) {
         val root = container ?: return; root.removeAllViews(); val exercise = exercises[index]
         text(root, exercise.area, 12f, true); text(root, exercise.name, 32f, true)
+        root.addView(ExerciseIllustration(activity, index), LinearLayout.LayoutParams(-1, dp(190)))
         text(root, exercise.steps, 19f); text(root, "FORM CHECK", 12f, true); text(root, exercise.cue)
         text(root, "Practice a few comfortable repetitions first. The guided routine offers 2 sets of 5 reps with an optional 60-second rest; adjust to your ability.")
         button(root, "Start full guided routine") { current = 0; sets = 0; session() }
@@ -100,6 +110,7 @@ class FitnessPanel(private val activity: Activity, private val openClub: () -> U
         text(root, "GUIDED TRAINING â€¢ ${current + 1} / ${exercises.size}", 12f, true)
         text(root, exercise.name, 32f, true)
         text(root, "SET ${sets + 1} OF 2  /  5 REPS", 23f, true)
+        root.addView(ExerciseIllustration(activity, current), LinearLayout.LayoutParams(-1, dp(190)))
         text(root, exercise.steps); text(root, exercise.cue)
         val status = TextView(activity).apply { textSize = 22f; setTextColor(blue) }; root.addView(status)
         button(root, "Set complete") {

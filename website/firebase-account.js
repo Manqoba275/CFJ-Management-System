@@ -18,7 +18,7 @@ async function run(action) {
  el('status').textContent='Contacting account service…';
  try { el('status').textContent=await action(); }
  catch(error) {
-  const messages={'auth/unauthorized-domain':'This website domain must be added to Firebase Authorized domains.','auth/popup-blocked':'Allow the Google sign-in popup and retry.','auth/popup-closed-by-user':'Google sign-in was cancelled.','auth/operation-not-allowed':'Enable this sign-in provider in Firebase.','auth/weak-password':'Choose a stronger password with at least six characters.','auth/too-many-requests':'Too many attempts. Please wait before retrying.'};
+  const messages={'auth/invalid-credential':'Email or password did not match. Use Google if that is how you joined, or reset your password.','auth/email-already-in-use':'This email already has an account. Sign in or reset its password.','auth/unauthorized-domain':'This website domain must be added to Firebase Authorized domains.','auth/popup-blocked':'Allow the Google sign-in popup and retry.','auth/popup-closed-by-user':'Google sign-in was cancelled.','auth/operation-not-allowed':'Enable this sign-in provider in Firebase.','auth/weak-password':'Choose a stronger password with at least six characters.','auth/too-many-requests':'Too many attempts. Please wait before retrying.'};
   el('status').textContent=messages[error.code] || 'Request failed. Check your details and internet connection, then retry.';
  } finally { busy=false; el('password').value=''; document.querySelectorAll('button').forEach(b=>b.disabled=false); render(auth.currentUser); }
 }
@@ -31,7 +31,7 @@ try {
  el('register').onclick=()=>{if(!el('account-form').reportValidity())return;run(async()=>{const result=await createUserWithEmailAndPassword(auth,el('email').value.trim(),el('password').value);try{await sendEmailVerification(result.user);return 'Account created. Check your inbox for verification.';}catch{return 'Account created, but the verification email failed. Use Send verification email to retry.';}});};
  el('google').onclick=()=>run(async()=>{await signInWithPopup(auth,new GoogleAuthProvider());return 'Signed in with Google.';});
  el('verify').onclick=()=>run(async()=>{if(!auth.currentUser)throw Error();await sendEmailVerification(auth.currentUser);return 'Verification email sent. Check your inbox.';});
- el('reload').onclick=()=>run(async()=>{if(!auth.currentUser)throw Error();await reload(auth.currentUser);return auth.currentUser.emailVerified?'Email verified.':'Email is not verified yet. Open the link in your inbox, then check again.';});
+ el('reload').onclick=()=>run(async()=>{if(!auth.currentUser)throw Error();await reload(auth.currentUser);await auth.currentUser.getIdToken(true);return auth.currentUser.emailVerified?'Email verified.':'Email is not verified yet. Open the link in your inbox, then check again.';});
  el('reset').onclick=()=>{if(!el('email').reportValidity())return;run(async()=>{await sendPasswordResetEmail(auth,el('email').value.trim());return 'If this account is eligible, a reset email will arrive.';});};
  el('logout').onclick=()=>run(async()=>{await signOut(auth);return 'Signed out.';});
 } catch { el('status').textContent='Account service could not initialise. Check browser storage permissions and reload.'; document.querySelectorAll('button').forEach(b=>b.disabled=true); }
