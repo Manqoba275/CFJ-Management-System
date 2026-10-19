@@ -1,0 +1,31 @@
+# Render blueprint for the CFJ shared API.
+# The static website is deployed separately from the website branch.
+# Create the service, then add the secret values in the Render dashboard.
+services:
+  - type: web
+    name: cfj-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci
+    startCommand: node backend/firebase-oracle-server.mjs
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: CFJ_BIND_HOST
+        value: 0.0.0.0
+      - key: FIREBASE_PROJECT_ID
+        value: cfj-management-system
+      - key: CFJ_ALLOWED_ORIGINS
+        sync: false
+      - key: ORACLE_USER
+        sync: false
+      - key: ORACLE_PASSWORD
+        sync: false
+      - key: ORACLE_CONNECT_STRING
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: /etc/secrets/firebase-service-account.json

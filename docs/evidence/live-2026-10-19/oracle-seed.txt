@@ -1,0 +1,9 @@
+file:///C:/Users/mtung/OneDrive/Documentos/ChatGPT/The%20forge%202/scripts/seed-oracle.mjs:18
+    if(existing.rows.length && existing.rows[0][0]!==id('UID',i)) throw new Error(`Reserved member ${member} is already used; no data changed`);
+                                                                        ^
+
+Error: Reserved member 9001 is already used; no data changed
+    at file:///C:/Users/mtung/OneDrive/Documentos/ChatGPT/The%20forge%202/scripts/seed-oracle.mjs:18:73
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v24.19.0

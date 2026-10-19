@@ -1,0 +1,54 @@
+CFJ Oracle evidence capture
+Host time: 2026-10-19T21:05:03+02:00
+Repo: C:\Users\mtung\OneDrive\Documentos\ChatGPT\The forge 2
+Branch/HEAD: feature/team-and-app-setup 0e75de9
+Node: v24.19.0 at C:\Program Files\nodejs\node.exe
+npm: 11.17.0
+PowerShell: 5.1.26100.9549
+
+CONTAINER (wsl -d Ubuntu -- podman ps -a):
+CONTAINER ID  IMAGE                                                             COMMAND               CREATED     STATUS                PORTS                     NAMES
+4e971a55ec8b  container-registry.oracle.com/database/free:23.26.3.0-lite-amd64  /bin/bash -c $ORA...  4 days ago  Up 6 hours (healthy)  127.0.0.1:1521->1521/tcp  cfj-oracle
+CONTAINER HEALTH: running;health=healthy;started=2026-10-19 15:09:14 +0200 SAST;image=container-registry.oracle.com/database/free:23.26.3.0-lite-amd64
+
+=== STEP: migrate-oracle.mjs ===
+started: 2026-10-19T21:05:14+02:00
+command: node --env-file=.env.oracle scripts/migrate-oracle.mjs
+finished: 2026-10-19T21:05:17+02:00  exitCode: 0  bytes: 1517
+
+=== STEP: seed-oracle.mjs ===
+started: 2026-10-19T21:05:17+02:00
+command: node --env-file=.env.oracle scripts/seed-oracle.mjs
+finished: 2026-10-19T21:05:18+02:00  exitCode: 1  bytes: 589
+
+=== STEP: verify-oracle-schema.mjs ===
+started: 2026-10-19T21:05:18+02:00
+command: node --env-file=.env.oracle scripts/verify-oracle-schema.mjs
+finished: 2026-10-19T21:05:21+02:00  exitCode: 0  bytes: 40789
+
+=== STEP: verify-oracle-operations.mjs ===
+started: 2026-10-19T21:05:21+02:00
+command: node --env-file=.env.oracle scripts/verify-oracle-operations.mjs
+finished: 2026-10-19T21:05:25+02:00  exitCode: 0  bytes: 1194
+
+=== STEP: row-counts ===
+started: 2026-10-19T21:05:25+02:00
+command: node C:\Users\mtung\AppData\Local\Temp\cfj-rowcounts.mjs docs/evidence/live-2026-10-19/oracle-schema.txt
+finished: 2026-10-19T21:05:25+02:00  exitCode: 0  bytes: 370
+
+=== STEP: npm test ===
+started: 2026-10-19T21:05:25+02:00
+command: npm test
+finished: 2026-10-19T21:05:35+02:00  exitCode: 0  bytes: 4105
+
+
+=== SUMMARY (step -> exitCode) ===
+migrate-oracle.mjs -> 0
+seed-oracle.mjs -> 1
+verify-oracle-schema.mjs -> 0
+verify-oracle-operations.mjs -> 0
+row-counts -> 0
+npm test -> 0
+capture finished: 2026-10-19T21:05:35+02:00
+
+(Container rows and health were re-queried at 21:06 SAST after a shell-quoting error; the values above are the corrected ones.)

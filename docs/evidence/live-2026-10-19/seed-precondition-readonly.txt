@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-10-19T19:07:04.330Z",
+  "readOnly": true,
+  "membersTotal": 20,
+  "reservedRange": [
+    {
+      "memberId": 9001,
+      "identityMatchesSeedFixture": false,
+      "identityKind": "external-binding",
+      "identityLength": 28
+    },
+    {
+      "memberId": 9002,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9003,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9004,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9005,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9006,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9007,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9008,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9009,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 10
+    },
+    {
+      "memberId": 9010,
+      "identityMatchesSeedFixture": true,
+      "identityKind": "seed-fixture",
+      "identityLength": 11
+    }
+  ],
+  "membersOutsideReservedRange": 10
+}
