@@ -1,5 +1,6 @@
 // Configures Android builds, SDK versions and signing. Release builds must not silently use a debug certificate.
 plugins {
+    id("com.google.gms.google-services")
     id("com.android.application")
 }
 
@@ -51,5 +52,7 @@ gradle.taskGraph.whenReady {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
+    implementation("com.google.firebase:firebase-auth")
     testImplementation("junit:junit:4.13.2")
 }

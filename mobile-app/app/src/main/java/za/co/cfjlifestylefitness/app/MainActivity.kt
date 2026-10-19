@@ -93,6 +93,12 @@ class MainActivity : Activity() {
     }
 
     private fun setupPreferences() {
+        val account = Button(this).apply {
+            text = "CFJ account — sign in or register"
+            setOnClickListener { startActivity(Intent(this@MainActivity, AccountActivity::class.java)) }
+        }
+        val settings = findViewById<EditText>(R.id.display_name).parent as android.widget.LinearLayout
+        settings.addView(account, 1)
         val name = findViewById<EditText>(R.id.display_name)
         val goal = findViewById<Spinner>(R.id.goal)
         val goals = resources.getStringArray(R.array.fitness_goals).toList()
