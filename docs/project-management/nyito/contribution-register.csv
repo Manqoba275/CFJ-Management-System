@@ -1,0 +1,3 @@
+Member,Contribution,Commit/PR,Date,Reviewed deliverable,Review outcome,Limitation
+Nyito (existing Git author configuration),Three booking acceptance/specification files imported from supplied team pack,https://github.com/Manqoba275/CFJ-Management-System/commit/171bde80b0b228a5dc3340f489df0a6cd7a16b86,,docs/analysis/booking-acceptance.md; website/specifications/booking-cases.json; Android BookingExamples.kt,Review pending,Commit/push observed in prior session; original independent authorship and reviewer acceptance not established.
+Nyito / AI-assisted draft,Progress and evidence coordination pack,,2026-10-19,docs/project-management/nyito,Review pending,Prepared with Codex; Nyito must verify and understand records. No completed meetings or feature passes asserted.

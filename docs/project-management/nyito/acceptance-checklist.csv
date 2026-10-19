@@ -1,0 +1,13 @@
+Test ID,Requirement,Precondition,Procedure,Expected result,Actual result,Status,Evidence,Dependency
+AC-01,REQ-03,Fresh synthetic account / valid credentials,Register and sign in using intended hosted identity,Account created; valid login succeeds; private route has verified identity,,Not run,,Hosted identity not evidenced
+AC-02,REQ-03,Invalid credentials,Attempt login with wrong password,Access rejected; no private data; clear safe message,,Not run,,Hosted identity not evidenced
+AC-03,REQ-04,SSO and cancel path,"Sign in through agreed provider, then repeat with cancellation",Correct identity returned; cancellation handled without crash or duplicate account,,Not run,,SSO not evidenced
+AC-04,REQ-05,Settings,Change a supported setting; close/reopen app and reload intended service,Value persists in documented storage; no claim of API save for local-only setting,,Not run,,Physical-phone run needed
+AC-05,REQ-06,Same synthetic member on two clients,Create booking on phone; reload website; cancel and reload both,Same confirmed booking/cancellation visible; no duplicate,,Not run,,Saved browser/HTTP check only; phone needed
+AC-06,REQ-06,Two eligible members; final seat,Submit simultaneous booking requests,Exactly one confirmed booking; capacity never negative,,Not run,,Transactional environment needed
+AC-07,REQ-06,One confirmed request with retry ID,Repeat request after simulated timeout,One booking and one capacity decrement,,Not run,,Runtime execution needed
+AC-08,REQ-10,Guest / wrong role / another member ID,Request protected record and admin report,401/403 as designed; no private data returned,,Not run,,Full hosted contract needed
+AC-09,REQ-08,All required tables,Run saved count query against declared target schema,Each required table has ten or more synthetic records,,Not run,,Saved local evidence exists; fresh target check pending
+AC-10,REQ-10,"Invalid field, offline connection",Submit invalid data and attempt offline booking,Clear validation/retry message; no crash or false booking confirmation,,Not run,,Phone execution needed
+AC-11,REQ-11,New reviewer,"Follow help to login, change settings and book/cancel",Reviewer can follow steps; documented storage and limitations match actual build,,Not run,,Help consistency review pending
+AC-12,REQ-14,"Phone, hosted services and synthetic data",Narrate all required flows and service-data views,Readable professional recording; voice-over; no secrets; build identified,,Not run,,Video and hosted services needed
