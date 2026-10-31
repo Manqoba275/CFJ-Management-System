@@ -2,9 +2,9 @@
 name: Android build and tests
 on:
   push:
-    paths: ['mobile-app/**', '.github/workflows/android.yml']
+    paths: ['mobile-app/**', 'website/**', '.github/workflows/android.yml']
   pull_request:
-    paths: ['mobile-app/**', '.github/workflows/android.yml']
+    paths: ['mobile-app/**', 'website/**', '.github/workflows/android.yml']
 permissions:
   contents: read
 jobs:
