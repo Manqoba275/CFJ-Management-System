@@ -10,6 +10,7 @@ import { oracleProfileStore } from './oracle-profile-store.mjs';
 import { oracleOperationsStore } from './oracle-operations-store.mjs';
 import { createOperationsHandler } from './operations.mjs';
 import { createProfileServer } from './profile-server.mjs';
+import { enrolMember, oracleEnrolment } from './enrolment.mjs';
 if(process.env.FIREBASE_AUTH_EMULATOR_HOST) throw Error('The Oracle identity server does not accept emulator tokens');
 const projectId=process.env.FIREBASE_PROJECT_ID;
 if(!projectId)throw Error('Set FIREBASE_PROJECT_ID');
@@ -18,6 +19,7 @@ const pool=await oracledb.createPool({user:process.env.ORACLE_USER,password:proc
 const handler=firebaseGate({
  verifyToken: token=>auth.verifyIdToken(token),
  findMember:oracleIdentityStore(pool),
+ enrol:(req,claims)=>enrolMember(req,claims,oracleEnrolment(pool)),
  allowedOrigins:(process.env.CFJ_ALLOWED_ORIGINS || '').split(',').map(x=>x.trim()).filter(Boolean),
  async dispatch(req,res,member) {
   // Reuse the tested handlers behind a fresh, server-only credential. No external token bypasses verification.

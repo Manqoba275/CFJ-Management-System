@@ -1,5 +1,5 @@
 // Reject invalid identity before opening a database connection. Never link accounts by email.
-export function firebaseGate({ verifyToken, findMember, dispatch, allowedOrigins = [] }) {
+export function firebaseGate({ verifyToken, findMember, dispatch, enrol, allowedOrigins = [] }) {
   return async (req, res) => {
     const reply = (status, error) => { res.writeHead(status, {'Content-Type':'application/json','Cache-Control':'no-store'}); res.end(JSON.stringify({error})); };
     const origin = req.headers.origin;
@@ -14,6 +14,11 @@ export function firebaseGate({ verifyToken, findMember, dispatch, allowedOrigins
     try { claims = await verifyToken(match[1]); } catch { return reply(401,'unauthorized'); }
     if(!claims.uid || claims.email_verified !== true) return reply(403,'email_verification_required');
     try {
+      if (enrol && req.method === 'POST' && req.url === '/api/v1/enrol') {
+        const result = await enrol(req, claims);
+        res.writeHead(result.status, {'Content-Type':'application/json','Cache-Control':'no-store'});
+        return res.end(JSON.stringify(result.data));
+      }
       const member = await findMember(claims.uid);
       if(!member) return reply(403,'member_not_provisioned');
       // All Firebase accounts enter as members. Staff/admin claims supplied by clients are ignored.
