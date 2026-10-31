@@ -8,14 +8,22 @@ import android.os.Bundle
 /** Explicit local-service smoke test; run only against synthetic development data. */
 class ProfileConnectionInstrumentation : Instrumentation() {
     private var token = ""
+    private var mode = "profile"
     override fun onCreate(arguments: Bundle?) {
         super.onCreate(arguments)
         token = arguments?.getString("devToken").orEmpty()
+        mode = arguments?.getString("mode") ?: "profile"
         start()
     }
     override fun onStart() {
         val results = Bundle()
         try {
+            if (mode == "website") {
+                WebsiteSmoke(this).run()
+                results.putString("stream", "WEBSITE_SMOKE_OK: packaged images, navigation, member login and session persistence passed\n")
+                finish(Activity.RESULT_OK, results)
+                return
+            }
             check(token.length >= 32) { "Supply devToken for the synthetic local service" }
             val api = ProfileApi("http://10.0.2.2:8787", token, true)
             val initial = api.load()
@@ -32,8 +40,8 @@ class ProfileConnectionInstrumentation : Instrumentation() {
             }
             results.putString("stream", "PROFILE_SYNC_OK: load, save, reload, stale-write rejection and invalid-token rejection passed\n")
             finish(Activity.RESULT_OK, results)
-        } catch (_: Exception) {
-            results.putString("stream", "PROFILE_SYNC_FAILED: check the local server and rerun; no credentials are logged\n")
+        } catch (error: Exception) {
+            results.putString("stream", if (mode == "website") "WEBSITE_SMOKE_FAILED: ${error.javaClass.simpleName}: ${error.message}\n" else "PROFILE_SYNC_FAILED: check the local server and rerun; no credentials are logged\n")
             finish(Activity.RESULT_CANCELED, results)
         }
     }

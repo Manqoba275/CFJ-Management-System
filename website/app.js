@@ -970,6 +970,8 @@ function showManual(manual) {
 function exportAdminReport() {
   /* Export lets the admin download current report data as evidence. */
   const report = { generatedAt: new Date().toISOString(), members: state.members, payments: state.payments };
+  // The Android shell supplies an origin-restricted export channel and a document picker.
+  if (window.cfjExport) { window.cfjExport.postMessage(JSON.stringify(report, null, 2)); return; }
   const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
