@@ -10,53 +10,62 @@ import android.widget.Spinner
 import android.widget.TextView
 import java.util.concurrent.Executors
 
-/** Debug-only connection panel; credentials remain in memory and are never logged or saved. */
+/** Verified member connection; manual development credentials exist only in debug builds. */
 class ProfileSyncPanel(private val activity: Activity) {
     private val executor = Executors.newSingleThreadExecutor()
     fun close() { executor.shutdownNow() }
 
     fun bind() {
         val panel = activity.findViewById<View>(R.id.profile_sync)
-        panel.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
-        if (!BuildConfig.DEBUG) return
+        val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+        panel.visibility = if (BuildConfig.DEBUG || user != null) View.VISIBLE else View.GONE
+        if (!BuildConfig.DEBUG && user == null) return
         val origin = activity.findViewById<EditText>(R.id.api_origin)
         val token = activity.findViewById<EditText>(R.id.api_token)
-        com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.let {
+        val connectionPreferences = activity.getSharedPreferences("cfj_connection", Context.MODE_PRIVATE)
+        origin.setText(connectionPreferences.getString("origin", if (BuildConfig.DEBUG) activity.getString(R.string.sync_default_origin) else ""))
+        user?.let {
             token.setText("firebase:${it.uid}")
             token.isEnabled = false
-            origin.setText("http://127.0.0.1:8789")
+            token.visibility = View.GONE
         }
         val name = activity.findViewById<EditText>(R.id.display_name)
         val goal = activity.findViewById<Spinner>(R.id.goal)
         val status = activity.findViewById<TextView>(R.id.sync_status)
         val load = activity.findViewById<Button>(R.id.load_profile)
         val save = activity.findViewById<Button>(R.id.sync_profile)
+        val enrol = activity.findViewById<Button>(R.id.enrol_member)
         val controls = listOf<View>(origin, token, name, goal, load, save,
-            activity.findViewById<Button>(R.id.save), activity.findViewById<Button>(R.id.reset))
+            activity.findViewById<Button>(R.id.save), activity.findViewById<Button>(R.id.reset), enrol)
         val goals = activity.resources.getStringArray(R.array.fitness_goals).toList()
         var loaded: RemoteProfile? = null
         var loadedOrigin = ""
         var loadedToken = ""
-        fun perform(writing: Boolean) {
+        fun perform(writing: Boolean, enrolling: Boolean = false) {
             val address = origin.text.toString().trim()
             val secret = token.text.toString().trim()
             val value = MemberPreferences(name.text.toString().trim(), goal.selectedItem.toString())
             if (writing && (loaded == null || address != loadedOrigin || secret != loadedToken)) {
                 status.setText(R.string.sync_load_first); return
             }
-            if (writing && value.validate(goals) != null) {
+            if ((writing || enrolling) && value.validate(goals) != null) {
                 status.setText(R.string.sync_invalid); return
             }
             val api = try { ProfileApi(address, secret, BuildConfig.DEBUG) }
             catch (_: Exception) { status.setText(R.string.sync_config_invalid); return }
+            connectionPreferences.edit().putString("origin", address).apply()
             val request = if (writing) RemoteProfile(value.displayName, value.goal, loaded!!.version) else null
             controls.forEach { it.isEnabled = false }
             status.setText(R.string.sync_loading)
             executor.execute {
-                val result = runCatching { if (request == null) api.load() else api.save(request) }
+                val result = runCatching {
+                    if (enrolling) CommunityApi(address, secret).send("/enrol", org.json.JSONObject().put("displayName", value.displayName).put("goal", value.goal))
+                    if (request == null) api.load() else api.save(request)
+                }
                 activity.runOnUiThread {
                     if (activity.isDestroyed || !panel.isAttachedToWindow) return@runOnUiThread
                     controls.forEach { it.isEnabled = true }
+                    token.isEnabled = user == null && BuildConfig.DEBUG
                     result.fold(onSuccess = { remote ->
                         loaded = remote; loadedOrigin = address; loadedToken = secret
                         name.setText(remote.displayName)
@@ -74,5 +83,6 @@ class ProfileSyncPanel(private val activity: Activity) {
         }
         load.setOnClickListener { perform(false) }
         save.setOnClickListener { perform(true) }
+        enrol.setOnClickListener { perform(false, true) }
     }
 }

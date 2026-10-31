@@ -45,6 +45,7 @@ class ProfileApi(private val origin: String, private val token: String, allowLoc
             when (connection.responseCode) {
                 200 -> Unit
                 401 -> throw IllegalStateException("Access denied. Check the token and load again.")
+                403 -> throw IllegalStateException("Verify your email and ensure this account has been registered with the CFJ service.")
                 409 -> throw IllegalStateException("Profile changed elsewhere. Load it again before saving.")
                 400 -> throw IllegalStateException("The service rejected these profile details.")
                 else -> throw IllegalStateException("Service unavailable. Your local preferences were not changed.")

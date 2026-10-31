@@ -42,7 +42,11 @@ async function memberApi(path, method='GET', body) {
  const origin=new URL(el('api-origin').value);
  if(origin.username || origin.password || origin.search || origin.hash || origin.pathname!=='/' || !(origin.protocol==='https:' || (origin.protocol==='http:' && ['127.0.0.1','localhost'].includes(origin.hostname)))) throw Error('invalid_api_origin');
  const response=await fetch(origin.origin+'/api/v1'+path,{method,redirect:'error',headers:{Authorization:'Bearer '+await user.getIdToken(), 'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
- if(!response.ok)throw Error('member_api_failed');
+ if(!response.ok) {
+  const error = new Error('member_api_failed');
+  error.code = response.status === 409 ? 'cfj/conflict' : response.status === 403 ? 'cfj/forbidden' : 'cfj/unavailable';
+  throw error;
+ }
  return response.json();
 }
 async function loadMemberRecords() {
@@ -58,3 +62,45 @@ async function loadMemberRecords() {
 }
 el('api-load').onclick=()=>run(loadMemberRecords);
 onAuthStateChanged(auth,()=>el('api-records').replaceChildren());
+
+// The same versioned /me contract is used by Android Settings.
+const profilePanel = document.createElement('section');
+profilePanel.innerHTML = `<h2>Shared profile and settings</h2>
+ <label for="shared-name">Display name</label><input id="shared-name" maxlength="60" minlength="2" required autocomplete="name">
+ <label for="shared-goal">Training goal</label><select id="shared-goal"><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select>
+ <p>Register your verified account with the CFJ service first. Membership is assigned separately. Load before editing; saving updates the profile used by the app.</p>
+ <button id="enrol-member">Register with CFJ service</button><button id="profile-load">Load profile</button><button id="profile-save" disabled>Save shared profile</button>
+ <p id="profile-status" role="status"></p>`;
+el('api-panel').before(profilePanel);
+let loadedProfile = null;
+let profileBusy = false;
+function invalidateProfile() { loadedProfile = null; el('profile-save').disabled = true; el('profile-status').textContent = ''; }
+el('api-origin').addEventListener('input', invalidateProfile);
+onAuthStateChanged(auth, () => { invalidateProfile(); el('shared-name').value = ''; });
+async function profileAction(kind) {
+ if(profileBusy) return;
+ const uid = auth.currentUser?.uid, address = el('api-origin').value;
+ const displayName = el('shared-name').value.trim(), goal = el('shared-goal').value;
+ if(kind !== 'load' && (displayName.length < 2 || displayName.length > 60)) { el('profile-status').textContent='Enter a name of 2–60 characters.'; return; }
+ if(kind === 'save' && (!loadedProfile || loadedProfile.uid !== uid || loadedProfile.address !== address)) { invalidateProfile(); return; }
+ profileBusy = true;
+ const controls = ['enrol-member','profile-load','profile-save','shared-name','shared-goal','api-origin'].map(el);
+ controls.forEach(control => control.disabled = true);
+ el('profile-status').textContent='Contacting CFJ service…';
+ try {
+  if(kind === 'enrol') await memberApi('/enrol','POST',{displayName,goal});
+  const profile = kind === 'save' ? await memberApi('/me','PATCH',{displayName,goal,version:loadedProfile.version}) : await memberApi('/me');
+  if(auth.currentUser?.uid !== uid || el('api-origin').value !== address) { invalidateProfile(); return; }
+  loadedProfile = {...profile, uid, address};
+  el('shared-name').value = profile.displayName; el('shared-goal').value = profile.goal;
+  el('profile-status').textContent = kind === 'save' ? 'Shared profile saved. Reload it in Android Settings to see the change.' : 'Shared profile loaded.';
+ } catch(error) {
+  loadedProfile = null;
+  el('profile-status').textContent = error.code === 'cfj/conflict' ? 'Profile changed on another device. Load again before saving.' : 'Could not confirm the request. Check your API address and verified sign-in. Register with the CFJ service if this is a new account, then reload.';
+ } finally {
+  profileBusy = false; controls.forEach(control => control.disabled = false); el('profile-save').disabled = !loadedProfile;
+ }
+}
+el('enrol-member').onclick = () => profileAction('enrol');
+el('profile-load').onclick = () => profileAction('load');
+el('profile-save').onclick = () => profileAction('save');

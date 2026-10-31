@@ -80,7 +80,7 @@ async function record(kind) {
   const identity = el('token').value.trim();
   if (previous && previous.identity !== identity) throw new Error('Return to the original staff token to resolve the unconfirmed request');
   if (previous && previous.fingerprint !== fingerprint) throw new Error('Retry the previous unconfirmed record before changing its details');
-  const requestId = previous?.requestId || crypto.randomUUID();
+  const requestId = previous?.requestId || Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
   pending[kind] = { requestId, fingerprint, identity };
   try { await api('/api/v1/' + kind, 'POST', { ...body, requestId }); }
   catch (error) { if (error.status >= 400 && error.status < 500) delete pending[kind]; throw error; }

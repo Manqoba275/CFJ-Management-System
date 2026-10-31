@@ -14,6 +14,7 @@
         <TextView style="@style/Body" android:text="@string/sync_notice" />
         <EditText android:id="@+id/api_origin" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textUri" android:hint="@string/sync_origin" android:text="@string/sync_default_origin" android:importantForAutofill="no" />
         <EditText android:id="@+id/api_token" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp" android:inputType="textPassword" android:hint="@string/sync_token" android:importantForAutofill="no" android:saveEnabled="false" />
+        <Button android:id="@+id/enrol_member" style="@style/Action" android:text="Register verified account with CFJ service" />
         <Button android:id="@+id/load_profile" style="@style/Action" android:text="@string/sync_load" />
         <Button android:id="@+id/sync_profile" style="@style/Action" android:text="@string/sync_save" />
         <TextView android:id="@+id/sync_status" style="@style/Body" android:accessibilityLiveRegion="polite" />

@@ -20,8 +20,8 @@ android {
         applicationId = "za.co.cfjlifestylefitness.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
         testInstrumentationRunner = "za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation"
     }
     compileOptions {
@@ -52,6 +52,10 @@ gradle.taskGraph.whenReady {
 }
 
 dependencies {
+    implementation("androidx.webkit:webkit:1.12.1")
+    implementation("androidx.activity:activity:1.9.3")
+    // Keep the transitive Fragment runtime compatible with Activity Result contracts.
+    implementation("androidx.fragment:fragment:1.8.5")
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.credentials:credentials:1.3.0")
@@ -59,3 +63,13 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     testImplementation("junit:junit:4.13.2")
 }
+
+// One source for web and app pages; include only public website files.
+val bundleWebsite by tasks.registering(Sync::class) {
+    from(rootProject.file("../website")) {
+        include("**/*.html", "**/*.css", "**/*.js", "**/*.mjs", "assets/**")
+    }
+    into(layout.buildDirectory.dir("generated/websiteAssets/site"))
+}
+android.sourceSets.getByName("main").assets.directories.add(layout.buildDirectory.dir("generated/websiteAssets").get().asFile.path)
+tasks.named("preBuild").configure { dependsOn(bundleWebsite) }

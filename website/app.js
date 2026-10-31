@@ -1,5 +1,7 @@
 // Runs the browser-only website demo. These local records are separate from the Oracle profile service.
 /* CFJ local app state key: all demo data is stored in the browser for offline use. */
+// Demo records contain JSON values only; this also supports older Android WebViews.
+function cloneDemoData(value) { return JSON.parse(JSON.stringify(value)); }
 const STORAGE_KEY = "cfj_multi_page_working_app";
 
 /* The current month is used to decide whether a member has paid and can view manuals. */
@@ -176,23 +178,23 @@ function setupFooter() {
 function loadState() {
   /* If saved data is damaged, the app safely returns to seed data. */
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || structuredClone(seed);
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || cloneDemoData(seed);
   } catch {
-    return structuredClone(seed);
+    return cloneDemoData(seed);
   }
 }
 
 // Repair damaged saved collections while keeping valid records, including deliberately empty lists.
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
-  const upgraded = { ...structuredClone(seed), ...savedState };
+  const upgraded = { ...cloneDemoData(seed), ...savedState };
   // Integrates the reviewed recovery fix from PR #2 (cec0207).
   // Preserve valid records while repairing damaged saved collections.
   for (const [key, fallback] of Object.entries(seed)) {
     if (!Array.isArray(fallback)) continue;
     upgraded[key] = Array.isArray(upgraded[key])
       ? upgraded[key].filter((record) => record !== null && typeof record === "object" && !Array.isArray(record))
-      : structuredClone(fallback);
+      : cloneDemoData(fallback);
   }
   seed.users.forEach((seedUser) => {
     if (!upgraded.users.some((user) => user.id === seedUser.id || user.email === seedUser.email)) {
@@ -970,6 +972,8 @@ function showManual(manual) {
 function exportAdminReport() {
   /* Export lets the admin download current report data as evidence. */
   const report = { generatedAt: new Date().toISOString(), members: state.members, payments: state.payments };
+  // The Android shell supplies an origin-restricted export channel and a document picker.
+  if (window.cfjExport) { window.cfjExport.postMessage(JSON.stringify(report, null, 2)); return; }
   const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
