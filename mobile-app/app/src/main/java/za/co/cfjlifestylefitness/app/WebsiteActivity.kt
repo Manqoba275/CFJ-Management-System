@@ -93,8 +93,8 @@ class WebsiteActivity : ComponentActivity() {
             // Only the packaged reports page may request a bounded, user-selected JSON export.
             WebViewCompat.addWebMessageListener(web, "cfjExport", setOf("https://appassets.androidplatform.net")) { view, message, origin, mainFrame, _ ->
                 val data = message.data
-                if (mainFrame && origin.toString() == "https://appassets.androidplatform.net" &&
-                    Uri.parse(view.url).path == "/assets/site/reports.html" && data != null && data.length <= 1_000_000 && pendingReport == null) {
+                if (mainFrame && origin.scheme == "https" && origin.host == "appassets.androidplatform.net" &&
+                    Uri.parse(view.url ?: "").path == "/assets/site/reports.html" && data != null && data.length <= 1_000_000 && pendingReport == null) {
                     val valid = runCatching { org.json.JSONObject(data) }.isSuccess
                     if (valid) {
                         pendingReport = data

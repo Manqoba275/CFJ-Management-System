@@ -8,28 +8,46 @@
 <script>
 const el = id => document.getElementById(id);
 let pending;
+let loadedOrigin = '';
+const service = document.createElement('div');
+service.innerHTML = '<label for="event-origin">CFJ service address</label><input id="event-origin" type="url" placeholder="https://your-cfj-service.example"><button id="load-events" type="button">Load events</button>';
+el('registration').before(service);
+el('event-origin').value = ['localhost','127.0.0.1'].includes(location.hostname) ? location.origin : '';
+function serviceOrigin() {
+  const url = new URL(el('event-origin').value);
+  if (url.username || url.password || url.search || url.hash || url.pathname !== '/' ||
+      !(url.protocol === 'https:' || (url.protocol === 'http:' && ['localhost','127.0.0.1'].includes(url.hostname)))) throw Error('Enter the HTTPS address supplied by CFJ.');
+  return url.origin;
+}
+el('event-origin').addEventListener('input', () => { el('submit').disabled = true; loadedOrigin = ''; });
+el('load-events').onclick = loadEvents;
 async function request(path, body) {
-  const response = await fetch('/api/v1/public/' + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
-  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Open this page through the local API at port 8787.');
+  const response = await fetch(serviceOrigin() + '/api/v1/public/' + path, { method: body ? 'POST' : 'GET', redirect: 'error', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('This address did not return CFJ event data. Check the service address.');
   const data = await response.json();
   const messages = { invalid_registration: 'Check your name, email and consent.', registration_unavailable: 'Registration is unavailable for these details. Contact the event organiser.', event_full: 'This event is full.', request_id_reused: 'Retry the original details for this request.' };
   if (!response.ok) throw Object.assign(new Error(messages[data.error] || 'Registration is not confirmed. Please retry.'), { status: response.status });
   return data;
 }
 async function loadEvents() {
+  if (pending) { el('status').textContent = 'Retry your unconfirmed registration before loading another service.'; return; }
+  el('load-events').disabled = true; el('event-origin').disabled = true; el('submit').disabled = true;
   try {
     const events = await request('events'); el('event').replaceChildren();
     for (const event of events) { const option = document.createElement('option'); option.value = event.id; option.textContent = `${event.name} · ${event.spaces} places`; option.disabled = event.spaces === 0; el('event').append(option); }
     el('submit').disabled = !events.some(e => e.spaces > 0);
-  } catch (error) { el('status').textContent = error.message; }
+    loadedOrigin = serviceOrigin();
+  } catch (error) { loadedOrigin = ''; el('status').textContent = error.message; }
+  finally { el('load-events').disabled = false; el('event-origin').disabled = false; }
 }
 el('registration').onsubmit = async event => {
   event.preventDefault();
+  if (!loadedOrigin || loadedOrigin !== serviceOrigin()) { el('status').textContent = 'Load events from this service first.'; return; }
   const details = { eventId: el('event').value, displayName: el('name').value.trim(), email: el('email').value.trim().toLowerCase(), consent: el('consent').checked };
   const fingerprint = JSON.stringify(details);
   if (pending && pending.fingerprint !== fingerprint) { el('status').textContent = 'Retry your previous unconfirmed details before making changes.'; return; }
   pending ??= { fingerprint, requestId: crypto.randomUUID() };
-  el('submit').disabled = true; el('status').textContent = 'Submitting registration…';
+  el('submit').disabled = true; el('event-origin').disabled = true; el('load-events').disabled = true; el('status').textContent = 'Submitting registration…';
   try {
     const result = await request('registrations', { ...details, requestId: pending.requestId });
     el('status').textContent = `Registered for the demo event. Your reference: ${result.reference}`;
@@ -37,7 +55,9 @@ el('registration').onsubmit = async event => {
   } catch (error) {
     if (error.status >= 400 && error.status < 500) pending = null;
     el('status').textContent = error.message; el('submit').disabled = false;
+    el('event-origin').disabled = !!pending; el('load-events').disabled = !!pending;
   }
 };
-loadEvents();
+if (el('event-origin').value) loadEvents();
+else el('status').textContent = 'Enter the CFJ service address and load available events.';
 </script></body></html>
