@@ -47,7 +47,7 @@ el('registration').onsubmit = async event => {
   const fingerprint = JSON.stringify(details);
   if (pending && pending.fingerprint !== fingerprint) { el('status').textContent = 'Retry your previous unconfirmed details before making changes.'; return; }
   // Cryptographic retry ID also works on WebViews predating crypto.randomUUID.
-  pending ??= { fingerprint, requestId: Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('') };
+  if (!pending) pending = { fingerprint, requestId: Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('') };
   el('submit').disabled = true; el('event-origin').disabled = true; el('load-events').disabled = true; el('status').textContent = 'Submitting registration…';
   try {
     const result = await request('registrations', { ...details, requestId: pending.requestId });
