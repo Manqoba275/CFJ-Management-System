@@ -53,6 +53,7 @@ gradle.taskGraph.whenReady {
 
 dependencies {
     implementation("androidx.webkit:webkit:1.12.1")
+    implementation("androidx.activity:activity:1.9.3")
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.credentials:credentials:1.3.0")

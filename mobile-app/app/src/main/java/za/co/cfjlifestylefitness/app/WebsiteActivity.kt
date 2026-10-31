@@ -1,7 +1,8 @@
 package za.co.cfjlifestylefitness.app
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.os.Bundle
@@ -13,7 +14,7 @@ import androidx.webkit.WebViewAssetLoader
 /** Uses Android's HTTPS asset loader; no file access or native JavaScript bridge.
  * Website demo records remain on this phone. Firebase sign-in stays native.
  */
-class WebsiteActivity : Activity() {
+class WebsiteActivity : ComponentActivity() {
     private lateinit var web: WebView
     private lateinit var status: TextView
     private val home = "https://appassets.androidplatform.net/assets/site/index.html"
@@ -84,13 +85,11 @@ class WebsiteActivity : Activity() {
             }
         }
         if (savedInstanceState == null || web.restoreState(savedInstanceState) == null) web.loadUrl(home)
-        if (android.os.Build.VERSION.SDK_INT >= 33) {
-            onBackInvokedDispatcher.registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT) { navigateBack() }
-        }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { navigateBack() }
+        })
     }
     private fun navigateBack() { if (web.canGoBack()) web.goBack() else finish() }
-    @Deprecated("Legacy Android back navigation")
-    override fun onBackPressed() { navigateBack() }
     override fun onSaveInstanceState(outState: Bundle) { web.saveState(outState); super.onSaveInstanceState(outState) }
     override fun onPause() { web.onPause(); super.onPause() }
     override fun onResume() { super.onResume(); web.onResume() }

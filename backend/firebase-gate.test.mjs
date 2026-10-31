@@ -15,3 +15,21 @@ test('verified unmapped account is refused',async()=>{assert.equal((await invoke
 test('client admin claims cannot grant staff access',async()=>{const r=await invoke({claims:{uid:'a',email_verified:true,role:'admin'}});assert.equal(r.status,200);assert.deepEqual(r.actor,{id:'42',role:'member',displayName:undefined,discoverable:false});});
 test('foreign origin is refused before storage',async()=>{const r=await invoke({origin:'https://evil.example'});assert.equal(r.status,403);assert.equal(r.lookups,0);});
 test('database failure returns sanitized 503',async()=>{const r=await invoke({storeError:true});assert.equal(r.status,503);assert.equal(r.body,'{"error":"service_unavailable"}');});
+
+test('only exact public event methods bypass authentication and CORS still applies', async () => {
+ for (const [method,url,origin,expected] of [
+  ['GET','/api/v1/public/events',undefined,200],
+  ['POST','/api/v1/public/registrations',undefined,200],
+  ['GET','/api/v1/public/events','https://evil.example',403],
+  ['DELETE','/api/v1/public/events',undefined,401],
+  ['GET','/api/v1/public/registrations',undefined,401],
+  ['GET','/api/v1/admin/reports',undefined,401],
+  ['GET','/api/v1/public/events/../me',undefined,401]
+ ]) {
+  const res = { writeHead(status) { this.status=status; }, end() {}, setHeader() {} };
+  await firebaseGate({ verifyToken:()=>assert.fail('no token supplied'),findMember:()=>assert.fail(),dispatch:()=>assert.fail(),
+   publicDispatch:async(req,res)=>{res.writeHead(200);res.end();}
+  })({method,url,headers:{origin}},res);
+  assert.equal(res.status,expected,method+' '+url);
+ }
+});

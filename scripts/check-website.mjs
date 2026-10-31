@@ -23,5 +23,13 @@ for (const name of pages) {
   }
 }
 if (missing.length) throw new Error(`Missing local website files:\n${missing.join('\n')}`);
-execFileSync(process.execPath, ['--check', resolve(root, 'app.js')], { stdio: 'inherit' });
-console.log(`Validated local links/assets in ${pages.length} pages, inline scripts and app.js syntax. Runtime and integration testing remain separate.`);
+// Include account modules as well as the demo script in every CI syntax check.
+async function checkScripts(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const path = resolve(directory, entry.name);
+    if (entry.isDirectory()) await checkScripts(path);
+    else if (/\.(?:js|mjs)$/.test(entry.name)) execFileSync(process.execPath, ['--check', path], { stdio: 'inherit' });
+  }
+}
+await checkScripts(root);
+console.log(`Validated local links/assets in ${pages.length} pages, inline scripts and all website JavaScript modules. Runtime and integration testing remain separate.`);
