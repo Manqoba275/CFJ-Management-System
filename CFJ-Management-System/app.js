@@ -1,5 +1,7 @@
 // Runs the browser-only website demo. These local records are separate from the Oracle profile service.
 /* CFJ local app state key: all demo data is stored in the browser for offline use. */
+// Demo records contain JSON values only; this also supports older Android WebViews.
+function cloneDemoData(value) { return JSON.parse(JSON.stringify(value)); }
 const STORAGE_KEY = "cfj_multi_page_working_app";
 
 /* The current month is used to decide whether a member has paid and can view manuals. */
@@ -33,27 +35,50 @@ const seed = {
     { id: "P-1", memberId: "M-1001", month: currentMonth, amount: 450, method: "Online", channel: "Email", date: today, confirmation: "Email sent to anele@cfjfit.co.za confirming R450 membership payment." }
   ],
   bookings: [],
+  trainingLog: [],
   attendance: [],
   trainerRequests: [],
   trainerReviews: [],
   friendConnections: []
 };
 
-/* Original training-manual content. It summarises safe exercise guidance without copying book text. */
+/* Original training plans use the supplied anatomy/workout images as visual references. */
 const manuals = [
-  { goal: "Build strength", area: "Chest", title: "Chest Strength Foundation", image: "assets/strength-class.jpg", steps: ["Warm up shoulders with light band work.", "Use controlled chest presses for 3 sets of 6 to 8 reps.", "Keep shoulder blades stable and elbows slightly tucked.", "Rest 90 seconds between heavy sets.", "Stop if sharp shoulder pain appears."] },
-  { goal: "Build strength", area: "Back", title: "Back Pulling Strength", image: "assets/aesthetic-gym.jpg", steps: ["Start with lat pulldowns or assisted pull-ups.", "Pull elbows down instead of pulling with only the hands.", "Add a rowing movement for mid-back strength.", "Train back before biceps to keep pulling power high.", "Stretch gently after training."] },
-  { goal: "Weight loss", area: "Legs", title: "Fat-Loss Leg Circuit", image: "assets/boxing-workout.jpg", steps: ["Perform bodyweight squats for 12 reps.", "Move into reverse lunges for 10 reps each side.", "Add step-ups or bike intervals for 45 seconds.", "Repeat the circuit 3 to 4 times.", "Keep effort high but technique clean."] },
-  { goal: "Weight loss", area: "Core", title: "Core Conditioning", image: "assets/mindset.jpg", steps: ["Use planks, dead bugs, and mountain climbers.", "Work in 30 to 45 second intervals.", "Breathe steadily and brace the abdomen.", "Avoid pulling the neck during floor exercises.", "Combine with regular cardio and nutrition control."] },
-  { goal: "Muscle tone", area: "Legs", title: "Leg Tone Builder", image: "assets/gym-hub.jpg", steps: ["Use moderate weights for 10 to 15 reps.", "Combine goblet squats, Romanian deadlifts, and calf raises.", "Move slowly during the lowering phase.", "Rest 45 to 60 seconds between sets.", "Increase resistance gradually each week."] },
-  { goal: "Muscle tone", area: "Chest", title: "Upper Body Tone", image: "assets/training-hero.jpg", steps: ["Pair push-ups with dumbbell chest presses.", "Use lighter weights with clean full-range reps.", "Add cable or band fly movements carefully.", "Keep the chest lifted and wrists neutral.", "Finish with gentle stretching."] },
-  { goal: "Endurance", area: "Core", title: "Endurance Core Manual", image: "assets/mindset.jpg", steps: ["Train core stability before long cardio sessions.", "Hold plank variations for time.", "Use bird dogs to improve control.", "Add breathing work between rounds.", "Progress by adding time, not by losing form."] },
-  { goal: "Endurance", area: "Back", title: "Posture For Endurance", image: "assets/aesthetic-gym.jpg", steps: ["Use light rows for high-quality repetitions.", "Strengthen upper-back posture for running and cycling.", "Keep shoulder blades moving naturally.", "Avoid heavy loads when tired.", "Stretch chest and lats after training."] }
+  { id: "strength-chest", goal: "Build strength", area: "Chest", title: "Chest Strength Foundation", image: "assets/training/chest-workout.jpg", illustration: "assets/training/illustrations/chest.svg", duration: "35 min", level: "Foundation", equipment: "Bench or clear floor space; optional light dumbbells", steps: ["Warm up with easy arm circles and wall press-ups for 5 minutes.", "Choose a comfortable chest press or incline push-up and complete 3 sets of 6 to 8 reps.", "Keep wrists stacked over elbows and lower with control.", "Rest 75 to 90 seconds between sets, breathing normally.", "Finish with gentle chest and shoulder mobility; stop for sharp pain."] },
+  { id: "strength-back", goal: "Build strength", area: "Back", title: "Back Pulling Strength", image: "assets/training/back-workout.jpg", illustration: "assets/training/illustrations/back.svg", duration: "35 min", level: "Foundation", equipment: "Resistance band or cable row; optional light dumbbells", steps: ["Warm up with relaxed shoulder rolls and very light rows for 5 minutes.", "Complete 3 sets of 8 to 10 band or cable rows, keeping the torso steady.", "Add 2 sets of 8 light hip hinges only if the movement feels comfortable.", "Rest 60 to 90 seconds and keep every repetition smooth.", "Cool down with gentle upper-back movement; do not force a stretch."] },
+  { id: "strength-legs", goal: "Build strength", area: "Legs", title: "Lower-body Strength Basics", image: "assets/training/leg-workout.jpg", illustration: "assets/training/illustrations/legs.svg", duration: "35 min", level: "Foundation", equipment: "Stable chair or bench; optional light weights", steps: ["Warm up with an easy walk and supported sit-to-stands for 5 minutes.", "Complete 3 sets of 8 chair squats, using a chair for support if needed.", "Complete 2 sets of 8 supported hip hinges with a neutral back.", "Rest 60 to 90 seconds and keep the movement pain-free.", "Finish with a relaxed walk; increase load only when your form stays steady."] },
+  { id: "strength-arms", goal: "Build strength", area: "Arms", title: "Arms and Shoulder Control", image: "assets/training/arm-workout.jpg", illustration: "assets/training/illustrations/arms.svg", duration: "30 min", level: "Foundation", equipment: "Light dumbbells or resistance band", steps: ["Warm up shoulders and elbows with comfortable unloaded movements.", "Complete 2 to 3 sets of 8 to 10 light curls and band press-downs.", "Keep elbows close to your sides and avoid swinging the weights.", "Rest 60 seconds between exercises and reduce the load if form changes.", "Finish with gentle arm movement; avoid painful overhead positions."] },
+  { id: "weight-loss-legs", goal: "Weight loss", area: "Legs", title: "Low-impact Leg Circuit", image: "assets/training/leg-workout.jpg", illustration: "assets/training/illustrations/legs.svg", duration: "25 min", level: "All levels", equipment: "Stable chair and open floor space", steps: ["Warm up with an easy walk or marching in place for 5 minutes.", "Cycle through 8 chair squats, 8 supported step-backs per side, and 30 seconds of easy marching.", "Repeat for 2 to 4 rounds at a pace that lets you speak in short sentences.", "Rest whenever needed and use the chair for balance.", "Cool down with slow walking; progress by adding time gradually, not by rushing."] },
+  { id: "weight-loss-core", goal: "Weight loss", area: "Core", title: "Core and Cardio Intervals", image: "assets/training/core-workout.jpg", illustration: "assets/training/illustrations/core.svg", duration: "20 min", level: "All levels", equipment: "Mat or clear floor space", steps: ["Warm up with easy walking and comfortable trunk rotations for 5 minutes.", "Alternate 20 seconds of standing marches with 20 seconds of rest for 6 rounds.", "Add 2 sets of 6 controlled dead-bug repetitions per side if comfortable.", "Keep breathing; choose standing options if getting to the floor is difficult.", "Cool down gradually. Exercise supports wellbeing but does not guarantee weight loss."] },
+  { id: "tone-legs", goal: "Muscle tone", area: "Legs", title: "Leg Control and Balance", image: "assets/training/leg-workout.jpg", illustration: "assets/training/illustrations/legs.svg", duration: "30 min", level: "Foundation", equipment: "Stable chair; optional light dumbbells", steps: ["Warm up with an easy walk and supported heel raises for 5 minutes.", "Complete 3 sets of 10 sit-to-stands at a steady pace.", "Complete 2 sets of 10 supported calf raises, pausing briefly at the top.", "Rest 45 to 75 seconds and keep a stable support within reach.", "When all reps feel controlled, add one or two repetitions before adding load."] },
+  { id: "tone-chest", goal: "Muscle tone", area: "Chest", title: "Upper-body Push Session", image: "assets/training/chest-workout.jpg", illustration: "assets/training/illustrations/chest.svg", duration: "30 min", level: "Foundation", equipment: "Wall or bench; optional light dumbbells", steps: ["Warm up with wall press-ups and relaxed shoulder movement for 5 minutes.", "Complete 3 sets of 8 to 12 wall or incline press-ups at a comfortable angle.", "Add 2 sets of 10 light chest presses only if you have safe equipment.", "Rest 45 to 75 seconds and use a range that feels controlled.", "Cool down with easy shoulder motion; gradual practice matters more than fatigue."] },
+  { id: "tone-arms", goal: "Muscle tone", area: "Arms", title: "Arms and Upper-body Basics", image: "assets/training/arm-workout.jpg", illustration: "assets/training/illustrations/arms.svg", duration: "25 min", level: "Foundation", equipment: "Light dumbbells or resistance band", steps: ["Warm up with easy arm swings and shoulder rolls for 5 minutes.", "Complete 2 sets of 10 light curls and 2 sets of 10 band pull-aparts.", "Keep the movements smooth and stop each set before your form slips.", "Rest about 45 to 60 seconds between sets.", "Increase repetitions gradually; no single routine can guarantee a specific appearance."] },
+  { id: "endurance-core", goal: "Endurance", area: "Core", title: "Core Stability for Endurance", image: "assets/training/core-workout.jpg", illustration: "assets/training/illustrations/core.svg", duration: "25 min", level: "Foundation", equipment: "Mat or stable chair", steps: ["Warm up with 5 minutes of easy walking and relaxed breathing.", "Complete 2 sets of 6 bird-dogs per side, moving slowly.", "Add 3 rounds of 20 seconds of standing marches with 20 seconds of rest.", "Keep breathing throughout and use a chair-supported option if needed.", "Build duration a few minutes at a time while keeping the movement comfortable."] },
+  { id: "endurance-back", goal: "Endurance", area: "Back", title: "Back Endurance and Posture", image: "assets/training/back-workout.jpg", illustration: "assets/training/illustrations/back.svg", duration: "25 min", level: "Foundation", equipment: "Light resistance band", steps: ["Warm up with relaxed shoulder movement and an easy walk for 5 minutes.", "Complete 2 to 3 sets of 12 light band rows with controlled returns.", "Add 2 sets of 8 wall slides only through a comfortable range.", "Rest 45 to 60 seconds and keep shoulders relaxed rather than shrugged.", "Finish with easy walking. Stop and seek qualified advice if symptoms arise."] }
 ];
 
 let state = normalizeState(loadState());
 const page = document.body.dataset.page;
 const toast = document.querySelector(".toast");
+let foundationSession = null;
+let foundationRestTimer = null;
+let mobilitySession = null;
+let mobilityTimer = null;
+const mobilityExercises = [
+  { name: "March and arm swings", focus: "Warm up · whole body", image: "assets/training/standing-mobility.jpg", alt: "At-home mobility warm-up on an exercise mat", cue: "March gently in place. Let your arms swing naturally and keep the steps easy." },
+  { name: "Shoulder rolls", focus: "Shoulders · standing", image: "assets/training/mobility-standing-flow.jpg", alt: "Standing stretch on a yoga mat", cue: "Roll both shoulders up, back and down. Make slow, comfortable circles with your arms." },
+  { name: "Standing side reach", focus: "Sides · standing", image: "assets/training/mobility-full-body.jpg", alt: "Full-body stretch at home on a mat", cue: "Reach one arm overhead and lean gently to the other side. Switch sides without forcing the range." },
+  { name: "Cat and cow", focus: "Spine · hands and knees", image: "assets/training/floor-mobility.jpg", alt: "Floor-based mobility stretch at home", cue: "On hands and knees, gently round your back, then let your chest open. Move with your breath." },
+  { name: "Thread the needle", focus: "Upper back · both sides", image: "assets/training/mobility-floor-stretch.jpg", alt: "Floor stretch on a mat", cue: "From hands and knees, slide one arm under your body. Return to centre and switch halfway through." },
+  { name: "Hip flexor rocks", focus: "Hips · both sides", image: "assets/training/gentle-home-stretch.jpg", alt: "Gentle hip mobility stretch at home", cue: "In a supported half-kneeling position, gently shift your hips forward and back. Switch sides halfway through; use a chair for balance." },
+  { name: "Seated hamstring hinge", focus: "Back of legs · seated", image: "assets/training/seated-mobility.jpg", alt: "Seated stretch on an exercise mat", cue: "Sit tall with one leg comfortably extended. Hinge slightly from the hips, then switch sides halfway through." },
+  { name: "Ankle rocks", focus: "Ankles · wall support", image: "assets/training/hamstring-mobility.jpg", alt: "Gentle lower-body mobility stretch", cue: "With a wall or chair for support, move one knee gently forward over your toes while keeping the heel down. Switch sides halfway through." }
+];
+const foundationMovements = [
+  { name: "Sit to stand", area: "Legs · stable chair", image: "assets/training/leg-workout.jpg", steps: "Sit near the front of a stable chair with feet flat. Lean forward slightly, stand under control, then slowly sit back down. Keep the chair against a wall." },
+  { name: "Wall press-up", area: "Chest · wall", image: "assets/training/chest-workout.jpg", steps: "Face a wall with palms at chest height. Bend your elbows to bring your chest towards the wall, then press away smoothly. Keep your body aligned and breathe." },
+  { name: "Supported calf raise", area: "Lower legs · chair support", image: "assets/training/leg-workout.jpg", steps: "Stand tall while holding a stable chair. Lift your heels while keeping your toes grounded, then lower slowly. Use the support for balance and avoid bouncing." }
+];
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -61,6 +86,7 @@ function init() {
   /* Shared startup tasks run on every page. */
   validateSession();
   if (!enforceRoleAccess()) return;
+  setupTheme();
   setupRoleNavigation();
   setupFooter();
   setupRevealAnimation();
@@ -142,10 +168,10 @@ function setupFooter() {
         : `<a href="index.html#programmes">Programmes</a><a href="index.html#memberships">Membership options</a><a href="login.html">Demo sign in</a>`;
     const communityLinks = role === "staff" || role === "admin"
       ? `<a href="login.html" data-footer-logout="true">Logout</a>`
-      : `<a href="https://cfjlifestylefitness.co.za/">Official CFJ website ↗</a><a href="https://cfjlifestylefitness.co.za/timetable/">Official timetable ↗</a>`;
+      : `<a href="members.html">Member area</a><a href="help.html">App help</a>`;
     footer.innerHTML = `
       <div class="footer-brand">
-        <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
+        <img src="assets/cfj-blue-logo.png" alt="CFJ Lifestyle Fitness logo">
         <p>Team Forge · School project, 2026. An independent demonstration; not CFJ's official booking service.</p>
       </div>
       <div class="footer-column">
@@ -173,26 +199,56 @@ function setupFooter() {
   });
 }
 
+function setupTheme() {
+  const root = document.documentElement;
+  const key = "cfj_visual_theme";
+  const saved = localStorage.getItem(key);
+  const apply = (theme) => {
+    root.dataset.theme = theme;
+    const button = document.querySelector(".theme-toggle");
+    if (button) {
+      const next = theme === "dark" ? "light" : "dark";
+      button.textContent = next === "light" ? "☀ Light theme" : "● Dark theme";
+      button.setAttribute("aria-label", `Switch to ${next} theme`);
+      button.setAttribute("aria-pressed", String(theme === "light"));
+    }
+  };
+  apply(saved === "dark" ? "dark" : "light");
+  const header = document.querySelector(".topbar");
+  if (!header || header.querySelector(".theme-toggle")) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "theme-toggle";
+  button.addEventListener("click", () => {
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem(key, next);
+    apply(next);
+  });
+  const login = header.querySelector(".nav-login");
+  header.insertBefore(button, login || null);
+  apply(root.dataset.theme);
+}
+
 function loadState() {
   /* If saved data is damaged, the app safely returns to seed data. */
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || structuredClone(seed);
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || cloneDemoData(seed);
   } catch {
-    return structuredClone(seed);
+    return cloneDemoData(seed);
   }
 }
 
 // Repair damaged saved collections while keeping valid records, including deliberately empty lists.
 function normalizeState(savedState) {
   /* Older saved browser data is upgraded when new fields are added to the app. */
-  const upgraded = { ...structuredClone(seed), ...savedState };
+  const upgraded = { ...cloneDemoData(seed), ...savedState };
   // Integrates the reviewed recovery fix from PR #2 (cec0207).
   // Preserve valid records while repairing damaged saved collections.
   for (const [key, fallback] of Object.entries(seed)) {
     if (!Array.isArray(fallback)) continue;
     upgraded[key] = Array.isArray(upgraded[key])
       ? upgraded[key].filter((record) => record !== null && typeof record === "object" && !Array.isArray(record))
-      : structuredClone(fallback);
+      : cloneDemoData(fallback);
   }
   seed.users.forEach((seedUser) => {
     if (!upgraded.users.some((user) => user.id === seedUser.id || user.email === seedUser.email)) {
@@ -460,7 +516,7 @@ function setupLibraryPage() {
       location.href = "login.html";
       return;
     }
-    const selected = [...document.querySelectorAll('[name="libraryGoals"]:checked')].map((input) => input.value);
+  const selected = [...document.querySelectorAll('[name="libraryGoals"]:checked')].map((input) => input.value);
     if (!selected.length) return showToast("Select at least one goal.");
     member.goals = selected;
     member.goal = selected[0];
@@ -469,6 +525,165 @@ function setupLibraryPage() {
     showToast("Training goals saved.");
   });
   document.querySelector(".modal-close").addEventListener("click", () => document.querySelector("#manualModal").close());
+  document.querySelector("#startFoundations").addEventListener("click", startFoundationSession);
+  renderMobilityExercises();
+  document.querySelector("#startMobility").addEventListener("click", startMobilitySession);
+  document.querySelector("#playMobilityVideo").addEventListener("click", () => {
+    const frame = document.createElement("iframe");
+    frame.src = "https://www.youtube-nocookie.com/embed/Cf5htJ0VA1k?autoplay=1&rel=0";
+    frame.title = "10-minute follow-along mobility flow";
+    frame.loading = "lazy";
+    frame.referrerPolicy = "strict-origin-when-cross-origin";
+    frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    frame.allowFullscreen = true;
+    document.querySelector("#playMobilityVideo").replaceWith(frame);
+  });
+  renderTrainingHistory(member);
+}
+
+function renderMobilityExercises() {
+  const target = document.querySelector("#mobilityExercises");
+  if (!target) return;
+  target.innerHTML = mobilityExercises.map((exercise, index) => `
+    <article class="mobility-exercise">
+      <img src="${exercise.image}" alt="${exercise.alt}" loading="lazy">
+      <div class="mobility-exercise-copy">
+        <p class="eyebrow">${String(index + 1).padStart(2, "0")} · 1:15</p>
+        <h3>${exercise.name}</h3>
+        <p class="manual-meta">${exercise.focus}</p>
+        <p>${exercise.cue}</p>
+      </div>
+    </article>`).join("");
+}
+
+function startMobilitySession() {
+  if (mobilityTimer) clearInterval(mobilityTimer);
+  mobilitySession = { movement: 0, remaining: 75, paused: false };
+  paintMobilitySession();
+  mobilityTimer = setInterval(() => {
+    if (!mobilitySession || mobilitySession.paused) return;
+    mobilitySession.remaining--;
+    if (mobilitySession.remaining <= 0) {
+      mobilitySession.movement++;
+      if (mobilitySession.movement >= mobilityExercises.length) {
+        finishMobilitySession();
+        return;
+      }
+      mobilitySession.remaining = 75;
+      paintMobilitySession();
+      return;
+    }
+    const clock = document.querySelector("#mobilityClock");
+    if (clock) clock.textContent = formatMobilityTime(mobilitySession.remaining);
+  }, 1000);
+}
+
+function formatMobilityTime(seconds) {
+  return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function paintMobilitySession() {
+  const target = document.querySelector("#mobilitySession");
+  if (!target || !mobilitySession) return;
+  const exercise = mobilityExercises[mobilitySession.movement];
+  target.innerHTML = `
+    <div class="mobility-active-card">
+      <img src="${exercise.image}" alt="${exercise.alt}">
+      <div>
+        <p class="eyebrow">Move ${mobilitySession.movement + 1} of ${mobilityExercises.length} · ${exercise.focus}</p>
+        <h3>${exercise.name}</h3>
+        <p>${exercise.cue}</p>
+        <p class="mobility-clock" id="mobilityClock" role="timer" aria-live="off">${formatMobilityTime(mobilitySession.remaining)}</p>
+        <div class="hero-actions"><button class="primary-button" id="mobilityPause" type="button">Pause</button><button class="ghost-button" id="mobilityLeave" type="button">End session</button></div>
+      </div>
+    </div>`;
+  target.querySelector("#mobilityPause").addEventListener("click", () => {
+    mobilitySession.paused = !mobilitySession.paused;
+    target.querySelector("#mobilityPause").textContent = mobilitySession.paused ? "Resume" : "Pause";
+  });
+  target.querySelector("#mobilityLeave").addEventListener("click", () => {
+    if (mobilityTimer) clearInterval(mobilityTimer);
+    mobilityTimer = null;
+    mobilitySession = null;
+    target.innerHTML = `<p class="muted">Session ended. Start again whenever you are ready.</p>`;
+  });
+}
+
+function finishMobilitySession() {
+  if (mobilityTimer) clearInterval(mobilityTimer);
+  mobilityTimer = null;
+  mobilitySession = null;
+  const member = getCurrentMember();
+  state.trainingLog.push({ id: createId("TR", state.trainingLog), memberId: member?.id || null, title: "At-home mobility · 10 min", date: today, type: "mobility" });
+  saveState();
+  document.querySelector("#mobilitySession").innerHTML = `<div class="mobility-complete"><p class="eyebrow">10 minutes complete</p><h3>Nice work. You made time to move.</h3><p>Your mobility session is saved on this device.</p></div>`;
+  renderTrainingHistory(member);
+  showToast("At-home mobility session saved.");
+}
+
+function startFoundationSession() {
+  if (foundationRestTimer) clearInterval(foundationRestTimer);
+  foundationSession = { movement: 0, set: 0, rest: 0 };
+  paintFoundationSession();
+}
+
+function paintFoundationSession() {
+  const target = document.querySelector("#foundationSession");
+  if (!target || !foundationSession) return;
+  if (foundationSession.movement >= foundationMovements.length) {
+    if (foundationRestTimer) clearInterval(foundationRestTimer);
+    foundationRestTimer = null;
+    const member = getCurrentMember();
+    state.trainingLog.push({ id: createId("TR", state.trainingLog), memberId: member?.id || null, title: "Everyday foundations", date: today, type: "foundation" });
+    saveState();
+    foundationSession = null;
+    target.innerHTML = `<h3>Session complete</h3><p>Nice work. Your free foundation session is saved on this device.</p>`;
+    renderTrainingHistory(member);
+    showToast("Foundation session saved on this device.");
+    return;
+  }
+  const movement = foundationMovements[foundationSession.movement];
+  target.innerHTML = `
+    <p class="eyebrow">Movement ${foundationSession.movement + 1} of ${foundationMovements.length}</p>
+    <h3>${movement.name}</h3>
+    <p class="muted">${movement.area} · Set ${foundationSession.set + 1} of 2 · 5 comfortable repetitions</p>
+    <img src="${movement.image}" alt="Training reference for ${movement.area}">
+    <p>${movement.steps}</p>
+    <p id="foundationRest" role="status" aria-live="polite">${foundationSession.rest ? `Rest · ${foundationSession.rest}s remaining` : "Take extra rest whenever you need it."}</p>
+    <div class="hero-actions"><button class="primary-button" id="foundationSet" type="button" ${foundationSession.rest ? "disabled" : ""}>Set complete</button>${foundationSession.rest ? `<button class="ghost-button" id="foundationSkip" type="button">Continue now</button>` : ""}<button class="ghost-button" id="foundationLeave" type="button">Leave session</button></div>`;
+  target.querySelector("#foundationSet").addEventListener("click", () => {
+    if (foundationSession.rest) return;
+    foundationSession.set++;
+    if (foundationSession.set >= 2) {
+      foundationSession.set = 0;
+      foundationSession.movement++;
+      paintFoundationSession();
+      return;
+    }
+    foundationSession.rest = 60;
+    paintFoundationSession();
+    foundationRestTimer = setInterval(() => {
+      foundationSession.rest--;
+      if (foundationSession.rest <= 0) {
+        clearInterval(foundationRestTimer);
+        foundationRestTimer = null;
+        foundationSession.rest = 0;
+      }
+      paintFoundationSession();
+    }, 1000);
+  });
+  target.querySelector("#foundationSkip")?.addEventListener("click", () => {
+    if (foundationRestTimer) clearInterval(foundationRestTimer);
+    foundationRestTimer = null;
+    foundationSession.rest = 0;
+    paintFoundationSession();
+  });
+  target.querySelector("#foundationLeave").addEventListener("click", () => {
+    if (foundationRestTimer) clearInterval(foundationRestTimer);
+    foundationRestTimer = null;
+    foundationSession = null;
+    target.innerHTML = `<p class="muted">Session paused. Completed sessions remain saved.</p>`;
+  });
 }
 
 function setupMarathonPage() {
@@ -785,8 +1000,8 @@ function renderManuals(member) {
   const status = document.querySelector("#guideStatus");
   status.className = `locked-guide ${paid ? "unlocked" : "locked"}`;
   status.innerHTML = paid
-    ? `<h2>Training manual unlocked</h2><p>${member.name}, your ${member.goal} guide is available because ${currentMonth} is paid.</p>`
-    : `<h2>Training manual locked</h2><p>CFJ includes goal-based training manuals, but members can only view the detailed guide after logging in and paying for the current month.</p><a class="primary-button" href="login.html">Login / Register</a>`;
+    ? `<h2>Paid training library unlocked</h2><p>${member.name}, your goal-based plans are open for ${currentMonth}. Completed sessions are saved on this device.</p><p class="muted">Demo access is based on the local payment record; no real payment is processed here.</p>`
+    : `<h2>Paid training library locked</h2><p>Sign in as a member and record this month's membership payment to open the detailed plans. This prototype simulates payments; it does not collect money.</p><a class="primary-button" href="${member ? "members.html" : "login.html"}">${member ? "Open member payments" : "Login / Register"}</a>`;
 
   const selectedGoal = getValue("#guideGoal");
   const selectedArea = getValue("#guideArea");
@@ -806,6 +1021,7 @@ function renderManuals(member) {
       <img src="${manual.image}" alt="${manual.title}">
       <h3>${manual.title}</h3>
       <p>${manual.goal} | ${manual.area}${selectedGoals.includes(manual.goal) ? " | selected goal" : ""}</p>
+      <p class="manual-meta">${manual.duration} · ${manual.level}</p>
       <button class="${paid ? "primary-button" : "ghost-button"} mini-button" data-manual="${index}" type="button">${paid ? "Open Guide" : "Locked"}</button>
     </article>
   `).join("");
@@ -820,6 +1036,15 @@ function renderManuals(member) {
       showManual(visible[Number(button.dataset.manual)]);
     });
   });
+}
+
+function renderTrainingHistory(member) {
+  const target = document.querySelector("#trainingHistory");
+  if (!target) return;
+  const entries = member ? state.trainingLog.filter((entry) => entry.memberId === member.id).slice().reverse() : [];
+  target.innerHTML = entries.length
+    ? `<h2>Completed sessions</h2><ul>${entries.slice(0, 6).map((entry) => `<li>${entry.date} · ${entry.title}</li>`).join("")}</ul>`
+    : `<h2>Completed sessions</h2><p class="muted">Completed paid-library sessions will appear here on this device.</p>`;
 }
 
 function renderAdminReports() {
@@ -956,20 +1181,36 @@ function recordPayment(memberId, amount, month, channel, method = "Online", allo
 
 function showManual(manual) {
   /* Modal gives the member practical instructions for the selected body area. */
+  const member = getCurrentMember();
+  if (!member || !hasPaid(member.id, currentMonth)) return showToast("The paid training library is locked until this month's membership payment is recorded.");
   document.querySelector("#manualModalContent").innerHTML = `
     <p class="eyebrow">${manual.goal} | ${manual.area}</p>
     <h2>${manual.title}</h2>
     <img class="manual-modal-image" src="${manual.image}" alt="${manual.title} exercise demonstration">
-    <p>This is an original CFJ training guide based on general strength-training anatomy principles and safe exercise practice.</p>
-    <p><b>Suggested set structure:</b> 3 working sets, controlled reps, and 45 to 90 seconds rest depending on the goal and intensity.</p>
+    <p><b>${manual.duration} · ${manual.level}</b></p>
+    <p><b>Equipment:</b> ${manual.equipment}</p>
+    <p>Use a comfortable pace and range of motion. This general guide is educational and does not replace individual advice from a qualified trainer or clinician.</p>
+    <h3>Movement focus</h3>
+    <img class="manual-modal-illustration" src="${manual.illustration}" alt="Vector movement focus illustration for ${manual.area.toLowerCase()} training">
     <ol>${manual.steps.map((step) => `<li>${step}</li>`).join("")}</ol>
+    <button class="primary-button" id="completeTraining" type="button">Record session complete</button>
   `;
+  document.querySelector("#completeTraining").addEventListener("click", () => {
+    const activeMember = getCurrentMember();
+    if (!activeMember || !hasPaid(activeMember.id, currentMonth)) return showToast("Your current-month payment is required to record a paid training session.");
+    state.trainingLog.push({ id: createId("TR", state.trainingLog), memberId: activeMember.id, manualId: manual.id, title: manual.title, date: today });
+    saveState();
+    renderTrainingHistory(activeMember);
+    showToast("Training session saved on this device.");
+  });
   document.querySelector("#manualModal").showModal();
 }
 
 function exportAdminReport() {
   /* Export lets the admin download current report data as evidence. */
   const report = { generatedAt: new Date().toISOString(), members: state.members, payments: state.payments };
+  // The Android shell supplies an origin-restricted export channel and a document picker.
+  if (window.cfjExport) { window.cfjExport.postMessage(JSON.stringify(report, null, 2)); return; }
   const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

@@ -1,19 +1,33 @@
-/* Keeps the shared blue theme, forms and responsive layouts consistent across the website. */
-/* Global theme variables used by every page in the local app. */
+/* CFJ blue, white and charcoal identity shared across both selectable themes. */
 :root {
-  color-scheme: dark;
-  --bg: #0b1426;
-  --bg-soft: #111f36;
-  --panel: rgba(21, 38, 63, .94);
-  --panel-solid: #15263f;
-  --line: rgba(255, 255, 255, .14);
-  --text: #f1f5fb;
-  --muted: #b9c9df;
-  --primary: #60a5fa;
-  --highlight: #bfdbfe;
-  --secondary: #93c5fd;
+  color-scheme: light;
+  --bg: #f4f5f6;
+  --bg-soft: #e9ecef;
+  --panel: rgba(255, 255, 255, .97);
+  --panel-solid: #fff;
+  --line: rgba(20, 28, 33, .13);
+  --text: #24292d;
+  --muted: #555e64;
+  --primary: #006fa8;
+  --highlight: #0788c9;
+  --secondary: #087fb8;
   --danger: #ff7864;
-  --shadow: 0 26px 70px rgba(0, 0, 0, .42);
+  --shadow: 0 18px 46px rgba(24, 33, 39, .12);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111315;
+  --bg-soft: #1b1d1f;
+  --panel: rgba(34, 36, 38, .96);
+  --panel-solid: #222426;
+  --line: rgba(255, 255, 255, .13);
+  --text: #f8fafb;
+  --muted: #c2c9ce;
+  --primary: #087fb8;
+  --highlight: #28a2dc;
+  --secondary: #5db8e5;
+  --shadow: 0 22px 58px rgba(0, 0, 0, .34);
 }
 
 /* Basic reset keeps sizing predictable across desktop and mobile. */
@@ -65,8 +79,13 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 16% 3%, rgba(96, 165, 250, .18), transparent 28rem),
-    radial-gradient(circle at 88% 0%, rgba(147, 197, 253, .12), transparent 30rem);
+    radial-gradient(circle at 16% 3%, rgba(0, 132, 199, .12), transparent 28rem),
+    radial-gradient(circle at 88% 0%, rgba(7, 136, 201, .08), transparent 30rem);
+}
+
+:root[data-theme="dark"] body::before {
+  background: radial-gradient(circle at 16% 3%, rgba(8, 127, 184, .16), transparent 28rem),
+    radial-gradient(circle at 88% 0%, rgba(40, 162, 220, .1), transparent 30rem);
 }
 
 a {
@@ -100,7 +119,7 @@ img {
   gap: 1rem;
   padding: .85rem clamp(1rem, 4vw, 4.5rem);
   border-bottom: 1px solid var(--line);
-  background: rgba(11, 20, 38, .96);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
   backdrop-filter: blur(18px);
 }
 
@@ -112,8 +131,8 @@ img {
 }
 
 .brand img {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 3.75rem;
+  height: auto;
 }
 
 .nav {
@@ -134,14 +153,25 @@ img {
 .nav a.active,
 .nav-login:hover,
 .nav-login.active {
-  background: rgba(255, 255, 255, .08);
+  background: color-mix(in srgb, var(--panel-solid) 88%, transparent);
   color: var(--text);
   transform: translateY(-1px);
 }
 
 .nav-login {
-  border: 1px solid rgba(96, 165, 250, .5);
+  border: 1px solid color-mix(in srgb, var(--primary) 65%, transparent);
 }
+
+.theme-toggle {
+  min-height: 2.65rem;
+  padding: .55rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: var(--panel-solid);
+  color: var(--text);
+  font-weight: 700;
+}
+.theme-toggle:hover { border-color: var(--primary); }
 
 /* Typography and reusable layout sections. */
 h1,
@@ -203,13 +233,13 @@ label {
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
   background:
-    linear-gradient(90deg, rgba(11, 20, 38, .96), rgba(11, 20, 38, .68)),
-    url("assets/aesthetic-gym.jpg") center / cover no-repeat;
+    linear-gradient(90deg, rgba(17, 19, 21, .96), rgba(17, 19, 21, .68)),
+    url("assets/cfj-gym-floor.jpg") center / cover no-repeat;
 }
 
 .hero-copy p {
   max-width: 45rem;
-  color: #dde3e7;
+  color: #f8f6f2;
   font-size: 1.08rem;
 }
 
@@ -233,7 +263,7 @@ label {
   inset: auto 8% -1.2rem 8%;
   height: 2.5rem;
   border-radius: 50%;
-  background: rgba(96, 165, 250, .26);
+  background: color-mix(in srgb, var(--primary) 40%, transparent);
   filter: blur(16px);
 }
 
@@ -261,13 +291,13 @@ label {
 }
 
 .primary-button {
-  color: #0b1426;
+  color: #fff;
   background: linear-gradient(135deg, var(--primary), var(--highlight));
 }
 
 .ghost-button {
   color: var(--text);
-  background: rgba(255, 255, 255, .07);
+  background: color-mix(in srgb, var(--panel-solid) 88%, transparent);
   border-color: var(--line);
 }
 
@@ -292,19 +322,20 @@ label {
 }
 
 .members-hero {
-  background: linear-gradient(90deg, rgba(11,20,38,.96), rgba(11,20,38,.55)), url("assets/gym-hub.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(17,19,21,.96), rgba(17,19,21,.48)), url("assets/gym-hub.jpg") center / cover no-repeat;
 }
+.page-hero, .marathon-hero { color: #f8f6f2; }
 
 .operations-hero {
-  background: linear-gradient(90deg, rgba(11,20,38,.96), rgba(11,20,38,.55)), url("assets/strength-class.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(17,19,21,.96), rgba(17,19,21,.48)), url("assets/strength-class.jpg") center / cover no-repeat;
 }
 
 .library-hero {
-  background: linear-gradient(90deg, rgba(11,20,38,.94), rgba(11,20,38,.5)), url("assets/boxing-workout.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(17,19,21,.94), rgba(17,19,21,.5)), url("assets/boxing-workout.jpg") center / cover no-repeat;
 }
 
 .reports-hero {
-  background: linear-gradient(90deg, rgba(11,20,38,.97), rgba(11,20,38,.6)), url("assets/mindset.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(17,19,21,.97), rgba(17,19,21,.55)), url("assets/mindset.jpg") center / cover no-repeat;
 }
 
 .page-hero div {
@@ -316,7 +347,7 @@ label {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   padding: 1rem clamp(1rem, 5vw, 5rem);
-  background: #101e34;
+  background: var(--bg-soft);
 }
 
 .metric-strip article,
@@ -384,6 +415,16 @@ label {
   padding: 1.25rem;
 }
 
+.programme-grid .panel { overflow: hidden; }
+.programme-photo {
+  width: calc(100% + 2.5rem);
+  height: 12rem;
+  margin: -1.25rem -1.25rem 1.1rem;
+  object-fit: cover;
+}
+.programme-number { color: var(--secondary); font-size: .75rem; font-weight: 800; letter-spacing: .08em; }
+.programme-grid h3 { margin-top: .55rem; font-size: 1.35rem; }
+
 .info-grid article,
 .panel,
 .manual-card,
@@ -395,9 +436,9 @@ label {
 .panel:hover,
 .manual-card:hover,
 .feature-lanes article:hover {
-  border-color: rgba(96, 165, 250, .52);
+  border-color: color-mix(in srgb, var(--primary) 65%, transparent);
   transform: translateY(-3px);
-  background: rgba(255, 255, 255, .075);
+  background: var(--panel-solid);
 }
 
 .image-feature {
@@ -420,9 +461,12 @@ label {
 /* Login and signup pages. */
 .auth-page {
   background:
-    linear-gradient(90deg, rgba(11,20,38,.98) 0 35%, rgba(11,20,38,.68)),
+    linear-gradient(90deg, rgba(17,19,21,.98) 0 35%, rgba(17,19,21,.68)),
     url("assets/login-jack.jpg") center / cover no-repeat fixed;
+  color: #fff;
 }
+
+.auth-card { color: var(--text); }
 
 .redesigned-auth {
   min-height: 100vh;
@@ -501,7 +545,7 @@ label {
   align-items: end;
   padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 5vw, 5rem);
   background:
-    linear-gradient(90deg, rgba(11,20,38,.94), rgba(11,20,38,.46)),
+    linear-gradient(90deg, rgba(17,19,21,.94), rgba(17,19,21,.46)),
     url("assets/marathon-runners.jpg") center / cover no-repeat;
   border-bottom: 1px solid var(--line);
 }
@@ -519,10 +563,10 @@ label {
 .marathon-countdown {
   margin: 1rem 0;
   padding: 1rem;
-  border: 1px solid rgba(147, 197, 253, .5);
+  border: 1px solid color-mix(in srgb, var(--highlight) 55%, transparent);
   border-radius: .75rem;
   color: var(--highlight);
-  background: rgba(147, 197, 253, .08);
+  background: color-mix(in srgb, var(--highlight) 10%, var(--panel-solid));
   font-size: 1.25rem;
   font-weight: 700;
 }
@@ -557,7 +601,7 @@ label {
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: .75rem;
-  background: rgba(16, 30, 52, .88);
+  background: color-mix(in srgb, var(--panel-solid) 92%, transparent);
   box-shadow: var(--shadow);
 }
 
@@ -571,7 +615,7 @@ label {
   gap: 1.5rem;
   align-items: center;
   padding: clamp(3rem, 7vw, 5rem) clamp(1rem, 5vw, 5rem);
-  background: #101e34;
+  background: var(--bg-soft);
 }
 
 .form-grid {
@@ -597,12 +641,12 @@ select {
   padding: .7rem .75rem;
   border: 1px solid var(--line);
   border-radius: .5rem;
-  background: rgba(3, 5, 8, .58);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
   color: var(--text);
 }
 
 select option {
-  background: #15263f;
+  background: var(--panel-solid);
 }
 
 /* Member and operations components. */
@@ -617,7 +661,7 @@ select option {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  color: #0b1426;
+  color: #fff;
   background: linear-gradient(135deg, var(--primary), var(--highlight));
   font-weight: 750;
 }
@@ -627,12 +671,12 @@ select option {
   place-items: center;
   width: 5rem;
   height: 5rem;
-  border: 2px solid rgba(96, 165, 250, .55);
+  border: 2px solid color-mix(in srgb, var(--primary) 65%, transparent);
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--highlight));
   background-size: cover;
   background-position: center;
-  color: #0b1426;
+  color: #fff;
   font-weight: 750;
 }
 
@@ -688,7 +732,7 @@ select option {
   border: 1px solid var(--line);
   border-radius: .75rem;
   background:
-    linear-gradient(90deg, transparent 45%, rgba(147, 197, 253, .7) 50%, transparent 55%),
+    linear-gradient(90deg, transparent 45%, color-mix(in srgb, var(--highlight) 80%, transparent) 50%, transparent 55%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0 2px, transparent 2px 18px);
   animation: scan 2.4s linear infinite;
 }
@@ -734,7 +778,7 @@ select option {
 .class-row:hover,
 .directory-card:hover,
 .manual-card:hover {
-  border-color: rgba(96, 165, 250, .6);
+  border-color: color-mix(in srgb, var(--primary) 70%, transparent);
 }
 
 .class-row small,
@@ -755,11 +799,11 @@ hr {
 }
 
 .locked-guide.unlocked {
-  border-color: rgba(147, 197, 253, .55);
+  border-color: color-mix(in srgb, var(--highlight) 65%, transparent);
 }
 
 .locked-guide.locked {
-  border-color: rgba(96, 165, 250, .5);
+  border-color: color-mix(in srgb, var(--primary) 60%, transparent);
 }
 
 .manual-grid {
@@ -776,14 +820,187 @@ hr {
 
 .manual-card img {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  padding: .35rem;
+  background: #f7f9fc;
   border-radius: .5rem;
 }
 
+.manual-meta {
+  color: var(--secondary) !important;
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.training-history {
+  margin-top: 1rem;
+}
+
+.training-history h2 {
+  font-size: 1.35rem;
+}
+
+.training-history li {
+  margin: .45rem 0;
+  color: var(--muted);
+}
+
+.foundation-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, .65fr);
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.mobility-panel {
+  margin-bottom: 1.25rem;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.mobility-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.mobility-heading > div { max-width: 54rem; }
+.mobility-heading h2 { margin: .2rem 0 .65rem; }
+
+.mobility-media-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(14rem, .8fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mobility-video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: .75rem;
+  background: #101315;
+}
+
+.mobility-video-poster {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: .75rem;
+  background: #101315;
+  cursor: pointer;
+}
+
+.mobility-video-poster img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.mobility-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  padding-left: .25rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.5rem;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+}
+
+.mobility-video > p { margin: .5rem 0 0; font-size: .9rem; }
+
+.mobility-note {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: .75rem;
+  background: var(--bg-soft);
+}
+
+.mobility-note h3 { margin: .5rem 0; }
+.mobility-duration { color: var(--primary); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; letter-spacing: -.06em; line-height: 1; }
+
+.mobility-exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.mobility-exercise {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: .75rem;
+  background: var(--panel-solid);
+}
+
+.mobility-exercise img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.mobility-exercise-copy { padding: .9rem; }
+.mobility-exercise-copy .eyebrow { margin: 0 0 .25rem; }
+.mobility-exercise-copy h3 { margin: .25rem 0; font-size: 1.05rem; }
+.mobility-exercise-copy p:last-child { margin-bottom: 0; font-size: .94rem; }
+
+.mobility-session { margin-top: 1.25rem; }
+
+.mobility-active-card {
+  display: grid;
+  grid-template-columns: minmax(13rem, .7fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--highlight) 55%, var(--line));
+  border-radius: .75rem;
+  background: var(--bg-soft);
+}
+
+.mobility-active-card > img { width: 100%; max-height: 20rem; object-fit: cover; border-radius: .6rem; }
+.mobility-clock { color: var(--primary); font-variant-numeric: tabular-nums; font-size: 2rem; font-weight: 800; }
+.mobility-complete { padding: 1rem; border-left: 4px solid var(--highlight); background: var(--bg-soft); }
+.mobility-complete h3 { margin: .2rem 0; }
+
+.foundation-panel img {
+  width: 100%;
+  max-height: 17rem;
+  padding: .5rem;
+  object-fit: contain;
+  border-radius: .6rem;
+  background: #f7f9fc;
+}
+
+.foundation-session {
+  grid-column: 1 / -1;
+}
+
+.foundation-session img {
+  width: min(100%, 28rem);
+  margin: 1rem 0;
+}
+
 .manual-card.selected-goal {
-  border-color: rgba(147, 197, 253, .72);
-  background: rgba(147, 197, 253, .08);
+  border-color: color-mix(in srgb, var(--highlight) 80%, transparent);
+  background: color-mix(in srgb, var(--highlight) 9%, var(--panel-solid));
 }
 
 .goal-picker {
@@ -853,7 +1070,7 @@ body.admin-active .admin-only {
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: .75rem;
-  background: #15263f;
+  background: var(--panel-solid);
   color: var(--text);
   box-shadow: var(--shadow);
 }
@@ -880,9 +1097,9 @@ body.admin-active .admin-only {
   z-index: 80;
   max-width: min(26rem, calc(100vw - 2rem));
   padding: .9rem 1rem;
-  border: 1px solid rgba(147, 197, 253, .55);
+  border: 1px solid color-mix(in srgb, var(--highlight) 65%, transparent);
   border-radius: .65rem;
-  background: #132b47;
+  background: var(--panel-solid);
   transform: translateY(150%);
   transition: transform .25s ease;
   box-shadow: var(--shadow);
@@ -900,11 +1117,11 @@ body.admin-active .admin-only {
   align-items: center;
   padding: 2rem clamp(1rem, 5vw, 5rem);
   border-top: 1px solid var(--line);
-  background: #08101f;
+  background: var(--bg-soft);
 }
 
 .site-footer img {
-  width: min(18rem, 100%);
+  width: min(13rem, 100%);
   margin-bottom: .5rem;
 }
 
@@ -939,11 +1156,23 @@ body.admin-active .admin-only {
 
 .manual-modal-image {
   width: 100%;
-  max-height: 18rem;
-  object-fit: cover;
+  max-height: 28rem;
+  object-fit: contain;
+  background: #f7f9fc;
   border: 1px solid var(--line);
   border-radius: .75rem;
   margin-bottom: 1rem;
+}
+
+.manual-modal-illustration {
+  display: block;
+  width: min(100%, 54rem);
+  max-height: 34rem;
+  object-fit: contain;
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+  border-radius: .75rem;
+  margin: 0 0 1.25rem;
 }
 
 /* Reveal animation is activated by app.js when elements enter the viewport. */
@@ -982,8 +1211,11 @@ body.admin-active .admin-only {
   .hero-page,
   .two-col,
   .image-feature,
+  .foundation-panel,
   .auth-hero,
   .auth-shell,
+  .mobility-media-grid,
+  .mobility-active-card,
   .admin-login,
   .operations-grid,
   .staff-grid,
@@ -998,7 +1230,8 @@ body.admin-active .admin-only {
   .feature-lanes,
   .manual-explainer,
   .site-footer,
-  .checkbox-grid {
+  .checkbox-grid,
+  .mobility-exercise-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1018,9 +1251,12 @@ body.admin-active .admin-only {
   .site-footer,
   .checkbox-grid,
   .role-buttons,
-  .compact-grid {
+  .compact-grid,
+  .mobility-exercise-grid {
     grid-template-columns: 1fr;
   }
+
+  .mobility-heading { align-items: stretch; flex-direction: column; }
 
   .class-row,
   .panel-title {
@@ -1036,10 +1272,10 @@ body.admin-active .admin-only {
 }
 
 /* Public programme and onboarding pages. */
-.skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; background: var(--primary); color: #0b1426; padding: 12px; }
+.skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; background: var(--primary); color: #fff; padding: 12px; }
 .skip-link:focus { top: 12px; }
 .programme-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.programme-grid .panel { padding: 30px; }
+.programme-grid .panel { padding: 1.25rem; }
 .programme-grid h3 { font-size: 1.6rem; margin: 16px 0; }
 .programme-grid p, .intro-steps p, .visit-panel p { color: var(--muted); line-height: 1.75; }
 .programme-grid a, .section-note a, .visit-panel a:not(.primary-button):not(.ghost-button) { color: var(--highlight); text-underline-offset: 4px; }
@@ -1059,4 +1295,10 @@ section[id] { scroll-margin-top: 120px; }
   .topbar .nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
   .topbar .nav a { padding: 8px 10px; font-size: .9rem; }
   .nav-login { align-self: flex-start; }
+}
+
+@media (max-width: 560px) {
+  .theme-toggle { width: 100%; }
+  .hero-page { min-height: 0; }
+  .hero-image img { aspect-ratio: 4 / 3; }
 }

@@ -9,7 +9,7 @@
 </head>
 <body data-page="library">
   <header class="topbar">
-    <a class="brand" href="index.html"><img src="assets/cfj-logo-app.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
+    <a class="brand" href="index.html"><img src="assets/cfj-blue-mark.png" alt="CFJ logo"><span>CFJ Lifestyle Fitness</span></a>
     <nav class="nav">
       <a href="index.html">Overview</a>
       <a href="members.html">Members</a>
@@ -25,12 +25,49 @@
       <div>
         <p class="eyebrow">Training Manual</p>
         <h1>Goal-based workout guidance for paid members.</h1>
-        <p>CFJ includes a training guide inspired by strength-training anatomy principles. The manual is organised by what each member wants to achieve.</p>
+        <p>CFJ offers goal-based workout plans with anatomy and exercise visuals. The paid library includes strength, endurance, low-impact conditioning and muscle-tone plans.</p>
       </div>
     </section>
 
     <!-- Locked state appears until the member has paid for the current month. -->
     <section class="content-band">
+      <section class="panel mobility-panel reveal" aria-labelledby="mobilityTitle">
+        <div class="mobility-heading">
+          <div>
+            <p class="eyebrow">At home · no equipment</p>
+            <h2 id="mobilityTitle">10-minute mobility reset</h2>
+            <p>A gentle, full-body movement break you can do at home. Follow the video or use the eight photo-guided moves below. Each move is 1 minute 15 seconds.</p>
+          </div>
+          <button class="primary-button" id="startMobility" type="button">Start 10-minute flow</button>
+        </div>
+        <div class="mobility-media-grid">
+          <div class="mobility-video">
+            <button class="mobility-video-poster" id="playMobilityVideo" type="button" aria-label="Play 10-minute follow-along mobility video">
+              <img src="assets/training/mobility-video-cover.jpg" alt="Video preview: 10 Minute Mobility Flow Workout">
+              <span class="mobility-play-icon" aria-hidden="true">▶</span>
+            </button>
+            <p class="muted">Follow-along video · turn on captions or use the image guide</p>
+          </div>
+          <aside class="mobility-note">
+            <span class="mobility-duration">10:00</span>
+            <h3>Move at your own pace</h3>
+            <p>Use a mat and a stable chair or wall for support if you need it. Keep every movement comfortable, breathe normally, and stop if you feel pain or become unwell.</p>
+          </aside>
+        </div>
+        <div class="mobility-exercise-grid" id="mobilityExercises" aria-label="Eight mobility exercises"></div>
+        <div id="mobilitySession" class="mobility-session" aria-live="polite"></div>
+      </section>
+
+      <section class="panel foundation-panel reveal" aria-labelledby="foundationTitle">
+        <div>
+          <p class="eyebrow">Free starter · 3 movements</p>
+          <h2 id="foundationTitle">Everyday foundations</h2>
+          <p>A short, gentle chair-supported routine is available to everyone. Complete 2 sets of 5 comfortable repetitions per movement, resting between sets. Progress saves on this device.</p>
+          <button class="primary-button" id="startFoundations" type="button">Start free guided session</button>
+        </div>
+        <img src="assets/training/anatomy-overview.jpg" alt="Muscle anatomy reference supplied with the training materials">
+        <div id="foundationSession" class="foundation-session" aria-live="polite"></div>
+      </section>
       <div class="locked-guide reveal" id="guideStatus"></div>
       <div class="manual-explainer reveal">
         <article>
@@ -39,12 +76,12 @@
         </article>
         <article>
           <h2>What inspired it?</h2>
-          <p>The guide was inspired by the exercise and anatomy resources included in the project pack. Instead of copying book content, CFJ uses the same idea: members learn which body parts are involved and receive clear, safe instructions matched to goals such as strength, weight loss, muscle tone, or endurance.</p>
+          <p>These original plans use the supplied training images as visual references. Each guide lists equipment, a session length, exercise steps and pacing suggestions. A trainer can adapt the plan to your needs.</p>
         </article>
       </div>
       <div class="tool-row reveal">
         <label>Goal filter<select id="guideGoal"><option>My goal</option><option>Build strength</option><option>Weight loss</option><option>Muscle tone</option><option>Endurance</option></select></label>
-        <label>Body area<select id="guideArea"><option>All areas</option><option>Chest</option><option>Back</option><option>Legs</option><option>Core</option></select></label>
+        <label>Body area<select id="guideArea"><option>All areas</option><option>Chest</option><option>Back</option><option>Arms</option><option>Legs</option><option>Core</option></select></label>
       </div>
       <form class="panel goal-picker reveal" id="libraryGoalForm">
         <h2>Select Your Training Goals</h2>
@@ -58,6 +95,7 @@
         <button class="primary-button" type="submit">Save Goals</button>
       </form>
       <div class="manual-grid reveal" id="manualGrid"></div>
+      <section class="panel training-history reveal" id="trainingHistory" aria-live="polite"></section>
     </section>
   </main>
 
@@ -71,8 +109,8 @@
   <!-- Bottom site navigation keeps this page connected to the rest of the app. -->
   <footer class="site-footer">
     <div>
-      <img src="assets/cfj-logo-wide.png" alt="CFJ Lifestyle Fitness logo">
-      <p>Goal-based training manuals are unlocked after current-month payment.</p>
+      <img src="assets/cfj-blue-logo.png" alt="CFJ Lifestyle Fitness logo">
+      <p>Detailed workout plans require a current-month payment. This prototype records simulated payments only.</p>
     </div>
     <nav>
       <a href="index.html">Overview</a>
