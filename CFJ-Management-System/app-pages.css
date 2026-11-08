@@ -1,0 +1,95 @@
+/* Native Android navigation supplies the page links; keep the site theme control. */
+body.app-page .topbar {
+  position: absolute;
+  z-index: 40;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: auto;
+  padding: .4rem .75rem;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+body.app-page .topbar .brand,
+body.app-page .topbar .nav,
+body.app-page .topbar .nav-login {
+  display: none;
+}
+
+body.app-page .topbar .theme-toggle {
+  min-height: 2.2rem;
+  padding: .35rem .6rem;
+  font-size: .8rem;
+}
+
+body.app-page main {
+  min-height: calc(100vh - 2.5rem);
+}
+
+body.app-page .hero-page {
+  min-height: calc(100vh - 5rem);
+  padding-top: clamp(2rem, 5vh, 4rem);
+  padding-bottom: 2rem;
+}
+
+body.app-page .content-band {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+body.app-page .app-page-heading {
+  max-width: 1400px;
+  margin: 0 auto 1.3rem;
+  padding: 0 clamp(1rem, 4vw, 4.5rem);
+}
+
+body.app-page .app-page-heading h1 {
+  margin: 0 0 .55rem;
+}
+
+body.app-page .app-page-heading p:last-child {
+  margin-bottom: 0;
+}
+
+body.app-page .app-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+body.app-page .app-page-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding: .7rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: .55rem;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+body.app-page .app-page-actions a.secondary-action {
+  background: var(--panel-solid);
+  color: var(--text);
+}
+
+body.app-page .programme-grid .panel {
+  min-height: 13rem;
+}
+
+body.app-page .app-page-note {
+  max-width: 1400px;
+  margin: 1rem auto 0;
+  padding: 0 clamp(1rem, 4vw, 4.5rem);
+  color: var(--muted);
+}
+
+body.app-page .site-footer {
+  padding: 1rem clamp(1rem, 4vw, 4.5rem);
+}

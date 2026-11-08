@@ -141,9 +141,9 @@ function setupRoleNavigation() {
   const role = state.session?.role || "public";
   const links = [
     ["Home", "index.html", true],
-    ["Programmes", "index.html#programmes", role === "public"],
-    ["Memberships", "index.html#memberships", role === "public"],
-    ["Visit us", "index.html#visit", role === "public"],
+    ["Programmes", "programmes.html", role === "public"],
+    ["Training", "training.html", role === "public"],
+    ["Memberships", "memberships.html", role === "public"],
     ["Join Marathon", "marathon.html", true],
     ["Members", "members.html", role === "member"],
     ["Operations", "operations.html", role === "member"],
@@ -152,7 +152,9 @@ function setupRoleNavigation() {
     ["Reports", "reports.html", role === "admin"]
   ];
   nav.innerHTML = links.filter(([, , visible]) => visible).map(([label, href]) => {
-    const active = location.pathname.toLowerCase().endsWith(href.toLowerCase()) ? "active" : "";
+    const path = location.pathname.toLowerCase();
+    const isHome = href === "index.html" && (path === "/" || path.endsWith("/index.html"));
+    const active = isHome || path.endsWith(href.toLowerCase()) ? "active" : "";
     return `<a class="${active}" href="${href}">${label}</a>`;
   }).join("");
 }
@@ -165,7 +167,7 @@ function setupFooter() {
       ? `<a href="reports.html">Admin Reports</a>`
       : role === "staff"
         ? `<a href="staff.html">Staff Desk</a>`
-        : `<a href="index.html#programmes">Programmes</a><a href="index.html#memberships">Membership options</a><a href="login.html">Demo sign in</a>`;
+        : `<a href="programmes.html">Programmes</a><a href="training.html">Training plans</a><a href="memberships.html">Membership options</a><a href="login.html">Demo sign in</a>`;
     const communityLinks = role === "staff" || role === "admin"
       ? `<a href="login.html" data-footer-logout="true">Logout</a>`
       : `<a href="members.html">Member area</a><a href="help.html">App help</a>`;
