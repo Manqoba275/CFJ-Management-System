@@ -27,7 +27,9 @@
     };
     const start = () => {
       stop();
-      if (!reducedMotion && !document.hidden) {
+      const pointerIsOverCarousel = carousel.matches(':hover');
+      const keyboardIsUsingCarousel = carousel.contains(document.activeElement);
+      if (!reducedMotion && !document.hidden && !pointerIsOverCarousel && !keyboardIsUsingCarousel) {
         timer = window.setInterval(() => show(active + 1), 6000);
       }
     };
