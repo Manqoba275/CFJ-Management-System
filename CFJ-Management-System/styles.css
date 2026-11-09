@@ -697,6 +697,32 @@ select option {
   gap: .85rem;
 }
 
+.payment-confirmation {
+  width: min(92vw, 30rem);
+  padding: 0;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: 0 1.5rem 5rem #0008;
+}
+
+.payment-confirmation::backdrop {
+  background: #071421bb;
+  backdrop-filter: blur(4px);
+}
+
+.payment-confirmation-card {
+  display: grid;
+  gap: .9rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.payment-confirmation-card h2,
+.payment-confirmation-card p {
+  margin: 0;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;

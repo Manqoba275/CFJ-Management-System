@@ -31,9 +31,7 @@ const seed = {
     { id: "T-2", name: "Thabo Nkosi", specialisation: "HIIT", language: "Zulu", rating: 4.7, availability: "Tue, Thu", bio: "Conditioning coach for stamina, weight loss, and high-energy circuits." },
     { id: "T-3", name: "Mia Naidoo", specialisation: "Mobility", language: "Venda", rating: 4.8, availability: "Sat, Sun", bio: "Mobility coach for recovery, flexibility, and injury prevention." }
   ],
-  payments: [
-    { id: "P-1", memberId: "M-1001", month: currentMonth, amount: 450, method: "Online", channel: "Email", date: today, confirmation: "Email sent to anele@cfjfit.co.za confirming R450 membership payment." }
-  ],
+  payments: [],
   bookings: [],
   trainingLog: [],
   attendance: [],
@@ -412,10 +410,20 @@ function setupMembersPage() {
 
   document.querySelector("#memberPaymentForm").addEventListener("submit", (event) => {
     event.preventDefault();
-    recordPayment(member.id, Number(getValue("#paymentAmount")), getValue("#paymentMonth"), getValue("#paymentChannel"));
-    renderMemberProfile(member);
-    renderMemberPayments(member.id);
-    renderOverviewMetrics();
+    const amount = Number(getValue("#paymentAmount"));
+    const month = getValue("#paymentMonth");
+    if (!Number.isFinite(amount) || amount <= 0) return showToast("Enter a valid payment amount.");
+    if (state.payments.some((payment) => payment.memberId === member.id && payment.month === month)) return showToast(`${month} is already marked as paid.`);
+    const dialog = document.querySelector("#paymentConfirmation");
+    document.querySelector("#paymentReviewDetails").textContent = `${month} · R${amount.toFixed(2)} · ${getValue("#paymentChannel")} confirmation`;
+    dialog.showModal();
+    document.querySelector("#confirmPayment").onclick = () => {
+      dialog.close();
+      recordPayment(member.id, amount, month, getValue("#paymentChannel"));
+      renderMemberProfile(member);
+      renderMemberPayments(member.id);
+      renderOverviewMetrics();
+    };
   });
 
   document.querySelector("#profileEditForm").addEventListener("submit", (event) => {
@@ -1174,8 +1182,7 @@ function recordPayment(memberId, amount, month, channel, method = "Online", allo
   const existing = state.payments.find((payment) => payment.memberId === memberId && payment.month === month);
   if (existing && !allowDuplicate) return showToast(`${month} is already marked as paid.`);
 
-  const destination = channel === "SMS" ? member.phone : member.email;
-  const confirmation = `${channel} sent to ${destination} confirming R${amount} membership payment for ${month}.`;
+  const confirmation = `Demo payment recorded for ${month}: R${Number(amount).toFixed(2)}. Confirmation channel selected: ${channel}. No message was sent.`;
   state.payments.push({ id: createId("P", state.payments), memberId, month, amount, method, channel, date: today, confirmation });
   saveState();
   showToast(confirmation);

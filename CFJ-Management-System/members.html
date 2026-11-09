@@ -39,16 +39,29 @@
         <button class="ghost-button mini-button" id="logoutButton" type="button">Logout</button>
       </article>
 
-      <!-- Payment form records paid months and generates simulated SMS/email confirmations. -->
+      <!-- Review dialog makes the demo payment action explicit before saving a record. -->
       <form class="panel payment-panel reveal" id="memberPaymentForm">
         <h2>Payment Section</h2>
-        <p class="muted">After payment, members receive a confirmation SMS or email. In this local demo, the confirmation is generated and displayed below.</p>
+        <p class="muted">Choose a month and review the demo payment before saving it. No money is collected by this website.</p>
         <label>Payment month<select id="paymentMonth"></select></label>
         <label>Amount<input id="paymentAmount" type="number" min="1" value="450"></label>
         <label>Confirmation channel<select id="paymentChannel"><option>Email</option><option>SMS</option></select></label>
         <button class="primary-button" type="submit">Pay Membership</button>
       </form>
     </section>
+
+    <dialog class="payment-confirmation" id="paymentConfirmation" aria-labelledby="paymentDialogTitle">
+      <form method="dialog" class="payment-confirmation-card">
+        <p class="eyebrow">Membership payment</p>
+        <h2 id="paymentDialogTitle">Review your payment</h2>
+        <p id="paymentReviewDetails"></p>
+        <p class="muted">This is a demonstration payment record. No card or bank payment will be processed.</p>
+        <div class="hero-actions">
+          <button class="primary-button" id="confirmPayment" type="button">Confirm demo payment</button>
+          <button class="ghost-button" type="submit">Cancel</button>
+        </div>
+      </form>
+    </dialog>
 
     <!-- Editable profile covers the required registration/profile interactions. -->
     <section class="content-band">
