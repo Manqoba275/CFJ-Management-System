@@ -45,8 +45,18 @@
         <p class="muted">Choose a month and review the demo payment before saving it. No money is collected by this website.</p>
         <label>Payment month<select id="paymentMonth"></select></label>
         <label>Amount<input id="paymentAmount" type="number" min="1" value="450"></label>
+        <fieldset class="payment-methods" aria-describedby="paymentMethodsNote">
+          <legend>Payment options</legend>
+          <p class="muted" id="paymentMethodsNote">These options are shown for preview. They are not active yet.</p>
+          <div class="payment-method-grid">
+            <button class="payment-method-option" type="button" disabled><span aria-hidden="true">▰</span><b>Debit or credit card</b><small>Coming soon</small></button>
+            <button class="payment-method-option" type="button" disabled><span aria-hidden="true">⇄</span><b>Instant EFT</b><small>Coming soon</small></button>
+            <button class="payment-method-option" type="button" disabled><span aria-hidden="true">▣</span><b>Mobile wallet</b><small>Coming soon</small></button>
+            <button class="payment-method-option" type="button" disabled><span aria-hidden="true">⌂</span><b>Pay at the club</b><small>Coming soon</small></button>
+          </div>
+        </fieldset>
         <label>Confirmation channel<select id="paymentChannel"><option>Email</option><option>SMS</option></select></label>
-        <button class="primary-button" type="submit">Pay Membership</button>
+        <button class="primary-button" type="submit">Create demo payment record</button>
       </form>
     </section>
 

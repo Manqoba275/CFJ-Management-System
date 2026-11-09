@@ -723,6 +723,49 @@ select option {
   margin: 0;
 }
 
+.payment-methods {
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: .85rem;
+}
+
+.payment-methods legend {
+  padding: 0 .4rem;
+  font-weight: 750;
+}
+
+.payment-methods > p { margin: 0 0 .8rem; }
+
+.payment-method-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .65rem;
+}
+
+.payment-method-option {
+  display: grid;
+  min-width: 0;
+  gap: .3rem;
+  justify-items: start;
+  padding: .85rem;
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: .7rem;
+  text-align: left;
+  opacity: .66;
+  cursor: not-allowed;
+}
+
+.payment-method-option span { color: var(--primary); font-size: 1.25rem; }
+.payment-method-option small { color: var(--muted); }
+
+@media (max-width: 560px) {
+  .payment-method-grid { grid-template-columns: 1fr; }
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;
