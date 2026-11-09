@@ -161,14 +161,15 @@ function setupFooter() {
   /* Footer uses copyright/legal/community links instead of duplicating main navigation. */
   document.querySelectorAll(".site-footer").forEach((footer) => {
     const role = state.session?.role || "public";
+    const destination = { member: "members.html", staff: "staff.html", admin: "reports.html" }[role];
     const aboutLinks = role === "admin"
       ? `<a href="reports.html">Admin Reports</a>`
       : role === "staff"
         ? `<a href="staff.html">Staff Desk</a>`
-        : `<a href="programmes.html">Programmes</a><a href="training.html">Training plans</a><a href="memberships.html">Membership options</a><a href="login.html">Demo sign in</a>`;
-    const communityLinks = role === "staff" || role === "admin"
-      ? `<a href="login.html" data-footer-logout="true">Logout</a>`
-      : `<a href="members.html">Member area</a><a href="help.html">App help</a>`;
+        : `<a href="programmes.html">Programmes</a><a href="training.html">Training plans</a><a href="memberships.html">Membership options</a>${role === "public" ? `<a href="member-login.html">Member sign in</a>` : ""}`;
+    const communityLinks = destination
+      ? `<a href="${destination}">${role === "member" ? "Member area" : role === "staff" ? "Staff desk" : "Admin reports"}</a><a href="help.html">App help</a><a href="login.html" data-session-logout="true">Logout</a>`
+      : `<a href="help.html">App help</a><a href="member-login.html">Sign in</a>`;
     footer.innerHTML = `
       <div class="footer-brand">
         <img src="assets/cfj-blue-logo.png" alt="CFJ Lifestyle Fitness logo">
@@ -188,14 +189,16 @@ function setupFooter() {
         ${communityLinks}
       </div>
     `;
-    footer.querySelectorAll("[data-footer-logout]").forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        state.session = null;
-        saveState();
-        location.href = "login.html";
-      });
-    });
+    footer.querySelectorAll("[data-session-logout]").forEach(bindLogout);
+  });
+}
+
+function bindLogout(link) {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    state.session = null;
+    saveState();
+    location.href = "index.html";
   });
 }
 
@@ -303,17 +306,21 @@ function setupRevealAnimation() {
 }
 
 function updateSessionLink() {
-  /* The login button becomes a working logout button after any user signs in. */
-  const link = document.querySelector("#sessionLink") || document.querySelector(".nav-login");
-  if (!link) return;
-  if (!state.session) return;
-  link.textContent = "Logout";
-  link.href = "login.html";
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    state.session = null;
-    saveState();
-    location.href = "login.html";
+  const session = state.session;
+  if (!session) return;
+  const dashboard = { member: "members.html", staff: "staff.html", admin: "reports.html" }[session.role];
+  if (!dashboard) return;
+  const label = { member: "Member area", staff: "Staff desk", admin: "Admin reports" }[session.role];
+  const accountLink = document.querySelector("#sessionLink") || document.querySelector(".nav-login");
+  if (accountLink) {
+    accountLink.textContent = "Logout";
+    accountLink.href = "index.html";
+    accountLink.setAttribute("aria-label", `Log out ${session.role}`);
+    bindLogout(accountLink);
+  }
+  document.querySelectorAll('main a[href="member-login.html"], main a[href="login.html"]').forEach((link) => {
+    link.href = dashboard;
+    link.textContent = label;
   });
 }
 
