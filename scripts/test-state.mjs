@@ -8,7 +8,6 @@ const source = await readFile(new URL('../website/app.js', import.meta.url), 'ut
 
 function start(saved) {
   const context = {
-    structuredClone,
     localStorage: { getItem: () => saved },
     document: {
       body: { dataset: { page: 'index' } },

@@ -50,6 +50,7 @@ class MainActivity : Activity() {
             insets
         }
         findViewById<Button>(R.id.top_home).setOnClickListener { showScreen("home") }
+        findViewById<Button>(R.id.top_website).setOnClickListener { startActivity(Intent(this, WebsiteActivity::class.java)) }
         findViewById<Button>(R.id.nav_home).setOnClickListener { showScreen("home") }
         findViewById<Button>(R.id.nav_classes).setOnClickListener { showScreen("classes") }
         findViewById<Button>(R.id.nav_settings).setOnClickListener { showScreen("settings") }
@@ -59,6 +60,12 @@ class MainActivity : Activity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("screen", screen)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        // Rebind after native sign-in/sign-out so the previous identity cannot linger.
+        if (screen == "settings") showScreen("settings")
     }
 
     private fun showScreen(destination: String) {

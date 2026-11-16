@@ -2,9 +2,9 @@
 name: Android build and tests
 on:
   push:
-    paths: ['mobile-app/**', '.github/workflows/android.yml']
+    paths: ['mobile-app/**', 'website/**', '.github/workflows/android.yml']
   pull_request:
-    paths: ['mobile-app/**', '.github/workflows/android.yml']
+    paths: ['mobile-app/**', 'website/**', '.github/workflows/android.yml']
 permissions:
   contents: read
 jobs:
@@ -30,6 +30,40 @@ jobs:
           name: CFJ-Android-debug
           path: mobile-app/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Enable KVM for Android emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run website preview on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          emulator-boot-timeout: 600
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: mobile-app
+          script: |
+            adb shell input keyevent 82
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+            adb shell am instrument -w -e mode website za.co.cfjlifestylefitness.app.test/za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation | tee "$RUNNER_TEMP/website-smoke.txt"
+            grep -F 'WEBSITE_SMOKE_OK' "$RUNNER_TEMP/website-smoke.txt"
+            mkdir -p app/build/website-evidence
+            adb pull /sdcard/Android/data/za.co.cfjlifestylefitness.app/files/. app/build/website-evidence/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: CFJ-Android-test-evidence
+          path: |
+            mobile-app/app/build/website-evidence/
+            mobile-app/app/build/reports/tests/
+            mobile-app/app/build/reports/lint-results-debug.html
+            ${{ runner.temp }}/website-smoke.txt
+            ${{ runner.temp }}/emulator.log
       - name: Verify release packaging requires signing
         working-directory: mobile-app
         run: |

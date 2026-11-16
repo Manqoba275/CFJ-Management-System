@@ -1,7 +1,7 @@
 <!-- Messages and labels for community requests, including failure states. -->
 <resources>
     <string name="community_heading">Membership, bookings and community</string>
-    <string name="community_notice">Synthetic members and trainers. Requests remain pending; sample guides unlock after a simulated payment. Uses the service address and token above.</string>
+    <string name="community_notice">Shared API records include bookings, trainers, connections, messages, attendance and simulated payments. Requests remain pending until accepted; guides require a recorded payment. Reload after changes.</string>
     <string name="community_load">Load membership and service records</string>
     <string name="community_guides">View exercise guides</string>
     <string name="community_loading">Contacting service…</string>

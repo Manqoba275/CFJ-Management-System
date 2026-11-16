@@ -18,7 +18,7 @@ class CommunityPanel(private val activity: Activity) {
     fun close() { executor.shutdownNow() }
 
     fun bind() {
-        if (!BuildConfig.DEBUG) return
+        if (!BuildConfig.DEBUG && com.google.firebase.auth.FirebaseAuth.getInstance().currentUser == null) return
         val container = activity.findViewById<LinearLayout>(R.id.community_panel)
         val origin = activity.findViewById<EditText>(R.id.api_origin)
         val token = activity.findViewById<EditText>(R.id.api_token)
@@ -74,6 +74,9 @@ class CommunityPanel(private val activity: Activity) {
                 val memberships = api.list("/me/memberships")
                 val classes = api.list("/classes")
                 val bookings = api.list("/bookings")
+                val payments = api.list("/me/payments")
+                val attendance = api.list("/me/attendance")
+                val messages = api.list("/me/messages")
                 val render: () -> Unit = {
                     records.removeAllViews()
                     message("Shared membership and bookings")
@@ -93,6 +96,12 @@ class CommunityPanel(private val activity: Activity) {
                         }
                     }
                     if (bookings.isEmpty()) message("No shared bookings yet.")
+                    message("Payment history (simulated)")
+                    payments.forEach { p -> message("ZAR ${"%.2f".format(java.util.Locale.ROOT, p.getLong("amountCents") / 100.0)} · ${p.optString("recordedAt")}") }
+                    if (payments.isEmpty()) message("No payments recorded.")
+                    message("Attendance history")
+                    attendance.forEach { a -> message("Booking ${a.getString("bookingId")} · ${a.optString("recordedAt")}") }
+                    if (attendance.isEmpty()) message("No attendance recorded.")
                     trainers.forEach { t ->
                         message("${t.getString("displayName")} · ${t.getString("specialty")}")
                         button(activity.getString(R.string.community_request_trainer)) { send("/trainer-requests", JSONObject().put("trainerId", t.getString("id"))) }
@@ -106,6 +115,16 @@ class CommunityPanel(private val activity: Activity) {
                     connections.forEach { c ->
                         message("${c.getString("fromId")} → ${c.getString("toId")}: ${c.getString("status")}")
                         if (c.getString("status") == "pending") button(activity.getString(R.string.community_accept)) { send("/friend-connections/${c.getString("id")}/accept", JSONObject()) }
+                    }
+                    message("Messages")
+                    messages.forEach { m -> message("${m.getString("senderId")} → ${m.getString("recipientId")}\n${m.getString("body")}") }
+                    if (messages.isEmpty()) message("No messages yet.")
+                    val recipient = EditText(activity).apply { hint = "Recipient member reference (accepted connection)" }
+                    val body = EditText(activity).apply { hint = "Message"; filters = arrayOf(android.text.InputFilter.LengthFilter(1000)) }
+                    records.addView(recipient); records.addView(body)
+                    button("Send message") {
+                        if (recipient.text.isBlank() || body.text.isBlank()) status.text = "Enter a recipient and message."
+                        else send("/messages", JSONObject().put("recipientId", recipient.text.toString().trim()).put("body", body.text.toString().trim()))
                     }
                 }
                 render
