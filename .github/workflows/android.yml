@@ -30,24 +30,30 @@ jobs:
           name: CFJ-Android-debug
           path: mobile-app/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-      - name: Run website preview on Android emulator
-        working-directory: mobile-app
-        timeout-minutes: 12
+      - name: Enable KVM for Android emulator
         run: |
-          sdkmanager 'system-images;android-30;google_apis;x86_64' 'emulator'
-          echo no | avdmanager create avd -n cfj-smoke -k 'system-images;android-30;google_apis;x86_64' --force
-          sudo chmod 666 /dev/kvm
-          "$ANDROID_HOME/emulator/emulator" -avd cfj-smoke -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > "$RUNNER_TEMP/emulator.log" 2>&1 &
-          trap 'adb emu kill || true' EXIT
-          timeout 180 adb wait-for-device
-          timeout 240 bash -c 'until [ "$(adb shell getprop sys.boot_completed | tr -d "\r")" = "1" ]; do sleep 2; done'
-          adb shell input keyevent 82
-          adb install -r app/build/outputs/apk/debug/app-debug.apk
-          adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-          adb shell am instrument -w -e mode website za.co.cfjlifestylefitness.app.test/za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation | tee "$RUNNER_TEMP/website-smoke.txt"
-          grep -F 'WEBSITE_SMOKE_OK' "$RUNNER_TEMP/website-smoke.txt"
-          mkdir -p app/build/website-evidence
-          adb pull /sdcard/Android/data/za.co.cfjlifestylefitness.app/files/. app/build/website-evidence/
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run website preview on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          emulator-boot-timeout: 600
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: mobile-app
+          script: |
+            adb shell input keyevent 82
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+            adb shell am instrument -w -e mode website za.co.cfjlifestylefitness.app.test/za.co.cfjlifestylefitness.app.ProfileConnectionInstrumentation | tee "$RUNNER_TEMP/website-smoke.txt"
+            grep -F 'WEBSITE_SMOKE_OK' "$RUNNER_TEMP/website-smoke.txt"
+            mkdir -p app/build/website-evidence
+            adb pull /sdcard/Android/data/za.co.cfjlifestylefitness.app/files/. app/build/website-evidence/
       - uses: actions/upload-artifact@v4
         if: always()
         with:
