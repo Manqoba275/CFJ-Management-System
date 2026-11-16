@@ -1483,7 +1483,6 @@ section[id] { scroll-margin-top: 120px; }
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .15rem;
   }
-
   body:not(.app-page) .topbar .nav a {
     display: flex;
     min-height: 3.45rem;
